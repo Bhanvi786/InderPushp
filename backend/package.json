@@ -24,18 +24,18 @@
     "mongoose": "^9.11.1",
     "multer": "^2.4.0",
     "resend": "^6.34.1",
-    "streamifier": "^0.1.1"
-  },
-  "devDependencies": {
+    "streamifier": "^0.1.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.3.0",
-    "@types/node": "^26.6.4",
+    "@types/node": "^22.13.4",
     "@types/streamifier": "^0.1.2",
+    "typescript": "^5.7.3"
+  },
+  "devDependencies": {
     "ts-node": "^10.9.2",
-    "tsx": "^4.23.15",
-    "typescript": "^7.0.2"
+    "tsx": "^4.23.15"
   }
 }
