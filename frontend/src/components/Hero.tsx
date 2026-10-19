@@ -16,8 +16,8 @@ export default function Hero() {
     "/9.jpeg", // 8: Bottom Middle Green Curve (Bottom middle, curved top-left)
     "/10.jpeg", // 9: Top Right Flower (Tall rectangle on the top right)
     "/2.jpeg", // 10: Right Small Gold (Small tile with curved top-left)
-    "/3.jpeg", // 11: Right Peacock (Tall rectangle on the middle right)
-    "/4.jpeg", // 12: Bottom Right Green Leaves (Bottom right, curved top-left)
+    "/11.jpg", // 11: Right bottom tile (Elongated)
+    "/12.jpg", // 12: Bottom Right curved tile (Curved top-left)
   ];
 
   return (
