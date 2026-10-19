@@ -170,37 +170,37 @@ export default function Collections() {
         </svg>
       </div>
 
-      <div className="max-w-[1560px] mx-auto relative z-10">
+      <div className="max-w-[1320px] mx-auto relative z-10">
 
         {/* ======================================================== */}
         {/* 1. EDITORIAL HEADER & FILTER PILLS                       */}
         {/* ======================================================== */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 sm:mb-12 gap-6">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-6 sm:mb-9 gap-5">
           {/* Left: Gold Label, Heading, and Subtitle */}
           <div className="max-w-2xl">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="w-6 h-[1.5px] bg-[#B79A5A]" />
-              <span className="text-[11px] font-sans tracking-[0.25em] uppercase text-[#B79A5A] font-medium">
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="w-5 h-[1.5px] bg-[#B79A5A]" />
+              <span className="text-[10px] sm:text-[11px] font-sans tracking-[0.25em] uppercase text-[#B79A5A] font-medium">
                 EXPLORE THE COLLECTION
               </span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#263248] tracking-tight font-normal leading-[1.15]">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif text-[#263248] tracking-tight font-normal leading-[1.15]">
               A Mosaic of Stories
             </h2>
 
-            <p className="text-[#4B5568] text-sm md:text-base font-sans mt-2.5 leading-relaxed">
+            <p className="text-[#4B5568] text-xs sm:text-sm font-sans mt-2 leading-relaxed">
               Art that brings colour, culture and meaning to everyday spaces.
             </p>
           </div>
 
           {/* Right: Category Filter Pills Aligned Alongside */}
-          <div className="flex items-center gap-2 flex-wrap pt-1">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap pt-1">
             {/* "ALL WORKS" Pill */}
             <button
               type="button"
               onClick={() => handleCategorySelect("All Works")}
-              className={`px-4 sm:px-5 py-2 rounded-full text-[11px] font-sans tracking-wider uppercase font-semibold transition-all duration-300 shadow-2xs ${selectedCategory === "All Works"
+              className={`px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-[10.5px] sm:text-[11px] font-sans tracking-wider uppercase font-semibold transition-all duration-300 shadow-2xs ${selectedCategory === "All Works"
                 ? "bg-[#263248] text-[#FAF7F0] border border-[#263248] shadow-sm"
                 : "bg-white/80 hover:bg-white text-[#4B5568] hover:text-[#263248] border border-[#B79A5A]/35"
                 }`}
@@ -216,7 +216,7 @@ export default function Collections() {
                   type="button"
                   key={cat._id}
                   onClick={() => handleCategorySelect(cat.name)}
-                  className={`px-4 sm:px-5 py-2 rounded-full text-[11px] font-sans tracking-wider uppercase font-semibold transition-all duration-300 shadow-2xs ${isSelected
+                  className={`px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-[10.5px] sm:text-[11px] font-sans tracking-wider uppercase font-semibold transition-all duration-300 shadow-2xs ${isSelected
                     ? "bg-[#263248] text-[#FAF7F0] border border-[#263248] shadow-sm"
                     : "bg-white/80 hover:bg-white text-[#4B5568] hover:text-[#263248] border border-[#B79A5A]/35"
                     }`}
@@ -236,12 +236,12 @@ export default function Collections() {
         {/* ======================================================== */}
         {loading ? (
           /* Editorial Skeleton Loader */
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-3.5 sm:gap-4 lg:gap-5 w-full animate-pulse">
-            <div className="md:col-span-4 h-[560px] bg-[#F4EFE4] rounded-2xl border border-[#B79A5A]/20" />
-            <div className="md:col-span-5 h-[280px] bg-[#F4EFE4] rounded-2xl border border-[#B79A5A]/20" />
-            <div className="md:col-span-3 h-[340px] bg-[#F4EFE4] rounded-2xl border border-[#B79A5A]/20" />
-            <div className="md:col-span-5 h-[260px] bg-[#F4EFE4] rounded-2xl border border-[#B79A5A]/20" />
-            <div className="md:col-span-7 h-[260px] bg-[#F4EFE4] rounded-2xl border border-[#B79A5A]/20" />
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-3.5 sm:gap-4 lg:gap-4.5 w-full animate-pulse">
+            <div className="md:col-span-4 h-[440px] bg-[#F4EFE4] rounded-2xl border border-[#B79A5A]/20" />
+            <div className="md:col-span-5 h-[210px] bg-[#F4EFE4] rounded-2xl border border-[#B79A5A]/20" />
+            <div className="md:col-span-3 h-[250px] bg-[#F4EFE4] rounded-2xl border border-[#B79A5A]/20" />
+            <div className="md:col-span-5 h-[210px] bg-[#F4EFE4] rounded-2xl border border-[#B79A5A]/20" />
+            <div className="md:col-span-7 h-[210px] bg-[#F4EFE4] rounded-2xl border border-[#B79A5A]/20" />
           </div>
         ) : error ? (
           /* Error State */
@@ -277,370 +277,331 @@ export default function Collections() {
               View All Works
             </button>
           </div>
-        ) : isAllWorksSelected && tile1Artwork && tile2Artwork && tile3Artwork && tile4Artwork && tile5Artwork ? (
+        ) : filteredArtworks.length > 0 ? (
           /* ======================================================== */
-          /* 3. PRIMARY REFERENCE MOSAIC COMPOSITION (ALL WORKS)      */
+          /* 3. CONTINUOUS HARMONIC MOSAIC COMPOSITION (ALL ARTWORKS)  */
           /* ======================================================== */
-          <div className="space-y-4 sm:space-y-5">
-            {/* Master Grid: Slot 1 (Tall Left) alongside the Middle/Right cluster */}
-            {/* Preserves the exact same orientation on mobile as laptop, scaled proportionally */}
-            <div className="grid grid-cols-12 gap-2.5 xs:gap-3 sm:gap-4 lg:gap-5 items-stretch">
+          <div className="space-y-4 sm:space-y-6">
+            {/* Chunk artworks into groups of 5 to repeat the exact artistic mosaic rhythm */}
+            {Array.from({ length: Math.ceil(filteredArtworks.length / 5) }).map((_, blockIdx) => {
+              const blockArtworks = filteredArtworks.slice(blockIdx * 5, blockIdx * 5 + 5);
+              const isEvenBlock = blockIdx % 2 === 0;
 
-              {/* ---------------------------------------------------- */}
-              {/* TILE 1: (Tall Portrait on Left) - Slot #1            */}
-              {/* ---------------------------------------------------- */}
-              <div className="col-span-5 lg:col-span-4 flex flex-col">
-                <article
-                  onClick={() => handleArtworkClick(tile1Artwork)}
-                  className="group cursor-pointer relative overflow-hidden rounded-xl xs:rounded-2xl bg-[#263248] border border-[#B79A5A]/20 hover:border-[#B79A5A] transition-all duration-500 shadow-md hover:shadow-xl hover:-translate-y-1 h-[270px] xs:h-[330px] sm:h-[480px] lg:h-[580px] flex flex-col justify-end"
-                >
-                  <img
-                    src={getImageKitUrl(tile1Artwork.mainImage?.url, {
-                      width: 1000,
-                      quality: 88,
-                      format: "webp",
-                    })}
-                    alt={tile1Artwork.mainImage?.alt || tile1Artwork.title}
-                    className="absolute inset-0 w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                  />
+              const a1 = blockArtworks[0];
+              const a2 = blockArtworks[1];
+              const a3 = blockArtworks[2];
+              const a4 = blockArtworks[3];
+              const a5 = blockArtworks[4];
 
-                  {/* Dark gradient overlay matching reference */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none" />
-
-                  {/* Artwork Information: On mobile, only MRP and Add button are shown; title/category show from sm upwards */}
-                  <div className="relative z-10 p-2.5 xs:p-3.5 sm:p-6 lg:p-7 flex items-end justify-between gap-1.5 xs:gap-2">
-                    <div className="min-w-0">
-                      <span className="hidden sm:block text-[8px] xs:text-[9px] sm:text-[11px] font-sans tracking-[0.2em] sm:tracking-[0.25em] uppercase text-[#D8C594] font-medium mb-0.5">
-                        {tile1Artwork.category}
-                      </span>
-                      <h3 className="hidden sm:block text-xs xs:text-sm sm:text-2xl font-serif text-white font-normal leading-tight xs:leading-snug line-clamp-2">
-                        {tile1Artwork.title}
-                      </h3>
-                      <p className="text-sm xs:text-base sm:text-base sm:mt-1 font-serif font-bold text-white drop-shadow-md tracking-tight leading-none">
-                        ₹{tile1Artwork.priceINR.toLocaleString("en-IN")}
-                      </p>
-                    </div>
-
-                    <div className="flex items-center gap-1 xs:gap-1.5 shrink-0">
-                      <AddToCartButton artwork={tile1Artwork} />
-                    </div>
-                  </div>
-                </article>
-
-                {/* Decorative Bottom-Left Botanical flourish + text (desktop only) */}
-                <div className="mt-6 hidden lg:flex items-center gap-4 pl-3 select-none">
-                  {/* Subtle botanical branch SVG */}
-                  <svg
-                    className="w-20 h-14 text-[#B79A5A]/50 shrink-0"
-                    viewBox="0 0 100 60"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.2"
-                  >
-                    <path d="M0,50 Q40,35 90,10" />
-                    <path d="M25,40 Q35,25 30,15 Q40,25 45,33" fill="currentColor" fillOpacity="0.15" />
-                    <path d="M55,27 Q65,15 62,5 Q70,18 73,20" fill="currentColor" fillOpacity="0.15" />
-                    <path d="M78,16 Q88,5 95,0 Q92,12 88,13" fill="currentColor" fillOpacity="0.15" />
-                  </svg>
-                  <p className="font-serif italic text-[#4B5568] text-base leading-snug">
-                    Small pieces.<br />
-                    <span className="ml-3">Larger meanings.</span>
-                  </p>
-                </div>
-              </div>
-
-              {/* ---------------------------------------------------- */}
-              {/* MIDDLE & RIGHT COMBINED AREA                         */}
-              {/* ---------------------------------------------------- */}
-              <div className="col-span-7 lg:col-span-8 flex flex-col justify-between gap-2.5 xs:gap-3 sm:gap-4 lg:gap-5">
-
-                {/* Upper Sub-Row: Slot 2 (Wide) & Slot 3 (Arched) */}
-                <div className="grid grid-cols-12 gap-2 xs:gap-2.5 sm:gap-4 lg:gap-5 items-stretch">
-
-                  {/* TILE 2: (Wide horizontal tile) - Slot #2 */}
-                  <div className="col-span-7">
-                    <article
-                      onClick={() => handleArtworkClick(tile2Artwork)}
-                      className="group cursor-pointer relative overflow-hidden rounded-xl xs:rounded-2xl bg-[#263248] border border-[#B79A5A]/20 hover:border-[#B79A5A] transition-all duration-500 shadow-md hover:shadow-xl hover:-translate-y-1 h-[130px] xs:h-[160px] sm:h-[235px] lg:h-[320px] flex flex-col justify-end"
-                    >
-                      <img
-                        src={getImageKitUrl(tile2Artwork.mainImage?.url, {
-                          width: 1000,
-                          quality: 88,
-                          format: "webp",
-                        })}
-                        alt={tile2Artwork.mainImage?.alt || tile2Artwork.title}
-                        className="absolute inset-0 w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                      />
-
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none" />
-
-                      <div className="relative z-10 p-2.5 xs:p-3 sm:p-6 flex items-end justify-between gap-1.5 xs:gap-2">
-                        <div className="min-w-0">
-                          <span className="hidden sm:block text-[8px] xs:text-[9px] sm:text-[11px] font-sans tracking-[0.2em] sm:tracking-[0.25em] uppercase text-[#D8C594] font-medium mb-0.5">
-                            {tile2Artwork.category}
-                          </span>
-                          <h3 className="hidden sm:block text-xs xs:text-sm sm:text-xl font-serif text-white font-normal leading-tight xs:leading-snug line-clamp-1">
-                            {tile2Artwork.title}
-                          </h3>
-                          <p className="text-xs xs:text-sm sm:text-base sm:mt-0.5 font-serif font-bold text-white drop-shadow-md tracking-tight leading-none">
-                            ₹{tile2Artwork.priceINR.toLocaleString("en-IN")}
-                          </p>
-                        </div>
-
-                        <div className="flex items-center gap-1 xs:gap-1.5 shrink-0">
-                          <AddToCartButton artwork={tile2Artwork} />
-                        </div>
-                      </div>
-                    </article>
-                  </div>
-
-                  {/* TILE 3: (Tall tile on upper-right with arched top-right corner) - Slot #3 */}
-                  <div className="col-span-5">
-                    <article
-                      onClick={() => handleArtworkClick(tile3Artwork)}
-                      className="group cursor-pointer relative overflow-hidden rounded-xl xs:rounded-2xl rounded-tr-[28px] xs:rounded-tr-[36px] sm:rounded-tr-[44px] bg-[#263248] border border-[#B79A5A]/20 hover:border-[#B79A5A] transition-all duration-500 shadow-md hover:shadow-xl hover:-translate-y-1 h-[130px] xs:h-[160px] sm:h-[235px] lg:h-[320px] flex flex-col justify-end"
-                    >
-                      <img
-                        src={getImageKitUrl(tile3Artwork.mainImage?.url, {
-                          width: 800,
-                          quality: 88,
-                          format: "webp",
-                        })}
-                        alt={tile3Artwork.mainImage?.alt || tile3Artwork.title}
-                        className="absolute inset-0 w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                      />
-
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none" />
-
-                      <div className="relative z-10 p-2.5 xs:p-3 sm:p-5 flex items-end justify-between gap-1 xs:gap-2">
-                        <div className="min-w-0">
-                          <span className="hidden sm:block text-[8px] xs:text-[9px] font-sans tracking-[0.2em] uppercase text-[#D8C594] font-medium mb-0.5">
-                            {tile3Artwork.category}
-                          </span>
-                          <h3 className="hidden sm:block text-xs xs:text-sm sm:text-lg font-serif text-white font-normal leading-tight xs:leading-snug line-clamp-1">
-                            {tile3Artwork.title}
-                          </h3>
-                          <p className="text-xs xs:text-sm sm:text-sm sm:mt-0.5 font-serif font-bold text-white drop-shadow-md tracking-tight leading-none">
-                            ₹{tile3Artwork.priceINR.toLocaleString("en-IN")}
-                          </p>
-                        </div>
-
-                        <div className="flex items-center gap-1 xs:gap-1.5 shrink-0">
-                          <AddToCartButton artwork={tile3Artwork} />
-                        </div>
-                      </div>
-                    </article>
-                  </div>
-
-                </div>
-
-                {/* Lower Sub-Row: Slot 4 (Circular Frame) & Slot 5 (Horizontal Split) */}
-                <div className="grid grid-cols-12 gap-2 xs:gap-2.5 sm:gap-4 lg:gap-5 items-stretch">
-
-                  {/* TILE 4: (Circular Artwork with delicate laurel accents) - Slot #4 */}
-                  <div className="col-span-5 flex flex-col">
-                    <article
-                      onClick={() => handleArtworkClick(tile4Artwork)}
-                      className="group cursor-pointer relative overflow-hidden rounded-xl xs:rounded-2xl bg-white/70 border border-[#B79A5A]/25 hover:border-[#B79A5A] transition-all duration-500 shadow-2xs hover:shadow-xl hover:-translate-y-1 p-2 xs:p-2.5 sm:p-5 flex flex-col justify-between h-[130px] xs:h-[160px] sm:h-[235px] lg:h-[340px]"
-                    >
-                      {/* Decorative Gold Laurel Arch */}
-                      <svg
-                        className="absolute top-1 right-2 w-16 h-16 sm:w-28 sm:h-28 text-[#B79A5A]/35 pointer-events-none hidden xs:block"
-                        viewBox="0 0 100 100"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.2"
-                      >
-                        <path d="M10,80 Q50,20 90,40" />
-                        <path d="M40,35 Q50,20 48,10 Q58,22 62,28" fill="currentColor" fillOpacity="0.2" />
-                        <path d="M68,32 Q78,20 80,10 Q85,25 88,33" fill="currentColor" fillOpacity="0.2" />
-                      </svg>
-
-                      {/* Circular mosaic artwork frame */}
-                      <div className="relative mx-auto w-14 h-14 xs:w-18 xs:h-18 sm:w-40 sm:h-40 rounded-full overflow-hidden shadow-md border border-[#B79A5A]/30 p-0.5 sm:p-1 bg-[#FAF7F0] flex items-center justify-center shrink-0">
-                        <img
-                          src={getImageKitUrl(tile4Artwork.mainImage?.url, {
-                            width: 600,
-                            quality: 88,
-                            format: "webp",
-                          })}
-                          alt={tile4Artwork.mainImage?.alt || tile4Artwork.title}
-                          className="w-full h-full object-contain rounded-full transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                        />
-                      </div>
-
-                      {/* Clean cream information placard */}
-                      <div className="pt-1 xs:pt-1.5 sm:pt-3 border-t border-[#B79A5A]/15 flex items-end justify-between gap-1 xs:gap-2">
-                        <div className="min-w-0">
-                          <span className="hidden sm:block text-[7.5px] xs:text-[8.5px] sm:text-[10px] font-sans tracking-[0.18em] sm:tracking-[0.25em] uppercase text-[#B79A5A] font-medium leading-none mb-0.5">
-                            {tile4Artwork.category}
-                          </span>
-                          <h3 className="hidden sm:block text-[10px] xs:text-xs sm:text-lg font-serif text-[#263248] font-normal leading-tight group-hover:text-[#B79A5A] transition-colors line-clamp-1">
-                            {tile4Artwork.title}
-                          </h3>
-                          <p className="text-[11px] xs:text-xs sm:text-sm sm:mt-0.5 font-serif font-bold text-[#1E2738] tracking-tight leading-none">
-                            ₹{tile4Artwork.priceINR.toLocaleString("en-IN")}
-                          </p>
-                        </div>
-
-                        <div className="flex items-center gap-1 xs:gap-1.5 shrink-0">
-                          <AddToCartButton artwork={tile4Artwork} />
-                        </div>
-                      </div>
-                    </article>
-                  </div>
-
-                  {/* TILE 5: (Wide card with image on left, cream placard on right) - Slot #5 */}
-                  <div className="col-span-7 flex flex-col">
-                    <article
-                      onClick={() => handleArtworkClick(tile5Artwork)}
-                      className="group cursor-pointer relative overflow-hidden rounded-xl xs:rounded-2xl bg-white border border-[#B79A5A]/25 hover:border-[#B79A5A] transition-all duration-500 shadow-2xs hover:shadow-xl hover:-translate-y-1 flex flex-row items-stretch h-[130px] xs:h-[160px] sm:h-[235px] lg:h-[340px]"
-                    >
-                      {/* Image Occupies ~60-68% of available space */}
-                      <div className="w-[58%] xs:w-[62%] sm:w-[68%] relative overflow-hidden bg-[#FAF7F0] h-full">
-                        <img
-                          src={getImageKitUrl(tile5Artwork.mainImage?.url, {
-                            width: 1000,
-                            quality: 88,
-                            format: "webp",
-                          })}
-                          alt={tile5Artwork.mainImage?.alt || tile5Artwork.title}
-                          className="w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                        />
-                      </div>
-
-                      {/* Information placed beside image on right */}
-                      <div className="w-[42%] xs:w-[38%] sm:w-[32%] p-2 xs:p-2.5 sm:p-6 bg-white flex flex-col justify-end sm:justify-between border-l border-[#B79A5A]/15">
-                        <div className="min-w-0 hidden sm:block">
-                          <span className="text-[7.5px] xs:text-[8.5px] sm:text-[10px] font-sans tracking-[0.18em] sm:tracking-[0.25em] uppercase text-[#B79A5A] font-medium block leading-none mb-0.5">
-                            {tile5Artwork.category}
-                          </span>
-                          <h3 className="text-[10.5px] xs:text-xs sm:text-xl font-serif text-[#263248] font-normal leading-tight xs:leading-snug group-hover:text-[#B79A5A] transition-colors line-clamp-1 xs:line-clamp-2">
-                            {tile5Artwork.title}
-                          </h3>
-                        </div>
-
-                        <div className="pt-0 sm:pt-3 sm:border-t sm:border-[#B79A5A]/15 flex items-end justify-between gap-1 xs:gap-1.5">
-                          <p className="text-[11px] xs:text-xs sm:text-base font-serif font-bold text-[#1E2738] tracking-tight leading-none">
-                            ₹{tile5Artwork.priceINR.toLocaleString("en-IN")}
-                          </p>
-
-                          <div className="flex items-center gap-1 xs:gap-1.5 shrink-0">
-                            <AddToCartButton artwork={tile5Artwork} />
-                          </div>
-                        </div>
-                      </div>
-                    </article>
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            {/* ---------------------------------------------------- */}
-            {/* ADDITIONAL ARTWORKS (RENDERED BELOW HERO MOSAIC)     */}
-            {/* ---------------------------------------------------- */}
-            {visibleArtworks.slice(5).length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-3.5 sm:gap-4 lg:gap-5 items-stretch mt-4 sm:mt-5 pt-2">
-                {visibleArtworks.slice(5)
-                  .map((artwork, idx, arr) => {
-                    let colSpan = "col-span-12 md:col-span-6 lg:col-span-6";
-                    if (arr.length === 1) {
-                      colSpan = "col-span-12 lg:col-span-7";
-                    } else if (arr.length % 2 !== 0 && idx === 0) {
-                      colSpan = "col-span-12 lg:col-span-12";
-                    } else {
-                      colSpan = idx % 2 === 0 ? "col-span-12 md:col-span-7" : "col-span-12 md:col-span-5";
-                    }
-                    return (
-                      <div key={artwork._id} className={colSpan}>
+              // If block has fewer than 5 items and only 1 or 2 left, display them cleanly using the exact mosaic card styles
+              if (blockArtworks.length < 3) {
+                return (
+                  <div key={`partial-block-${blockIdx}`} className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-3.5 lg:gap-4 items-stretch">
+                    {blockArtworks.map((art) => (
+                      <div key={art._id} className={blockArtworks.length === 1 ? "col-span-12 md:col-span-8 lg:col-span-6 mx-auto w-full" : "col-span-12 md:col-span-6"}>
                         <article
-                          onClick={() => handleArtworkClick(artwork)}
-                          className="group cursor-pointer relative overflow-hidden rounded-2xl bg-[#263248] border border-[#B79A5A]/20 hover:border-[#B79A5A] transition-all duration-500 shadow-md hover:shadow-xl hover:-translate-y-1 h-[280px] sm:h-[320px] lg:h-[340px] flex flex-col justify-end"
+                          onClick={() => handleArtworkClick(art)}
+                          className="group cursor-pointer relative overflow-hidden rounded-xl xs:rounded-2xl bg-[#F9F5ED] border border-[#B79A5A]/30 hover:border-[#B79A5A] transition-all duration-500 shadow-sm hover:shadow-xl hover:-translate-y-1 h-[200px] xs:h-[230px] sm:h-[260px] lg:h-[275px] flex flex-col justify-end"
                         >
                           <img
-                            src={getImageKitUrl(artwork.mainImage?.url, {
-                              width: 1000,
+                            src={getImageKitUrl(art.mainImage?.url, {
+                              width: 900,
                               quality: 88,
                               format: "webp",
                             })}
-                            alt={artwork.mainImage?.alt || artwork.title}
+                            alt={art.mainImage?.alt || art.title}
                             className="absolute inset-0 w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                           />
-
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none" />
-
-                          <div className="relative z-10 p-5 sm:p-6 flex items-end justify-between gap-4">
+                          <div className="absolute inset-x-0 bottom-0 h-24 sm:h-28 bg-gradient-to-t from-black/65 via-black/20 to-transparent pointer-events-none" />
+                          <div className="relative z-10 p-3 sm:p-5 flex items-end justify-between gap-2">
                             <div className="min-w-0">
-                              <span className="hidden sm:block text-[10px] sm:text-[11px] font-sans tracking-[0.25em] uppercase text-[#D8C594] font-medium mb-1">
-                                {artwork.category}
+                              <span className="hidden sm:block text-[8px] xs:text-[9px] sm:text-[10px] font-sans tracking-[0.2em] uppercase text-[#D8C594] font-medium mb-0.5">
+                                {art.category}
                               </span>
-                              <h3 className="hidden sm:block text-lg sm:text-xl font-serif text-white font-normal leading-snug">
-                                {artwork.title}
+                              <h3 className="text-xs xs:text-sm sm:text-lg font-serif text-white font-normal leading-tight xs:leading-snug line-clamp-1">
+                                {art.title}
                               </h3>
-                              <p className="text-sm sm:text-base sm:mt-0.5 font-serif font-bold text-white leading-none">
-                                ₹{artwork.priceINR.toLocaleString("en-IN")}
+                              <p className="text-xs xs:text-sm sm:text-base sm:mt-0.5 font-serif font-bold text-white drop-shadow-md tracking-tight leading-none">
+                                ₹{art.priceINR.toLocaleString("en-IN")}
                               </p>
                             </div>
-
-                            <div className="flex items-center gap-2 shrink-0">
-                              <AddToCartButton artwork={artwork} />
+                            <div className="flex items-center gap-1 shrink-0">
+                              <AddToCartButton artwork={art} />
                             </div>
                           </div>
                         </article>
                       </div>
-                    );
-                  })}
-              </div>
-            )}
-          </div>
-        ) : (
-          /* ======================================================== */
-          /* 4. BALANCED MOSAIC FOR FILTERED SUBSETS                  */
-          /* ======================================================== */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {filteredArtworks.map((artwork) => (
-              <article
-                key={artwork._id}
-                onClick={() => handleArtworkClick(artwork)}
-                className="group cursor-pointer relative overflow-hidden rounded-2xl bg-[#263248] border border-[#B79A5A]/20 hover:border-[#B79A5A] transition-all duration-500 shadow-md hover:shadow-xl hover:-translate-y-1 h-[360px] flex flex-col justify-end"
-              >
-                <img
-                  src={getImageKitUrl(artwork.mainImage?.url, {
-                    width: 900,
-                    quality: 85,
-                    format: "webp",
-                  })}
-                  alt={artwork.mainImage?.alt || artwork.title}
-                  className="absolute inset-0 w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                />
+                    ))}
+                  </div>
+                );
+              }
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none" />
+              return (
+                <div
+                  key={`mosaic-block-${blockIdx}`}
+                  className="grid grid-cols-12 gap-2.5 xs:gap-3 sm:gap-3.5 lg:gap-4 items-stretch"
+                >
+                  {/* ======================================================== */}
+                  {/* TALL FEATURE CARD (Slot #1)                             */}
+                  {/* Even blocks: Left (col-span-5 lg:col-span-4, order-1)    */}
+                  {/* Odd blocks: Right (col-span-5 lg:col-span-4, order-2)   */}
+                  {/* ======================================================== */}
+                  <div className={`col-span-5 lg:col-span-4 flex flex-col ${isEvenBlock ? "order-1" : "order-2"}`}>
+                    <article
+                      onClick={() => handleArtworkClick(a1)}
+                      className="group cursor-pointer relative overflow-hidden rounded-xl xs:rounded-2xl bg-[#F9F5ED] border border-[#B79A5A]/30 hover:border-[#B79A5A] transition-all duration-500 shadow-sm hover:shadow-xl hover:-translate-y-1 h-[240px] xs:h-[290px] sm:h-[400px] lg:h-[470px] flex flex-col justify-end"
+                    >
+                      <img
+                        src={getImageKitUrl(a1.mainImage?.url, {
+                          width: 900,
+                          quality: 88,
+                          format: "webp",
+                        })}
+                        alt={a1.mainImage?.alt || a1.title}
+                        className="absolute inset-0 w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      />
 
-                <div className="relative z-10 p-6 flex items-end justify-between gap-4">
-                  <div className="min-w-0">
-                    <span className="hidden sm:block text-[10px] font-sans tracking-[0.25em] uppercase text-[#D8C594] font-medium mb-1">
-                      {artwork.category}
-                    </span>
-                    <h3 className="hidden sm:block text-xl font-serif text-white font-normal leading-snug">
-                      {artwork.title}
-                    </h3>
-                    <p className="text-sm sm:mt-1 font-serif font-bold text-white leading-none">
-                      ₹{artwork.priceINR.toLocaleString("en-IN")}
-                    </p>
+                      <div className="absolute inset-x-0 bottom-0 h-32 sm:h-36 bg-gradient-to-t from-black/65 via-black/20 to-transparent pointer-events-none" />
+
+                      <div className="relative z-10 p-2.5 xs:p-3 sm:p-5 lg:p-5 flex items-end justify-between gap-1.5 xs:gap-2">
+                        <div className="min-w-0">
+                          <span className="hidden sm:block text-[8px] xs:text-[9px] sm:text-[10px] font-sans tracking-[0.2em] sm:tracking-[0.25em] uppercase text-[#D8C594] font-medium mb-0.5">
+                            {a1.category}
+                          </span>
+                          <h3 className="hidden sm:block text-xs xs:text-sm sm:text-xl font-serif text-white font-normal leading-tight xs:leading-snug line-clamp-2">
+                            {a1.title}
+                          </h3>
+                          <p className="text-xs xs:text-sm sm:text-base sm:mt-1 font-serif font-bold text-white drop-shadow-md tracking-tight leading-none">
+                            ₹{a1.priceINR.toLocaleString("en-IN")}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center gap-1 xs:gap-1.5 shrink-0">
+                          <AddToCartButton artwork={a1} />
+                        </div>
+                      </div>
+                    </article>
+
+                    {/* Subtle botanical flourish on the first block */}
+                    {blockIdx === 0 && (
+                      <div className="mt-4 hidden lg:flex items-center gap-3 pl-2 select-none">
+                        <svg
+                          className="w-16 h-11 text-[#B79A5A]/50 shrink-0"
+                          viewBox="0 0 100 60"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.2"
+                        >
+                          <path d="M0,50 Q40,35 90,10" />
+                          <path d="M25,40 Q35,25 30,15 Q40,25 45,33" fill="currentColor" fillOpacity="0.15" />
+                          <path d="M55,27 Q65,15 62,5 Q70,18 73,20" fill="currentColor" fillOpacity="0.15" />
+                          <path d="M78,16 Q88,5 95,0 Q92,12 88,13" fill="currentColor" fillOpacity="0.15" />
+                        </svg>
+                        <p className="font-serif italic text-[#4B5568] text-sm leading-snug">
+                          Small pieces.<br />
+                          <span className="ml-2.5">Larger meanings.</span>
+                        </p>
+                      </div>
+                    )}
                   </div>
 
-                  <div className="flex items-center gap-2 shrink-0">
-                    <AddToCartButton artwork={artwork} />
+                  {/* ======================================================== */}
+                  {/* 4-CARD CLUSTER (Slots #2, #3, #4, #5)                    */}
+                  {/* Even blocks: Right (col-span-7 lg:col-span-8, order-2)  */}
+                  {/* Odd blocks: Left (col-span-7 lg:col-span-8, order-1)    */}
+                  {/* ======================================================== */}
+                  <div className={`col-span-7 lg:col-span-8 flex flex-col justify-between gap-2 xs:gap-2.5 sm:gap-3 lg:gap-3.5 ${isEvenBlock ? "order-2" : "order-1"}`}>
+
+                    {/* Upper Sub-Row: Slot 2 & Slot 3 */}
+                    <div className="grid grid-cols-12 gap-2 xs:gap-2 sm:gap-3 lg:gap-3.5 items-stretch">
+                      {/* TILE 2: Wide Horizontal Card */}
+                      {a2 && (
+                        <div className={a3 ? "col-span-7" : "col-span-12"}>
+                          <article
+                            onClick={() => handleArtworkClick(a2)}
+                            className="group cursor-pointer relative overflow-hidden rounded-xl xs:rounded-2xl bg-[#F9F5ED] border border-[#B79A5A]/30 hover:border-[#B79A5A] transition-all duration-500 shadow-sm hover:shadow-xl hover:-translate-y-1 h-[115px] xs:h-[140px] sm:h-[195px] lg:h-[260px] flex flex-col justify-end"
+                          >
+                            <img
+                              src={getImageKitUrl(a2.mainImage?.url, {
+                                width: 900,
+                                quality: 88,
+                                format: "webp",
+                              })}
+                              alt={a2.mainImage?.alt || a2.title}
+                              className="absolute inset-0 w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                            />
+
+                            <div className="absolute inset-x-0 bottom-0 h-24 sm:h-28 bg-gradient-to-t from-black/65 via-black/20 to-transparent pointer-events-none" />
+
+                            <div className="relative z-10 p-2 xs:p-2.5 sm:p-4.5 flex items-end justify-between gap-1 xs:gap-1.5">
+                              <div className="min-w-0">
+                                <span className="hidden sm:block text-[8px] xs:text-[9px] sm:text-[10px] font-sans tracking-[0.2em] sm:tracking-[0.25em] uppercase text-[#D8C594] font-medium mb-0.5">
+                                  {a2.category}
+                                </span>
+                                <h3 className="hidden sm:block text-xs xs:text-sm sm:text-lg font-serif text-white font-normal leading-tight xs:leading-snug line-clamp-1">
+                                  {a2.title}
+                                </h3>
+                                <p className="text-xs xs:text-sm sm:text-sm sm:mt-0.5 font-serif font-bold text-white drop-shadow-md tracking-tight leading-none">
+                                  ₹{a2.priceINR.toLocaleString("en-IN")}
+                                </p>
+                              </div>
+
+                              <div className="flex items-center gap-1 xs:gap-1.5 shrink-0">
+                                <AddToCartButton artwork={a2} />
+                              </div>
+                            </div>
+                          </article>
+                        </div>
+                      )}
+
+                      {/* TILE 3: Compact / Arched Card */}
+                      {a3 && (
+                        <div className="col-span-5">
+                          <article
+                            onClick={() => handleArtworkClick(a3)}
+                            className="group cursor-pointer relative overflow-hidden rounded-xl xs:rounded-2xl rounded-tr-[24px] xs:rounded-tr-[30px] sm:rounded-tr-[38px] bg-[#F9F5ED] border border-[#B79A5A]/30 hover:border-[#B79A5A] transition-all duration-500 shadow-sm hover:shadow-xl hover:-translate-y-1 h-[115px] xs:h-[140px] sm:h-[195px] lg:h-[260px] flex flex-col justify-end"
+                          >
+                            <img
+                              src={getImageKitUrl(a3.mainImage?.url, {
+                                width: 700,
+                                quality: 88,
+                                format: "webp",
+                              })}
+                              alt={a3.mainImage?.alt || a3.title}
+                              className="absolute inset-0 w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                            />
+
+                            <div className="absolute inset-x-0 bottom-0 h-24 sm:h-28 bg-gradient-to-t from-black/65 via-black/20 to-transparent pointer-events-none" />
+
+                            <div className="relative z-10 p-2 xs:p-2.5 sm:p-4 flex items-end justify-between gap-1 xs:gap-1.5">
+                              <div className="min-w-0">
+                                <span className="hidden sm:block text-[8px] xs:text-[9px] font-sans tracking-[0.2em] uppercase text-[#D8C594] font-medium mb-0.5">
+                                  {a3.category}
+                                </span>
+                                <h3 className="hidden sm:block text-xs xs:text-sm sm:text-base font-serif text-white font-normal leading-tight xs:leading-snug line-clamp-1">
+                                  {a3.title}
+                                </h3>
+                                <p className="text-xs xs:text-sm sm:text-sm sm:mt-0.5 font-serif font-bold text-white drop-shadow-md tracking-tight leading-none">
+                                  ₹{a3.priceINR.toLocaleString("en-IN")}
+                                </p>
+                              </div>
+
+                              <div className="flex items-center gap-1 xs:gap-1.5 shrink-0">
+                                <AddToCartButton artwork={a3} />
+                              </div>
+                            </div>
+                          </article>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Lower Sub-Row: Slot 4 (Circular Frame) & Slot 5 (Horizontal Split) */}
+                    {(a4 || a5) && (
+                      <div className="grid grid-cols-12 gap-2 xs:gap-2 sm:gap-3 lg:gap-3.5 items-stretch">
+                        {/* TILE 4: Circular Artwork Card */}
+                        {a4 && (
+                          <div className={a5 ? "col-span-5 flex flex-col" : "col-span-12 flex flex-col"}>
+                            <article
+                              onClick={() => handleArtworkClick(a4)}
+                              className="group cursor-pointer relative overflow-hidden rounded-xl xs:rounded-2xl bg-[#F9F5ED] border border-[#B79A5A]/30 hover:border-[#B79A5A] transition-all duration-500 shadow-sm hover:shadow-xl hover:-translate-y-1 p-2 xs:p-2.5 sm:p-4 flex flex-col justify-between h-[115px] xs:h-[140px] sm:h-[195px] lg:h-[275px]"
+                            >
+                              <svg
+                                className="absolute top-1 right-2 w-14 h-14 sm:w-22 sm:h-22 text-[#B79A5A]/35 pointer-events-none hidden xs:block"
+                                viewBox="0 0 100 100"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.2"
+                              >
+                                <path d="M10,80 Q50,20 90,40" />
+                                <path d="M40,35 Q50,20 48,10 Q58,22 62,28" fill="currentColor" fillOpacity="0.2" />
+                                <path d="M68,32 Q78,20 80,10 Q85,25 88,33" fill="currentColor" fillOpacity="0.2" />
+                              </svg>
+
+                              <div className="relative mx-auto my-auto w-16 h-16 xs:w-20 xs:h-20 sm:w-40 sm:h-40 lg:w-44 lg:h-44 rounded-full overflow-hidden shadow-sm border border-[#B79A5A]/35 p-0.5 sm:p-1 bg-[#FAF7F0] flex items-center justify-center shrink-0">
+                                <img
+                                  src={getImageKitUrl(a4.mainImage?.url, {
+                                    width: 600,
+                                    quality: 88,
+                                    format: "webp",
+                                  })}
+                                  alt={a4.mainImage?.alt || a4.title}
+                                  className="w-full h-full object-contain rounded-full transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                                />
+                              </div>
+
+                              <div className="pt-1 xs:pt-1 sm:pt-2 border-t border-[#B79A5A]/20 flex items-end justify-between gap-1 xs:gap-1.5">
+                                <div className="min-w-0">
+                                  <span className="hidden sm:block text-[7px] xs:text-[8px] sm:text-[9.5px] font-sans tracking-[0.18em] sm:tracking-[0.25em] uppercase text-[#B79A5A] font-medium leading-none mb-0.5">
+                                    {a4.category}
+                                  </span>
+                                  <h3 className="hidden sm:block text-[10px] xs:text-xs sm:text-base font-serif text-[#263248] font-normal leading-tight group-hover:text-[#B79A5A] transition-colors line-clamp-1">
+                                    {a4.title}
+                                  </h3>
+                                  <p className="text-[10.5px] xs:text-xs sm:text-sm sm:mt-0.5 font-serif font-bold text-[#263248] tracking-tight leading-none">
+                                    ₹{a4.priceINR.toLocaleString("en-IN")}
+                                  </p>
+                                </div>
+
+                                <div className="flex items-center gap-1 xs:gap-1.5 shrink-0">
+                                  <AddToCartButton artwork={a4} />
+                                </div>
+                              </div>
+                            </article>
+                          </div>
+                        )}
+
+                        {/* TILE 5: Horizontal Split Artwork Card */}
+                        {a5 && (
+                          <div className="col-span-7 flex flex-col">
+                            <article
+                              onClick={() => handleArtworkClick(a5)}
+                              className="group cursor-pointer relative overflow-hidden rounded-xl xs:rounded-2xl bg-[#F9F5ED] border border-[#B79A5A]/30 hover:border-[#B79A5A] transition-all duration-500 shadow-sm hover:shadow-xl hover:-translate-y-1 flex flex-row items-stretch h-[115px] xs:h-[140px] sm:h-[195px] lg:h-[275px]"
+                            >
+                              <div className="w-[58%] xs:w-[62%] sm:w-[66%] relative overflow-hidden bg-[#FAF7F0] h-full">
+                                <img
+                                  src={getImageKitUrl(a5.mainImage?.url, {
+                                    width: 800,
+                                    quality: 88,
+                                    format: "webp",
+                                  })}
+                                  alt={a5.mainImage?.alt || a5.title}
+                                  className="w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                                />
+                              </div>
+
+                              <div className="w-[42%] xs:w-[38%] sm:w-[34%] p-2 xs:p-2.5 sm:p-5 bg-[#F9F5ED] flex flex-col justify-end sm:justify-between border-l border-[#B79A5A]/20">
+                                <div className="min-w-0 hidden sm:block">
+                                  <span className="text-[7px] xs:text-[8px] sm:text-[9.5px] font-sans tracking-[0.18em] sm:tracking-[0.25em] uppercase text-[#B79A5A] font-medium block leading-none mb-0.5">
+                                    {a5.category}
+                                  </span>
+                                  <h3 className="text-[10px] xs:text-xs sm:text-lg font-serif text-[#263248] font-normal leading-tight xs:leading-snug group-hover:text-[#B79A5A] transition-colors line-clamp-1 xs:line-clamp-2">
+                                    {a5.title}
+                                  </h3>
+                                </div>
+
+                                <div className="pt-0 sm:pt-2 sm:border-t sm:border-[#B79A5A]/20 flex items-end justify-between gap-1 xs:gap-1.5">
+                                  <p className="text-[10.5px] xs:text-xs sm:text-sm font-serif font-bold text-[#263248] tracking-tight leading-none">
+                                    ₹{a5.priceINR.toLocaleString("en-IN")}
+                                  </p>
+
+                                  <div className="flex items-center gap-1 xs:gap-1.5 shrink-0">
+                                    <AddToCartButton artwork={a5} />
+                                  </div>
+                                </div>
+                              </div>
+                            </article>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
                   </div>
+
                 </div>
-              </article>
-            ))}
+              );
+            })}
           </div>
-        )}
+        ) : null}
 
       </div>
 
