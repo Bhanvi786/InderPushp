@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Volume2, VolumeX } from "lucide-react";
@@ -7,6 +7,15 @@ import { ArrowRight, Volume2, VolumeX } from "lucide-react";
 export default function AboutPreview() {
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.play().catch(() => {
+        // Autoplay policy fallback
+      });
+    }
+  }, []);
 
   const toggleSound = () => {
     if (videoRef.current) {
@@ -146,13 +155,13 @@ export default function AboutPreview() {
                     <video
                       ref={videoRef}
                       src="/artist.MP4"
-                      poster="/6.png"
+                      poster="/artist.png"
                       autoPlay
-                      muted={isMuted}
+                      muted
                       loop
                       playsInline
-                      preload="metadata"
-                      className="w-full h-full object-cover object-top cursor-pointer"
+                      preload="auto"
+                      className="w-full h-full object-contain cursor-pointer"
                       onClick={toggleSound}
                     />
 

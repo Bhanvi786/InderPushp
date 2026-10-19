@@ -8,8 +8,8 @@ import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 
 export default function AboutPage() {
   const [settings, setSettings] = useState<AboutSettingsData>({
-    videoUrl: "",
-    posterUrl: "/6.png",
+    videoUrl: "/artist.MP4",
+    posterUrl: "/artist.png",
     heading: "A Glimpse Into My Creative World",
     subheading: "",
   });
@@ -23,8 +23,8 @@ export default function AboutPage() {
         const data = await aboutSettingsApi.get();
         if (data) {
           setSettings({
-            videoUrl: data.videoUrl || "",
-            posterUrl: data.posterUrl || "/6.png",
+            videoUrl: data.videoUrl || "/artist.MP4",
+            posterUrl: data.posterUrl || "/artist.png",
             heading: data.heading || "A Glimpse Into My Creative World",
             subheading: data.subheading || "",
           });
@@ -102,7 +102,7 @@ export default function AboutPage() {
             <div className="w-full max-w-[380px] sm:max-w-[400px]">
               <div className="relative aspect-4/5 rounded-xl overflow-hidden shadow-lg border border-[#B79A5A]/30 bg-white">
                 <Image
-                  src="/artist.jpg"
+                  src="/artist.png"
                   alt="Geetu Jaidka - Founder & Artist at Inderpushp"
                   fill
                   className="object-cover object-center"
@@ -162,7 +162,7 @@ export default function AboutPage() {
             A Glimpse Into My Creative World
           </h2>
 
-          <div className="relative mx-auto w-full max-w-[620px] aspect-16/9 rounded-xl overflow-hidden shadow-sm border border-[#B79A5A]/30 bg-[#263248] group">
+          <div className="relative mx-auto w-full max-w-[440px] aspect-3/4 rounded-2xl overflow-hidden shadow-lg border border-[#B79A5A]/30 bg-[#1b2332] group">
             {settings.videoUrl ? (
               isYouTube(settings.videoUrl) ? (
                 <iframe
@@ -177,8 +177,8 @@ export default function AboutPage() {
                   <video
                     ref={videoRef}
                     src={settings.videoUrl}
-                    poster={settings.posterUrl || "/6.png"}
-                    className="w-full h-full object-cover"
+                    poster={settings.posterUrl || "/artist.png"}
+                    className="w-full h-full object-contain"
                     playsInline
                     onPlay={() => setIsPlaying(true)}
                     onPause={() => setIsPlaying(false)}

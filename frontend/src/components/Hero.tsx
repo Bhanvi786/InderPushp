@@ -29,30 +29,30 @@ export default function Hero() {
         <div className="hidden md:block absolute left-[46%] xl:left-[45%] top-1/2 -translate-y-1/2 w-px h-[50vh] bg-gold-light opacity-30 pointer-events-none rounded-full"></div>
 
         {/* LEFT SIDE CONTENT & MOBILE 2-COLUMN HERO COMPOSITION */}
-        <div className="w-full md:w-[44%] xl:w-[42%] z-10 animate-fade-up shrink-0 md:pl-16 lg:pl-32 xl:pl-40">
+        <div className="w-full md:w-[50%] lg:w-[46%] xl:w-[42%] z-10 animate-fade-up shrink-0 md:pl-4 lg:pl-16 xl:pl-28">
 
-          {/* On mobile: 2-column flex with items-center so left and right groups share the exact vertical center */}
-          {/* On desktop: single vertical column for text, with features placed below */}
-          <div className="flex flex-row md:flex-col items-center md:items-start justify-between gap-4 xs:gap-5 md:gap-0">
+          {/* On mobile (<md): 2-column flex side-by-side with vertical feature column on right */}
+          {/* On desktop (>=md): Single vertical column for content, with horizontal 3-column features row below */}
+          <div className="flex flex-row md:flex-col items-center md:items-start justify-between gap-3 xs:gap-4 md:gap-0">
 
-            {/* LEFT SUB-COLUMN ON MOBILE: Text Content & CTA (Shifted further right on mobile) */}
-            <div className="flex-1 min-w-0 flex flex-col items-start text-left pl-16 xs:pl-20 sm:pl-24 md:pl-0">
+            {/* LEFT SUB-COLUMN ON MOBILE: Text Content & CTA */}
+            <div className="flex-1 min-w-0 flex flex-col items-start text-left pl-2 xs:pl-4 sm:pl-8 md:pl-0">
               {/* EYEBROW */}
-              <div className="flex flex-col items-start mb-2 xs:mb-3 md:mb-10">
-                <p className="text-gold tracking-[0.22em] xs:tracking-[0.25em] md:tracking-[0.28em] text-[10px] xs:text-[11px] md:text-[14px] font-medium uppercase">
+              <div className="flex flex-col items-start mb-2 xs:mb-3 md:mb-5 lg:mb-8">
+                <p className="text-gold tracking-[0.22em] xs:tracking-[0.25em] md:tracking-[0.28em] text-[10px] xs:text-[11px] md:text-[13px] lg:text-[14px] font-medium uppercase">
                   Art <span className="mx-1 xs:mx-1.5 md:mx-2">·</span> Nature <span className="mx-1 xs:mx-1.5 md:mx-2">·</span> Spaces
                 </p>
               </div>
 
               {/* MAIN HEADING */}
-              <h1 className="text-[28px] xs:text-[32px] sm:text-[40px] md:text-[50px] lg:text-[54px] xl:text-[60px] font-serif text-navy leading-[1.08] xs:leading-[1.12] md:leading-[1.15] tracking-[-0.02em] mb-2.5 xs:mb-3.5 md:mb-12">
+              <h1 className="text-[28px] xs:text-[32px] sm:text-[40px] md:text-[44px] lg:text-[52px] xl:text-[60px] font-serif text-navy leading-[1.08] xs:leading-[1.12] md:leading-[1.14] tracking-[-0.02em] mb-2.5 xs:mb-3.5 md:mb-5 lg:mb-8">
                 MOSAICS<br />
                 THAT TELL<br />
                 <span className="text-gold italic pr-2 sm:pr-4">STORIES</span>
               </h1>
 
               {/* DESCRIPTION */}
-              <p className="text-text-muted text-[12.5px] xs:text-[13.5px] sm:text-[15px] md:text-[17px] lg:text-[18px] font-sans font-normal max-w-[340px] sm:max-w-[500px] mb-3.5 xs:mb-4.5 md:mb-14 leading-[1.5] xs:leading-[1.6] md:leading-[1.8]">
+              <p className="text-text-muted text-[12.5px] xs:text-[13.5px] sm:text-[15px] md:text-[15.5px] lg:text-[17px] xl:text-[18px] font-sans font-normal max-w-[340px] sm:max-w-[480px] mb-3.5 xs:mb-4.5 md:mb-6 lg:mb-9 leading-[1.5] xs:leading-[1.6] md:leading-[1.7]">
                 Handcrafted mosaic art that brings colour, texture and meaningful stories into your spaces.
               </p>
 
@@ -66,7 +66,7 @@ export default function Hero() {
                     target.scrollIntoView({ behavior: "smooth" });
                   }
                 }}
-                className="group relative inline-flex items-center justify-center gap-3 bg-[#B79A5A] hover:bg-[#263248] text-white w-full max-w-[210px] xs:max-w-[240px] sm:max-w-[280px] md:w-[320px] h-[42px] xs:h-[46px] sm:h-[50px] md:h-[56px] transition-all duration-300 rounded-full shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer px-6 overflow-hidden border border-[#B79A5A]/30"
+                className="group relative inline-flex items-center justify-center gap-3 bg-[#B79A5A] hover:bg-[#263248] text-white w-full max-w-[210px] xs:max-w-[240px] sm:max-w-[280px] md:w-[300px] lg:w-[320px] h-[42px] xs:h-[46px] sm:h-[48px] md:h-[52px] lg:h-[56px] transition-all duration-300 rounded-full shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer px-6 overflow-hidden border border-[#B79A5A]/30"
               >
                 {/* Subtle sheen highlight on hover */}
                 <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
@@ -79,34 +79,35 @@ export default function Hero() {
               </a>
             </div>
 
-            {/* RIGHT SUB-COLUMN ON MOBILE: Vertical Feature Highlights */}
-            {/* On desktop: Horizontal 3-column row below Explore Collections button */}
-            <div className="shrink-0 w-[110px] xs:w-[125px] sm:w-[145px] md:w-full md:max-w-[500px] flex flex-col md:grid md:grid-cols-3 gap-4 xs:gap-4.5 md:gap-2 lg:gap-3 pl-3.5 xs:pl-4 md:pl-0 border-l md:border-l-0 md:border-t border-[#B79A5A]/35 md:mt-8 lg:mt-10 md:pt-6 lg:pt-8 py-2 md:py-0 self-center">
+            {/* FEATURE HIGHLIGHTS: */}
+            {/* On mobile (<md): Positioned vertically on the right side */}
+            {/* On all desktop/laptop (>=md): Always visible horizontally in a clean 3-column row below CTA */}
+            <div className="shrink-0 w-[115px] xs:w-[130px] sm:w-[150px] md:w-full md:max-w-[480px] lg:max-w-[520px] flex flex-col md:grid md:grid-cols-3 gap-3.5 xs:gap-4 md:gap-2 lg:gap-3 pl-3 xs:pl-3.5 md:pl-0 border-l md:border-l-0 md:border-t border-[#B79A5A]/35 md:mt-6 lg:mt-8 md:pt-4 lg:pt-6 py-2 md:py-0 self-center md:self-start">
 
               {/* Feature 1 */}
-              <div className="flex flex-col items-center text-center gap-1.5 xs:gap-2 md:gap-2.5 relative px-1">
+              <div className="flex flex-col items-center text-center gap-1.5 xs:gap-2 md:gap-2 relative px-1">
                 <Heart size={22} className="text-[#B79A5A] xs:w-[24px] xs:h-[24px] md:w-[26px] md:h-[26px] lg:w-[28px] lg:h-[28px] shrink-0" strokeWidth={1.5} />
-                <p className="text-[10px] xs:text-[11px] sm:text-[11.5px] md:text-[12px] lg:text-[12.5px] text-[#263248] font-sans font-semibold uppercase tracking-[0.16em] xs:tracking-[0.18em] md:tracking-[0.18em] leading-snug md:leading-snug">
+                <p className="text-[10px] xs:text-[11px] sm:text-[11.5px] md:text-[11.5px] lg:text-[12.5px] text-[#263248] font-sans font-semibold uppercase tracking-[0.14em] xs:tracking-[0.16em] md:tracking-[0.16em] leading-snug">
                   Handcrafted<br />with Love
                 </p>
               </div>
 
               {/* Feature 2 */}
-              <div className="flex flex-col items-center text-center gap-1.5 xs:gap-2 md:gap-2.5 relative px-1">
+              <div className="flex flex-col items-center text-center gap-1.5 xs:gap-2 md:gap-2 relative px-1">
                 {/* Vertical Divider on Desktop */}
-                <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-[40px] lg:h-[48px] bg-[#B79A5A]/35 pointer-events-none" />
+                <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-[36px] lg:h-[44px] bg-[#B79A5A]/35 pointer-events-none" />
                 <Leaf size={22} className="text-[#B79A5A] xs:w-[24px] xs:h-[24px] md:w-[26px] md:h-[26px] lg:w-[28px] lg:h-[28px] shrink-0" strokeWidth={1.5} />
-                <p className="text-[10px] xs:text-[11px] sm:text-[11.5px] md:text-[12px] lg:text-[12.5px] text-[#263248] font-sans font-semibold uppercase tracking-[0.16em] xs:tracking-[0.18em] md:tracking-[0.18em] leading-snug md:leading-snug">
+                <p className="text-[10px] xs:text-[11px] sm:text-[11.5px] md:text-[11.5px] lg:text-[12.5px] text-[#263248] font-sans font-semibold uppercase tracking-[0.14em] xs:tracking-[0.16em] md:tracking-[0.16em] leading-snug">
                   Inspired<br />by Nature
                 </p>
               </div>
 
               {/* Feature 3 */}
-              <div className="flex flex-col items-center text-center gap-1.5 xs:gap-2 md:gap-2.5 relative px-1">
+              <div className="flex flex-col items-center text-center gap-1.5 xs:gap-2 md:gap-2 relative px-1">
                 {/* Vertical Divider on Desktop */}
-                <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-[40px] lg:h-[48px] bg-[#B79A5A]/35 pointer-events-none" />
+                <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-[36px] lg:h-[44px] bg-[#B79A5A]/35 pointer-events-none" />
                 <Home size={22} className="text-[#B79A5A] xs:w-[24px] xs:h-[24px] md:w-[26px] md:h-[26px] lg:w-[28px] lg:h-[28px] shrink-0" strokeWidth={1.5} />
-                <p className="text-[10px] xs:text-[11px] sm:text-[11.5px] md:text-[12px] lg:text-[12.5px] text-[#263248] font-sans font-semibold uppercase tracking-[0.16em] xs:tracking-[0.18em] md:tracking-[0.18em] leading-snug md:leading-snug">
+                <p className="text-[10px] xs:text-[11px] sm:text-[11.5px] md:text-[11.5px] lg:text-[12.5px] text-[#263248] font-sans font-semibold uppercase tracking-[0.14em] xs:tracking-[0.16em] md:tracking-[0.16em] leading-snug">
                   Art for<br />Homes
                 </p>
               </div>

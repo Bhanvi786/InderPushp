@@ -101,24 +101,7 @@ export default function Collections() {
       {/* CORNER & AMBIENT DECORATIVE MOSAIC ELEMENTS              */}
       {/* ======================================================== */}
 
-      {/* Top-Right Decorative Flowing Lines & Phrase */}
-      <div className="absolute top-6 right-6 md:top-10 md:right-12 hidden lg:flex items-start gap-3 pointer-events-none z-10 select-none">
-        <svg
-          className="w-24 h-24 text-[#B79A5A]/35 overflow-visible"
-          viewBox="0 0 100 100"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.2"
-        >
-          <path d="M10,0 C40,40 60,10 100,50 C80,80 100,100 120,120" />
-          <path d="M30,0 C60,30 70,20 100,80" />
-        </svg>
-        <div className="text-right tracking-[0.25em] text-[10px] font-sans font-medium text-[#B79A5A] uppercase leading-relaxed pt-2">
-          FRAGMENTS<br />
-          THAT TELL<br />
-          BIGGER STORIES
-        </div>
-      </div>
+
 
       {/* Bottom-Left Mosaic Tesserae Border */}
       <div className="absolute -bottom-2 -left-2 pointer-events-none z-0 hidden md:block select-none">
