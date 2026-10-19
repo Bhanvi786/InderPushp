@@ -57,10 +57,26 @@ export default function Hero() {
               </p>
 
               {/* CTA */}
-              <button className="group flex items-center justify-center gap-2 xs:gap-2.5 bg-gold hover:bg-navy text-white w-full max-w-[210px] xs:max-w-[240px] sm:max-w-[280px] md:w-[320px] h-[40px] xs:h-[44px] sm:h-[48px] md:h-[54px] transition-colors duration-300 rounded-[2px] shadow-sm">
-                <span className="text-[11px] xs:text-[12px] md:text-[13px] font-sans tracking-[0.14em] xs:tracking-[0.16em] md:tracking-[0.18em] uppercase font-medium">Explore Collections</span>
-                <span className="group-hover:translate-x-1 transition-transform duration-300 text-xs xs:text-sm">→</span>
-              </button>
+              <a
+                href="#collections"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const target = document.getElementById("collections");
+                  if (target) {
+                    target.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+                className="group relative inline-flex items-center justify-center gap-3 bg-[#B79A5A] hover:bg-[#263248] text-white w-full max-w-[210px] xs:max-w-[240px] sm:max-w-[280px] md:w-[320px] h-[42px] xs:h-[46px] sm:h-[50px] md:h-[56px] transition-all duration-300 rounded-full shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer px-6 overflow-hidden border border-[#B79A5A]/30"
+              >
+                {/* Subtle sheen highlight on hover */}
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+                <span className="text-[11px] xs:text-[12px] md:text-[13px] font-sans tracking-[0.18em] xs:tracking-[0.2em] uppercase font-semibold text-[#FAF7F0]">
+                  Explore Collections
+                </span>
+                <span className="group-hover:translate-x-1.5 transition-transform duration-300 text-sm md:text-base font-light text-[#FAF7F0]">
+                  →
+                </span>
+              </a>
             </div>
 
             {/* RIGHT SUB-COLUMN ON MOBILE: Vertical Feature Highlights */}
