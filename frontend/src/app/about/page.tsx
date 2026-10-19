@@ -102,8 +102,8 @@ export default function AboutPage() {
             <div className="w-full max-w-[380px] sm:max-w-[400px]">
               <div className="relative aspect-4/5 rounded-xl overflow-hidden shadow-lg border border-[#B79A5A]/30 bg-white">
                 <Image
-                  src="/1.jpeg"
-                  alt="Lotus Mosaic Artwork - Inderpushp"
+                  src="/artist.jpg"
+                  alt="Geetu Jaidka - Founder & Artist at Inderpushp"
                   fill
                   className="object-cover object-center"
                   sizes="(max-width: 768px) 100vw, 400px"
