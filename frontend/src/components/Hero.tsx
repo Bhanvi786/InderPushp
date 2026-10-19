@@ -21,7 +21,7 @@ export default function Hero() {
   ];
 
   return (
-    <section className="relative w-full h-auto md:min-h-[100dvh] pt-24 pb-8 md:pt-[76px] md:pb-8 flex items-center justify-center overflow-x-hidden md:overflow-y-visible bg-ivory">
+    <section className="relative w-full h-auto md:h-[100dvh] md:min-h-0 md:max-h-[100dvh] pt-24 pb-8 md:pt-[70px] md:pb-0 flex items-center justify-center overflow-hidden bg-ivory">
 
       <div className="relative w-full max-w-[1500px] h-full mx-auto px-5 md:px-12 xl:px-16 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 lg:gap-16 xl:gap-24">
 
@@ -38,21 +38,21 @@ export default function Hero() {
             {/* LEFT SUB-COLUMN ON MOBILE: Text Content & CTA (Shifted further right on mobile) */}
             <div className="flex-1 min-w-0 flex flex-col items-start text-left pl-16 xs:pl-20 sm:pl-24 md:pl-0">
               {/* EYEBROW */}
-              <div className="flex flex-col items-start mb-2 xs:mb-3 md:mb-5 lg:mb-8">
+              <div className="flex flex-col items-start mb-2 xs:mb-3 md:mb-10">
                 <p className="text-gold tracking-[0.22em] xs:tracking-[0.25em] md:tracking-[0.28em] text-[10px] xs:text-[11px] md:text-[14px] font-medium uppercase">
                   Art <span className="mx-1 xs:mx-1.5 md:mx-2">·</span> Nature <span className="mx-1 xs:mx-1.5 md:mx-2">·</span> Spaces
                 </p>
               </div>
 
               {/* MAIN HEADING */}
-              <h1 className="text-[28px] xs:text-[32px] sm:text-[40px] md:text-[46px] lg:text-[54px] xl:text-[60px] font-serif text-navy leading-[1.08] xs:leading-[1.12] md:leading-[1.14] tracking-[-0.02em] mb-2.5 xs:mb-3.5 md:mb-6 lg:mb-10">
+              <h1 className="text-[28px] xs:text-[32px] sm:text-[40px] md:text-[50px] lg:text-[54px] xl:text-[60px] font-serif text-navy leading-[1.08] xs:leading-[1.12] md:leading-[1.15] tracking-[-0.02em] mb-2.5 xs:mb-3.5 md:mb-12">
                 MOSAICS<br />
                 THAT TELL<br />
                 <span className="text-gold italic pr-2 sm:pr-4">STORIES</span>
               </h1>
 
               {/* DESCRIPTION */}
-              <p className="text-text-muted text-[12.5px] xs:text-[13.5px] sm:text-[15px] md:text-[16px] lg:text-[18px] font-sans font-normal max-w-[340px] sm:max-w-[500px] mb-3.5 xs:mb-4.5 md:mb-6 lg:mb-10 leading-[1.5] xs:leading-[1.6] md:leading-[1.7]">
+              <p className="text-text-muted text-[12.5px] xs:text-[13.5px] sm:text-[15px] md:text-[17px] lg:text-[18px] font-sans font-normal max-w-[340px] sm:max-w-[500px] mb-3.5 xs:mb-4.5 md:mb-14 leading-[1.5] xs:leading-[1.6] md:leading-[1.8]">
                 Handcrafted mosaic art that brings colour, texture and meaningful stories into your spaces.
               </p>
 
