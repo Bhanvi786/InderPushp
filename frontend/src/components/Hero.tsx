@@ -80,33 +80,33 @@ export default function Hero() {
             </div>
 
             {/* RIGHT SUB-COLUMN ON MOBILE: Vertical Feature Highlights */}
-            {/* On desktop: Shifts below as the standard horizontal 3-column row */}
-            <div className="shrink-0 w-[95px] xs:w-[110px] sm:w-[125px] md:w-full md:max-w-[500px] flex flex-col md:grid md:grid-cols-3 gap-3.5 xs:gap-4 md:gap-0 pl-3 xs:pl-4 md:pl-0 border-l md:border-l-0 md:border-t border-gold-light/40 md:mt-10 md:pt-8 py-1.5 self-center">
+            {/* On desktop: Horizontal 3-column row below Explore Collections button */}
+            <div className="shrink-0 w-[110px] xs:w-[125px] sm:w-[145px] md:w-full md:max-w-[500px] flex flex-col md:grid md:grid-cols-3 gap-4 xs:gap-4.5 md:gap-2 lg:gap-3 pl-3.5 xs:pl-4 md:pl-0 border-l md:border-l-0 md:border-t border-[#B79A5A]/35 md:mt-8 lg:mt-10 md:pt-6 lg:pt-8 py-2 md:py-0 self-center">
 
               {/* Feature 1 */}
-              <div className="flex flex-col items-center text-center gap-1.5 xs:gap-2 md:gap-3.5 relative">
-                <Heart size={20} className="text-gold xs:w-[22px] xs:h-[22px] md:w-[28px] md:h-[28px]" strokeWidth={1.2} />
-                <p className="text-[9.5px] xs:text-[10px] md:text-[11px] lg:text-[12px] text-navy font-sans font-medium uppercase tracking-[0.16em] xs:tracking-[0.18em] md:tracking-[0.2em] leading-tight md:leading-relaxed">
+              <div className="flex flex-col items-center text-center gap-1.5 xs:gap-2 md:gap-2.5 relative px-1">
+                <Heart size={22} className="text-[#B79A5A] xs:w-[24px] xs:h-[24px] md:w-[26px] md:h-[26px] lg:w-[28px] lg:h-[28px] shrink-0" strokeWidth={1.5} />
+                <p className="text-[10px] xs:text-[11px] sm:text-[11.5px] md:text-[12px] lg:text-[12.5px] text-[#263248] font-sans font-semibold uppercase tracking-[0.16em] xs:tracking-[0.18em] md:tracking-[0.18em] leading-snug md:leading-snug">
                   Handcrafted<br />with Love
                 </p>
               </div>
 
               {/* Feature 2 */}
-              <div className="flex flex-col items-center text-center gap-1.5 xs:gap-2 md:gap-3.5 relative">
-                {/* Vertical Divider on Desktop only */}
-                <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-[50px] bg-gold-light opacity-50 pointer-events-none"></div>
-                <Leaf size={20} className="text-gold xs:w-[22px] xs:h-[22px] md:w-[28px] md:h-[28px]" strokeWidth={1.2} />
-                <p className="text-[9.5px] xs:text-[10px] md:text-[11px] lg:text-[12px] text-navy font-sans font-medium uppercase tracking-[0.16em] xs:tracking-[0.18em] md:tracking-[0.2em] leading-tight md:leading-relaxed">
+              <div className="flex flex-col items-center text-center gap-1.5 xs:gap-2 md:gap-2.5 relative px-1">
+                {/* Vertical Divider on Desktop */}
+                <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-[40px] lg:h-[48px] bg-[#B79A5A]/35 pointer-events-none" />
+                <Leaf size={22} className="text-[#B79A5A] xs:w-[24px] xs:h-[24px] md:w-[26px] md:h-[26px] lg:w-[28px] lg:h-[28px] shrink-0" strokeWidth={1.5} />
+                <p className="text-[10px] xs:text-[11px] sm:text-[11.5px] md:text-[12px] lg:text-[12.5px] text-[#263248] font-sans font-semibold uppercase tracking-[0.16em] xs:tracking-[0.18em] md:tracking-[0.18em] leading-snug md:leading-snug">
                   Inspired<br />by Nature
                 </p>
               </div>
 
               {/* Feature 3 */}
-              <div className="flex flex-col items-center text-center gap-1.5 xs:gap-2 md:gap-3.5 relative">
-                {/* Vertical Divider on Desktop only */}
-                <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-[50px] bg-gold-light opacity-50 pointer-events-none"></div>
-                <Home size={20} className="text-gold xs:w-[22px] xs:h-[22px] md:w-[28px] md:h-[28px]" strokeWidth={1.2} />
-                <p className="text-[9.5px] xs:text-[10px] md:text-[11px] lg:text-[12px] text-navy font-sans font-medium uppercase tracking-[0.16em] xs:tracking-[0.18em] md:tracking-[0.2em] leading-tight md:leading-relaxed">
+              <div className="flex flex-col items-center text-center gap-1.5 xs:gap-2 md:gap-2.5 relative px-1">
+                {/* Vertical Divider on Desktop */}
+                <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-[40px] lg:h-[48px] bg-[#B79A5A]/35 pointer-events-none" />
+                <Home size={22} className="text-[#B79A5A] xs:w-[24px] xs:h-[24px] md:w-[26px] md:h-[26px] lg:w-[28px] lg:h-[28px] shrink-0" strokeWidth={1.5} />
+                <p className="text-[10px] xs:text-[11px] sm:text-[11.5px] md:text-[12px] lg:text-[12.5px] text-[#263248] font-sans font-semibold uppercase tracking-[0.16em] xs:tracking-[0.18em] md:tracking-[0.18em] leading-snug md:leading-snug">
                   Art for<br />Homes
                 </p>
               </div>
