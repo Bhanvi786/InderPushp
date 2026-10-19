@@ -9,18 +9,52 @@ dotenv.config();
 
 const router = Router();
 
-export const getJwtSecret = (): string =>
-  process.env.JWT_SECRET || 'inderpushp_studio_admin_jwt_secret_2026';
+// Login Rate Limiting (in-memory per client IP): 5 failed attempts per 15-minute window
+const LOGIN_WINDOW_MS = 15 * 60 * 1000;
+const MAX_FAILED_LOGIN_ATTEMPTS = 5;
+interface LoginAttemptRecord {
+  failedCount: number;
+  firstFailedAt: number;
+  blockedUntil?: number;
+}
+const loginAttemptHistory = new Map<string, LoginAttemptRecord>();
+
+const getClientIp = (req: Request): string => {
+  const forwarded = req.headers['x-forwarded-for'];
+  if (typeof forwarded === 'string' && forwarded.trim()) {
+    return forwarded.split(',')[0].trim();
+  }
+  return req.socket.remoteAddress || 'unknown';
+};
+
+export const getJwtSecret = (): string => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('CRITICAL CONFIGURATION ERROR: JWT_SECRET environment variable is missing.');
+    }
+    return 'inderpushp_studio_admin_jwt_secret_dev_only';
+  }
+  return secret;
+};
 
 /**
  * Seed or update initial admin user with configured password hash
  */
 const ensureInitialAdmin = async () => {
   try {
-    const adminPassword = process.env.ADMIN_PASSWORD || 'Geetu54321';
+    const adminPassword = process.env.ADMIN_PASSWORD;
     let adminHash = process.env.ADMIN_PASSWORD_HASH;
 
     if (!adminHash) {
+      if (!adminPassword) {
+        if (process.env.NODE_ENV === 'production') {
+          console.error('CRITICAL CONFIGURATION ERROR: Neither ADMIN_PASSWORD nor ADMIN_PASSWORD_HASH is set.');
+          return;
+        }
+        console.warn('[Auth] ADMIN_PASSWORD not configured. Please set ADMIN_PASSWORD in environment.');
+        return;
+      }
       const salt = await bcrypt.genSalt(10);
       adminHash = await bcrypt.hash(adminPassword, salt);
     }
@@ -35,7 +69,7 @@ const ensureInitialAdmin = async () => {
       });
       console.log('Studio Administrator initialized with secure password hash.');
     } else {
-      // Ensure existing admin record is updated with current configured password hash and name
+      // Ensure existing admin record is synchronized with configured hash and current name
       existingAdmin.passwordHash = adminHash;
       if (existingAdmin.name === 'Deepti' || !existingAdmin.name) {
         existingAdmin.name = 'Geetu Jaidka';
@@ -52,9 +86,23 @@ ensureInitialAdmin();
 
 /**
  * POST /api/auth/login
- * Password-only authentication for Studio Admin
+ * Password-only authentication for Studio Admin with rate limiting & secure bcrypt comparison
  */
 router.post('/login', async (req: Request, res: Response): Promise<void> => {
+  const clientIp = getClientIp(req);
+  const now = Date.now();
+
+  // Check rate limiting status for this IP
+  const record = loginAttemptHistory.get(clientIp);
+  if (record && record.blockedUntil && record.blockedUntil > now) {
+    const remainingSeconds = Math.ceil((record.blockedUntil - now) / 1000);
+    res.status(429).json({
+      success: false,
+      message: `Too many unsuccessful login attempts. Please wait ${remainingSeconds} seconds before trying again.`,
+    });
+    return;
+  }
+
   try {
     const { password } = req.body;
 
@@ -70,33 +118,53 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
 
     // Retrieve target password hash from database or environment
     const adminUser = await User.findOne({ role: 'admin' });
-    const targetHash = adminUser?.passwordHash || process.env.ADMIN_PASSWORD_HASH;
-    const targetEnvPassword = process.env.ADMIN_PASSWORD || 'Geetu54321';
+    let targetHash = adminUser?.passwordHash || process.env.ADMIN_PASSWORD_HASH;
 
-    let isMatch = false;
-
-    if (targetHash) {
-      isMatch = await bcrypt.compare(trimmedPassword, targetHash);
-    }
-
-    // Direct comparison fallback if hash comparison fails or hash is not yet generated
-    if (!isMatch && targetEnvPassword && trimmedPassword === targetEnvPassword) {
-      isMatch = true;
-      // Re-hash and save to DB
+    // If no hash stored but ADMIN_PASSWORD is set in env, generate and store the hash
+    if (!targetHash && process.env.ADMIN_PASSWORD) {
+      const salt = await bcrypt.genSalt(10);
+      targetHash = await bcrypt.hash(process.env.ADMIN_PASSWORD, salt);
       if (adminUser) {
-        const salt = await bcrypt.genSalt(10);
-        adminUser.passwordHash = await bcrypt.hash(trimmedPassword, salt);
+        adminUser.passwordHash = targetHash;
         await adminUser.save();
       }
     }
 
+    if (!targetHash) {
+      res.status(500).json({
+        success: false,
+        message: 'Admin account configuration is incomplete. Please verify server environment.',
+      });
+      return;
+    }
+
+    // Secure bcrypt comparison
+    const isMatch = await bcrypt.compare(trimmedPassword, targetHash);
+
     if (!isMatch) {
+      // Record failed attempt
+      const current = loginAttemptHistory.get(clientIp) || { failedCount: 0, firstFailedAt: now };
+      if (now - current.firstFailedAt > LOGIN_WINDOW_MS) {
+        current.failedCount = 1;
+        current.firstFailedAt = now;
+      } else {
+        current.failedCount += 1;
+      }
+
+      if (current.failedCount >= MAX_FAILED_LOGIN_ATTEMPTS) {
+        current.blockedUntil = now + LOGIN_WINDOW_MS;
+      }
+      loginAttemptHistory.set(clientIp, current);
+
       res.status(401).json({
         success: false,
         message: 'Incorrect password. Access denied.',
       });
       return;
     }
+
+    // On successful login, reset failed attempts for this client
+    loginAttemptHistory.delete(clientIp);
 
     const adminId = adminUser?._id ? String(adminUser._id) : 'studio-admin';
     const adminName = adminUser?.name || 'InderPushp Studio Admin';
@@ -125,7 +193,7 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
     console.error('Login error:', error);
     res.status(500).json({
       success: false,
-      message: error.message || 'Internal server error during login.',
+      message: 'Internal server error during login.',
     });
   }
 });

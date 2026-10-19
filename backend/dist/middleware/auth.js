@@ -17,9 +17,19 @@ const authenticateAdmin = (req, res, next) => {
         return;
     }
     const token = authHeader.split(' ')[1];
-    const secret = process.env.JWT_SECRET || 'inderpushp_studio_admin_jwt_secret_2026';
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+        if (process.env.NODE_ENV === 'production') {
+            res.status(500).json({
+                success: false,
+                message: 'Server configuration error: authentication secret is missing.',
+            });
+            return;
+        }
+    }
+    const effectiveSecret = secret || 'inderpushp_studio_admin_jwt_secret_dev_only';
     try {
-        const decoded = jsonwebtoken_1.default.verify(token, secret);
+        const decoded = jsonwebtoken_1.default.verify(token, effectiveSecret);
         if (decoded.role !== 'admin' && decoded.role !== 'artist') {
             res.status(403).json({
                 success: false,

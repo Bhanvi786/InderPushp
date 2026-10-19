@@ -1,5 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = __importDefault(require("mongoose"));
 const express_1 = require("express");
 const Artwork_1 = require("../models/Artwork");
 const auth_1 = require("../middleware/auth");
@@ -143,7 +147,12 @@ router.get('/', auth_1.authenticateAdmin, async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
     try {
-        const artwork = await Artwork_1.Artwork.findById(req.params.id);
+        const { id } = req.params;
+        if (!id || !mongoose_1.default.isValidObjectId(id)) {
+            res.status(400).json({ success: false, message: 'Invalid artwork ID format.' });
+            return;
+        }
+        const artwork = await Artwork_1.Artwork.findById(id);
         if (!artwork) {
             res.status(404).json({ success: false, message: 'Artwork not found.' });
             return;
@@ -154,9 +163,10 @@ router.get('/:id', async (req, res) => {
         });
     }
     catch (error) {
+        console.error('Error fetching artwork by id:', error);
         res.status(500).json({
             success: false,
-            message: error.message || 'Failed to fetch artwork.',
+            message: 'Failed to fetch artwork.',
         });
     }
 });

@@ -29,10 +29,22 @@ export const authenticateAdmin = (
   }
 
   const token = authHeader.split(' ')[1];
-  const secret = process.env.JWT_SECRET || 'inderpushp_studio_admin_jwt_secret_2026';
+  const secret = process.env.JWT_SECRET;
+
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      res.status(500).json({
+        success: false,
+        message: 'Server configuration error: authentication secret is missing.',
+      });
+      return;
+    }
+  }
+
+  const effectiveSecret = secret || 'inderpushp_studio_admin_jwt_secret_dev_only';
 
   try {
-    const decoded = jwt.verify(token, secret) as {
+    const decoded = jwt.verify(token, effectiveSecret) as {
       id: string;
       role: string;
       name?: string;
