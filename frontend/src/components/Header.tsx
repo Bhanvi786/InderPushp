@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Menu, Search, X, ShoppingBag } from "lucide-react";
+import { Menu, X, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -67,12 +67,9 @@ export default function Header() {
         </div>
       )}
 
-      {/* Actions (Desktop: Search, Instagram, Cart - only on Homepage) */}
+      {/* Actions (Desktop: Instagram, Cart - only on Homepage) */}
       {isHomePage ? (
         <div className="hidden xl:flex items-center gap-6 text-navy">
-          <button aria-label="Search" className="hover:text-gold transition-colors">
-            <Search size={22} strokeWidth={1.5} />
-          </button>
           <a
             href="https://www.instagram.com/_inderpushp?exln=Z2tuNXNwOXZ5Ym40"
             target="_blank"
@@ -135,9 +132,6 @@ export default function Header() {
             )}
           </Link>
 
-          <button aria-label="Search">
-            <Search size={22} strokeWidth={1.5} />
-          </button>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Menu"
