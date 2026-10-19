@@ -30,14 +30,17 @@ const ensureInitialAdmin = async () => {
             await User_1.User.create({
                 email: 'admin@inderpushp.local',
                 passwordHash: adminHash,
-                name: 'InderPushp Studio Admin',
+                name: 'Geetu Jaidka',
                 role: 'admin',
             });
             console.log('Studio Administrator initialized with secure password hash.');
         }
         else {
-            // Ensure existing admin record is updated with current configured password hash
+            // Ensure existing admin record is updated with current configured password hash and name
             existingAdmin.passwordHash = adminHash;
+            if (existingAdmin.name === 'Deepti' || !existingAdmin.name) {
+                existingAdmin.name = 'Geetu Jaidka';
+            }
             await existingAdmin.save();
             console.log('Studio Administrator password hash synchronized.');
         }
@@ -136,7 +139,7 @@ router.get('/me', auth_1.authenticateAdmin, async (req, res) => {
             success: true,
             user: {
                 id: user?._id ? String(user._id) : req.user.id || 'studio-admin',
-                name: user?.name || req.user.name || 'InderPushp Studio Admin',
+                name: user?.name || req.user.name || 'Geetu Jaidka',
                 role: req.user.role || 'admin',
             },
         });

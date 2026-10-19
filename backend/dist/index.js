@@ -12,6 +12,8 @@ const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const artwork_routes_1 = __importDefault(require("./routes/artwork.routes"));
 const upload_routes_1 = __importDefault(require("./routes/upload.routes"));
 const category_routes_1 = __importDefault(require("./routes/category.routes"));
+const aboutSettings_routes_1 = __importDefault(require("./routes/aboutSettings.routes"));
+const contact_routes_1 = __importDefault(require("./routes/contact.routes"));
 // Connect to MongoDB
 (0, db_1.connectDB)();
 const app = (0, express_1.default)();
@@ -37,6 +39,8 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', auth_routes_1.default);
 app.use('/api/artworks', artwork_routes_1.default);
 app.use('/api/categories', category_routes_1.default);
+app.use('/api/about-settings', aboutSettings_routes_1.default);
+app.use('/api/contact', contact_routes_1.default);
 app.use('/api/upload', upload_routes_1.default);
 // Error handling middleware
 app.use((err, req, res, next) => {
