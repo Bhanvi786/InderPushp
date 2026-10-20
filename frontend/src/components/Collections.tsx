@@ -7,6 +7,7 @@ import { getImageKitUrl } from "../lib/imagekit";
 import { useCart } from "../context/CartContext";
 import ArtworkDetailModal from "./ArtworkDetailModal";
 import AddToCartButton from "./AddToCartButton";
+import AllWorksPerspectiveCarousel from "./AllWorksPerspectiveCarousel";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -262,8 +263,16 @@ export default function Collections() {
           </div>
         ) : filteredArtworks.length > 0 ? (
           /* ======================================================== */
-          /* 3. CONTINUOUS HARMONIC MOSAIC COMPOSITION (ALL ARTWORKS)  */
+          /* 3. ARTWORKS DISPLAY                                      */
+          /* - "All Works": Dual-Row 3D Perspective Infinite Carousel */
+          /* - Individual Categories: Signature Mosaic Grid Layout    */
           /* ======================================================== */
+          isAllWorksSelected ? (
+            <AllWorksPerspectiveCarousel
+              artworks={filteredArtworks}
+              onArtworkClick={handleArtworkClick}
+            />
+          ) : (
           <div className="space-y-4 sm:space-y-6">
             {/* Chunk artworks into groups of 5 to repeat the exact artistic mosaic rhythm */}
             {Array.from({ length: Math.ceil(filteredArtworks.length / 5) }).map((_, blockIdx) => {
@@ -584,6 +593,7 @@ export default function Collections() {
               );
             })}
           </div>
+          )
         ) : null}
 
       </div>
