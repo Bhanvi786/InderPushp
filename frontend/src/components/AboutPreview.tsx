@@ -176,21 +176,21 @@ export default function AboutPreview() {
         </div>
 
         {/* ----------------------------------------------------------------------- */}
-        {/* RIGHT AREA: Dedicated Full Flowing Mosaic Ribbon                       */}
-        {/* Preserves the complete S-curve from top to bottom at full prominence    */}
-        {/* Has its own reserved width so content can NEVER touch or collide with it*/}
+        {/* RIGHT AREA: Full Flowing Mosaic Ribbon                                  */}
+        {/* On mobile: positioned absolutely along the right edge with subtle opacity */}
+        {/* On md+: dedicated column reserving its own full width                   */}
         {/* ----------------------------------------------------------------------- */}
         <div
           aria-hidden="true"
-          className="shrink-0 w-[72px] xs:w-[85px] sm:w-[130px] md:w-[190px] lg:w-[260px] xl:w-[320px] relative self-stretch overflow-hidden select-none pointer-events-none"
+          className="absolute right-0 top-0 bottom-0 w-[110px] xs:w-[130px] sm:w-[160px] md:relative md:w-[190px] lg:w-[260px] xl:w-[320px] shrink-0 self-stretch overflow-hidden select-none pointer-events-none z-0 md:z-auto opacity-35 sm:opacity-50 md:opacity-100"
         >
           <div className="relative w-full h-full min-h-[420px]">
             <Image
               src="/borders.png"
               alt="Handcrafted Mosaic Ribbon Border"
               fill
-              className="object-contain object-right"
-              sizes="(max-width: 640px) 85px, (max-width: 768px) 130px, (max-width: 1024px) 190px, 320px"
+              className="object-cover md:object-contain object-right"
+              sizes="(max-width: 640px) 140px, (max-width: 768px) 160px, (max-width: 1024px) 190px, 320px"
               priority
             />
           </div>
