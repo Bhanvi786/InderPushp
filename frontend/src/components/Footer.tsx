@@ -31,7 +31,7 @@ export default function Footer() {
           {/* Column 1: Brand & Atelier Story (lg:col-span-4) */}
           <div className="lg:col-span-4 space-y-4">
             <Link href="/" className="inline-block group">
-              <div className="relative w-[145px] sm:w-[165px] h-[40px] sm:h-[46px] bg-[#FAF7F0] rounded-lg p-1.5 border border-[#B79A5A]/30 shadow-xs transition-transform group-hover:scale-[1.02]">
+              <div className="relative w-[165px] sm:w-[195px] h-[48px] sm:h-[56px] bg-[#FAF7F0] rounded-lg p-1.5 border border-[#B79A5A]/30 shadow-xs transition-transform group-hover:scale-[1.02]">
                 <Image
                   src="/logo.png"
                   alt="InderPushp House of Art"

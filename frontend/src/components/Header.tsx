@@ -26,13 +26,13 @@ export default function Header() {
     <header className="absolute top-0 left-0 w-full z-50 pt-2.5 pb-2 px-6 md:px-12 xl:px-20 flex items-center justify-between">
       {/* Logo */}
       <Link href="/" className="flex flex-col items-center justify-center z-50 cursor-pointer w-auto">
-        <div className="relative w-[115px] md:w-[145px] xl:w-[165px] h-[36px] md:h-[44px]">
+        <div className="relative w-[138px] sm:w-[165px] md:w-[190px] xl:w-[215px] h-[44px] sm:h-[50px] md:h-[58px] xl:h-[64px]">
           <Image 
             src="/logo.png" 
             alt="InderPushp House of Art" 
             fill 
-            className="object-contain object-left"
-            sizes="(max-width: 768px) 115px, (max-width: 1280px) 145px, 165px"
+            className="object-contain object-left drop-shadow-[0_1px_2px_rgba(38,50,72,0.08)]"
+            sizes="(max-width: 640px) 140px, (max-width: 1024px) 190px, 215px"
             priority
           />
         </div>
