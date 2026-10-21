@@ -5,7 +5,6 @@ import { contactApi, ContactEnquiryPayload } from "@/lib/api";
 import {
   Mail,
   MessageCircle,
-  MapPin,
   CheckCircle2,
   AlertCircle,
   Loader2,
@@ -242,25 +241,6 @@ export default function ContactSection({
                 </span>
               </div>
             </a>
-
-            {/* Studio Location / Presence */}
-            <div className="flex items-start gap-3.5 p-3 sm:p-3.5 rounded-xl bg-[#FAF7F0] border border-[#B79A5A]/20">
-              <div className="p-2 rounded-lg bg-[#FAF7F0] text-[#B79A5A] border border-[#B79A5A]/30">
-                <MapPin size={16} />
-              </div>
-              <div>
-                <span className="text-[11px] font-sans uppercase tracking-wider text-gray-500 font-semibold block">
-                  Studio Location
-                </span>
-                <span className="text-xs sm:text-sm font-sans font-medium text-[#263248]">
-                  India
-                </span>
-                <span className="text-[10px] font-sans text-gray-400 block mt-0.5">
-                  Handmade artworks carefully shipped nationwide
-                </span>
-              </div>
-            </div>
-
           </div>
         </div>
 
