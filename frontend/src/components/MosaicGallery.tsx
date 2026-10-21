@@ -69,8 +69,8 @@ export default function MosaicGallery({ images }: MosaicGalleryProps) {
       {/* ========================================== */}
       <div className="w-full max-w-[500px] md:max-w-none md:w-auto md:h-full max-h-[800px] aspect-[9/10] mx-auto md:mx-0 md:ml-4 lg:ml-8 xl:ml-12 relative mt-0">
         
-        {/* 1. Left Arch (Red Leaves) - Elongated to 75% to go behind Tile 2 */}
-        <MosaicTile src={getImgSrc(0)} alt="Left Arch" left={5} top={5} width={25} height={75} rounded="rounded-tl-[100cqi]" zIndex={10} />
+        {/* 1. Left Arch (Red Leaves) - Starts at top=0 to match right column height */}
+        <MosaicTile src={getImgSrc(0)} alt="Left Arch" left={5} top={0} width={25} height={80} rounded="rounded-tl-[100cqi]" zIndex={10} />
 
         {/* 2. Left Blue Curve - Sits on top of Tile 1 */}
         <MosaicTile src={getImgSrc(1)} alt="Left Blue Curve" left={5} top={60} width={25} height={20} rounded="rounded-tl-[100cqi]" zIndex={20} maskBackground />
