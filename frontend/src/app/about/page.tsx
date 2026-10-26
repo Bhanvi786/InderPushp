@@ -4,7 +4,7 @@ import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { aboutSettingsApi, AboutSettingsData } from "@/lib/api";
-import { Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { Play } from "lucide-react";
 
 export default function AboutPage() {
   const [settings, setSettings] = useState<AboutSettingsData>({
@@ -13,8 +13,6 @@ export default function AboutPage() {
     heading: "A Glimpse Into My Creative World",
     subheading: "",
   });
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -36,6 +34,27 @@ export default function AboutPage() {
     loadSettings();
   }, []);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+
+    const playVideo = () => {
+      video.play().catch(() => {});
+    };
+
+    playVideo();
+    video.addEventListener("loadeddata", playVideo);
+    video.addEventListener("canplay", playVideo);
+
+    return () => {
+      video.removeEventListener("loadeddata", playVideo);
+      video.removeEventListener("canplay", playVideo);
+    };
+  }, [settings.videoUrl]);
+
   const isYouTube = (url: string) => {
     return /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(url);
   };
@@ -44,33 +63,16 @@ export default function AboutPage() {
     try {
       if (url.includes("youtu.be/")) {
         const id = url.split("youtu.be/")[1]?.split("?")[0];
-        return `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`;
+        return `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&autoplay=1&mute=1`;
       }
       if (url.includes("watch?v=")) {
         const id = url.split("watch?v=")[1]?.split("&")[0];
-        return `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1`;
+        return `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&autoplay=1&mute=1`;
       }
       return url;
     } catch {
       return url;
     }
-  };
-
-  const toggleDirectPlay = () => {
-    if (!videoRef.current) return;
-    if (isPlaying) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      videoRef.current.play();
-      setIsPlaying(true);
-    }
-  };
-
-  const toggleMute = () => {
-    if (!videoRef.current) return;
-    videoRef.current.muted = !isMuted;
-    setIsMuted(!isMuted);
   };
 
   return (
@@ -177,38 +179,13 @@ export default function AboutPage() {
                   <video
                     ref={videoRef}
                     src={settings.videoUrl}
-                    poster={settings.posterUrl || "/artist.png"}
                     className="w-full h-full object-contain"
+                    autoPlay
+                    muted
+                    loop
                     playsInline
-                    onPlay={() => setIsPlaying(true)}
-                    onPause={() => setIsPlaying(false)}
-                    onEnded={() => setIsPlaying(false)}
+                    preload="auto"
                   />
-                  <div
-                    onClick={toggleDirectPlay}
-                    className={`absolute inset-0 bg-[#263248]/30 transition-opacity flex items-center justify-center cursor-pointer ${
-                      isPlaying ? "opacity-0 hover:opacity-100" : "opacity-100"
-                    }`}
-                  >
-                    <div className="w-13 h-13 rounded-full bg-[#B79A5A] text-white flex items-center justify-center shadow-md transition-transform duration-200 group-hover:scale-105">
-                      {isPlaying ? (
-                        <Pause size={18} fill="white" />
-                      ) : (
-                        <Play size={18} fill="white" className="translate-x-0.5" />
-                      )}
-                    </div>
-                  </div>
-                  {isPlaying && (
-                    <div className="absolute bottom-2.5 right-2.5 flex items-center gap-2 z-20">
-                      <button
-                        onClick={toggleMute}
-                        aria-label="Toggle Audio"
-                        className="p-1.5 rounded-full bg-[#263248]/80 text-[#FAF7F0] border border-[#B79A5A]/30 hover:bg-[#B79A5A] transition-colors"
-                      >
-                        {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
-                      </button>
-                    </div>
-                  )}
                 </div>
               )
             ) : (
