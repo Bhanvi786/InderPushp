@@ -8,7 +8,7 @@ import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 
 export default function AboutPage() {
   const [settings, setSettings] = useState<AboutSettingsData>({
-    videoUrl: "/artist.MP4",
+    videoUrl: "/video.MP4",
     posterUrl: "/artist.png",
     heading: "A Glimpse Into My Creative World",
     subheading: "",
@@ -23,7 +23,7 @@ export default function AboutPage() {
         const data = await aboutSettingsApi.get();
         if (data) {
           setSettings({
-            videoUrl: data.videoUrl || "/artist.MP4",
+            videoUrl: data.videoUrl || "/video.MP4",
             posterUrl: data.posterUrl || "/artist.png",
             heading: data.heading || "A Glimpse Into My Creative World",
             subheading: data.subheading || "",

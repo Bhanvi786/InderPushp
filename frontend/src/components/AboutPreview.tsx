@@ -8,12 +8,26 @@ export default function AboutPreview() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = true;
-      videoRef.current.play().catch(() => {
-        // Autoplay policy fallback
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+
+    const playVideo = () => {
+      video.play().catch(() => {
+        // Autoplay may need user gesture if not muted
       });
-    }
+    };
+
+    playVideo();
+    video.addEventListener("loadeddata", playVideo);
+    video.addEventListener("canplay", playVideo);
+
+    return () => {
+      video.removeEventListener("loadeddata", playVideo);
+      video.removeEventListener("canplay", playVideo);
+    };
   }, []);
 
   return (
