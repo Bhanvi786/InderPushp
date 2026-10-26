@@ -1,11 +1,10 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Volume2, VolumeX } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export default function AboutPreview() {
-  const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -16,17 +15,6 @@ export default function AboutPreview() {
       });
     }
   }, []);
-
-  const toggleSound = () => {
-    if (videoRef.current) {
-      const nextMuted = !videoRef.current.muted;
-      videoRef.current.muted = nextMuted;
-      setIsMuted(nextMuted);
-      if (!nextMuted) {
-        videoRef.current.play().catch(() => { });
-      }
-    }
-  };
 
   return (
     <section
@@ -86,39 +74,17 @@ export default function AboutPreview() {
                   <div className="relative aspect-[9/14] sm:aspect-[9/14] md:aspect-4/5 w-full rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl border border-[#D8C594]/45 bg-[#1b2332] group">
                     <video
                       ref={videoRef}
-                      src="/artist.MP4"
-                      poster="/artist.png"
+                      src="/video.MP4"
                       autoPlay
                       muted
                       loop
                       playsInline
                       preload="auto"
-                      className="w-full h-full object-contain cursor-pointer"
-                      onClick={toggleSound}
+                      className="w-full h-full object-contain"
                     />
 
                     {/* Subtle warm golden gloss overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10 pointer-events-none" />
-
-                    {/* Elegant Sound Toggle Button */}
-                    <button
-                      type="button"
-                      onClick={toggleSound}
-                      aria-label={isMuted ? "Unmute video" : "Mute video"}
-                      className="absolute bottom-2.5 right-2.5 xs:bottom-3 xs:right-3 z-10 inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-[#D8C594]/60 text-[#FAF7F0] text-[10px] xs:text-[11px] font-sans font-medium transition-all shadow-lg active:scale-95"
-                    >
-                      {isMuted ? (
-                        <>
-                          <VolumeX size={13} className="text-[#D8C594]" />
-                          <span>Sound On</span>
-                        </>
-                      ) : (
-                        <>
-                          <Volume2 size={13} className="text-[#D8C594] animate-pulse" />
-                          <span>Mute</span>
-                        </>
-                      )}
-                    </button>
                   </div>
                 </div>
               </div>
