@@ -18,7 +18,8 @@ export interface ArtworkColorOption {
   colorHex?: string; // Optional hex code like "#1E5F38"
   imageUrl?: string; // Primary URL of the photo for this color
   images?: string[]; // Multiple photos (5-6 angles) of this color
-  priceINR?: number; // Optional price override if different from base
+  priceINR?: number; // Optional price override if single price piece
+  variantPrices?: Record<string, number>; // Set-specific pricing for this color e.g. { "Single Piece": 3000, "Pair": 5500 }
 }
 
 export type ArtworkCategory = string;

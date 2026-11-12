@@ -183,6 +183,7 @@ export default function ArtworkFormSection({
               imageUrl: primaryImg,
               images: validImages.length > 0 ? validImages : (primaryImg ? [primaryImg] : []),
               priceINR: Number(c.priceINR) || 0,
+              variantPrices: c.variantPrices || {},
             };
           })
       : [];
@@ -564,24 +565,27 @@ export default function ArtworkFormSection({
                           </div>
 
                           <div className="flex items-center gap-2">
-                            <div className="relative w-32">
-                              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-serif font-bold text-[#B79A5A]">
-                                ₹
-                              </span>
-                              <input
-                                type="number"
-                                placeholder="Same MRP"
-                                value={c.priceINR || ''}
-                                onChange={(e) => {
-                                  const val = Number(e.target.value);
-                                  const updated = [...colorOptions];
-                                  updated[idx].priceINR = isNaN(val) ? 0 : val;
-                                  setColorOptions(updated);
-                                }}
-                                className="w-full pl-6 pr-2 py-1.5 text-xs font-sans bg-[#FAF7F0] border border-[#B79A5A]/30 rounded-lg text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
-                                title="Leave blank or 0 to inherit base price"
-                              />
-                            </div>
+                            {/* If artwork has multiple sets / variants, let admin customize price per set for this color */}
+                            {!hasVariants && (
+                              <div className="relative w-32">
+                                <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-serif font-bold text-[#B79A5A]">
+                                  ₹
+                                </span>
+                                <input
+                                  type="number"
+                                  placeholder="Same MRP"
+                                  value={c.priceINR || ''}
+                                  onChange={(e) => {
+                                    const val = Number(e.target.value);
+                                    const updated = [...colorOptions];
+                                    updated[idx].priceINR = isNaN(val) ? 0 : val;
+                                    setColorOptions(updated);
+                                  }}
+                                  className="w-full pl-6 pr-2 py-1.5 text-xs font-sans bg-[#FAF7F0] border border-[#B79A5A]/30 rounded-lg text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
+                                  title="Leave blank or 0 to inherit base price"
+                                />
+                              </div>
+                            )}
 
                             <button
                               type="button"
@@ -593,6 +597,53 @@ export default function ArtworkFormSection({
                             </button>
                           </div>
                         </div>
+
+                        {/* Set / Variant Prices for THIS Color (shown when Different Sets / MRP Variants is ON) */}
+                        {hasVariants && variants.length > 0 && (
+                          <div className="p-2.5 bg-[#FAF7F0] rounded-lg border border-[#B79A5A]/20 space-y-2">
+                            <span className="text-[11px] font-sans font-semibold text-[#263248] block">
+                              Set Pricing for {c.name || 'this color'}
+                              <span className="text-[10px] text-[#4B5568] font-normal ml-1">
+                                (Leave as &quot;Same MRP&quot; to use the default set price, or enter a custom price)
+                              </span>
+                            </span>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                              {variants.map((v, vIdx) => {
+                                const specificPrice = c.variantPrices?.[v.name];
+                                return (
+                                  <div key={vIdx} className="flex items-center gap-1.5 bg-white px-2.5 py-1.5 rounded-md border border-[#B79A5A]/30">
+                                    <span className="text-[11px] font-sans text-[#263248] truncate flex-1 font-medium">
+                                      {v.name}:
+                                    </span>
+                                    <div className="relative w-24">
+                                      <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs font-serif font-bold text-[#B79A5A]">
+                                        ₹
+                                      </span>
+                                      <input
+                                        type="number"
+                                        placeholder={v.priceINR ? String(v.priceINR) : 'Same'}
+                                        value={specificPrice !== undefined ? specificPrice : ''}
+                                        onChange={(e) => {
+                                          const val = e.target.value === '' ? undefined : Number(e.target.value);
+                                          const updated = [...colorOptions];
+                                          const newVarPrices = { ...(updated[idx].variantPrices || {}) };
+                                          if (val === undefined || isNaN(val)) {
+                                            delete newVarPrices[v.name];
+                                          } else {
+                                            newVarPrices[v.name] = val;
+                                          }
+                                          updated[idx].variantPrices = newVarPrices;
+                                          setColorOptions(updated);
+                                        }}
+                                        className="w-full pl-5 pr-1.5 py-1 text-[11px] font-sans bg-transparent border-0 text-[#263248] focus:outline-hidden font-semibold"
+                                      />
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        )}
 
                         {/* Bottom area: Multi-image gallery for this specific color (up to 6 photos) */}
                         <div className="space-y-1.5">

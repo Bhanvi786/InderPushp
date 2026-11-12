@@ -248,6 +248,7 @@ router.post('/', authenticateAdmin, async (req: Request, res: Response): Promise
               imageUrl: c.imageUrl ? String(c.imageUrl).trim() : (Array.isArray(c.images) && c.images[0] ? String(c.images[0]).trim() : ''),
               images: Array.isArray(c.images) ? c.images.map((img: any) => String(img).trim()).filter(Boolean) : (c.imageUrl ? [String(c.imageUrl).trim()] : []),
               priceINR: typeof c.priceINR === 'number' ? c.priceINR : Number(c.priceINR) || 0,
+              variantPrices: c.variantPrices && typeof c.variantPrices === 'object' ? c.variantPrices : {},
             }))
         : [],
       mainImage: {
@@ -379,6 +380,7 @@ router.put('/:id', authenticateAdmin, async (req: Request, res: Response): Promi
           imageUrl: c.imageUrl ? String(c.imageUrl).trim() : (Array.isArray(c.images) && c.images[0] ? String(c.images[0]).trim() : ''),
           images: Array.isArray(c.images) ? c.images.map((img: any) => String(img).trim()).filter(Boolean) : (c.imageUrl ? [String(c.imageUrl).trim()] : []),
           priceINR: typeof c.priceINR === 'number' ? c.priceINR : Number(c.priceINR) || 0,
+          variantPrices: c.variantPrices && typeof c.variantPrices === 'object' ? c.variantPrices : {},
         }));
     }
     if (dimensions !== undefined) existingArtwork.dimensions = dimensions.trim();

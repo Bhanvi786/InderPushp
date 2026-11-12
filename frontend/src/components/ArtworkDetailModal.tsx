@@ -33,8 +33,15 @@ export default function ArtworkDetailModal({
   const currentVariant = hasVariants && artwork ? artwork.variants![selectedVariantIndex] : null;
   const currentColor = hasColors && artwork ? artwork.colorOptions![selectedColorIndex] : null;
 
-  // Calculate effective price: color override > variant > base artwork price
-  const currentPrice = currentColor?.priceINR && currentColor.priceINR > 0
+  // Calculate effective price:
+  // 1. If color has a specific price for this selected set variant -> use it
+  // 2. Else if color has a flat price override -> use it
+  // 3. Else use the variant's price
+  // 4. Fallback to base artwork priceINR
+  const colorVariantPrice = currentVariant && currentColor?.variantPrices?.[currentVariant.name];
+  const currentPrice = colorVariantPrice && colorVariantPrice > 0
+    ? colorVariantPrice
+    : currentColor?.priceINR && currentColor.priceINR > 0
     ? currentColor.priceINR
     : currentVariant
     ? currentVariant.priceINR
@@ -277,6 +284,7 @@ export default function ArtworkDetailModal({
                 <div className="flex flex-wrap gap-2">
                   {artwork.variants.map((v, i) => {
                     const isSelected = i === selectedVariantIndex;
+                    const specificPrice = currentColor?.variantPrices?.[v.name] || v.priceINR;
                     return (
                       <button
                         key={i}
@@ -290,7 +298,7 @@ export default function ArtworkDetailModal({
                       >
                         <span>{v.name}</span>
                         <span className={`text-[11px] ${isSelected ? 'text-[#D8C594]' : 'text-[#B79A5A]'}`}>
-                          ₹{v.priceINR.toLocaleString('en-IN')}
+                          ₹{specificPrice.toLocaleString('en-IN')}
                         </span>
                       </button>
                     );
@@ -405,8 +413,8 @@ export default function ArtworkDetailModal({
             <div className="flex items-center gap-2.5">
               <AddToCartButton
                 artwork={artwork}
-                selectedVariant={currentVariant || undefined}
-                selectedColor={currentColor || undefined}
+                selectedVariant={currentVariant ? { ...currentVariant, priceINR: currentPrice } : undefined}
+                selectedColor={currentColor ? { ...currentColor, priceINR: currentPrice } : undefined}
                 className="px-5 py-2.5"
               />
 

@@ -20,7 +20,8 @@ export interface IArtworkColorOption {
   colorHex?: string; // e.g. "#1B4D3E"
   imageUrl?: string; // Primary photo of this color
   images?: string[]; // Array of multiple photos for this color (e.g. 5-6 angles)
-  priceINR?: number; // Optional price override if color has different price
+  priceINR?: number; // Optional price override if single price piece
+  variantPrices?: Record<string, number>; // e.g. { "Single Piece": 3200, "Pair": 5800, "Set of 3": 8200 }
 }
 
 export type ArtworkCategory = string;
@@ -70,6 +71,7 @@ const ArtworkColorOptionSchema = new Schema<IArtworkColorOption>(
     imageUrl: { type: String, default: '', trim: true },
     images: { type: [String], default: [] },
     priceINR: { type: Number, default: 0 },
+    variantPrices: { type: Map, of: Number, default: {} },
   },
   { _id: false }
 );
