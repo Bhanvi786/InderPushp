@@ -245,7 +245,8 @@ router.post('/', authenticateAdmin, async (req: Request, res: Response): Promise
             .map((c: any) => ({
               name: String(c.name).trim(),
               colorHex: c.colorHex ? String(c.colorHex).trim() : '',
-              imageUrl: c.imageUrl ? String(c.imageUrl).trim() : '',
+              imageUrl: c.imageUrl ? String(c.imageUrl).trim() : (Array.isArray(c.images) && c.images[0] ? String(c.images[0]).trim() : ''),
+              images: Array.isArray(c.images) ? c.images.map((img: any) => String(img).trim()).filter(Boolean) : (c.imageUrl ? [String(c.imageUrl).trim()] : []),
               priceINR: typeof c.priceINR === 'number' ? c.priceINR : Number(c.priceINR) || 0,
             }))
         : [],
@@ -375,7 +376,8 @@ router.put('/:id', authenticateAdmin, async (req: Request, res: Response): Promi
         .map((c: any) => ({
           name: String(c.name).trim(),
           colorHex: c.colorHex ? String(c.colorHex).trim() : '',
-          imageUrl: c.imageUrl ? String(c.imageUrl).trim() : '',
+          imageUrl: c.imageUrl ? String(c.imageUrl).trim() : (Array.isArray(c.images) && c.images[0] ? String(c.images[0]).trim() : ''),
+          images: Array.isArray(c.images) ? c.images.map((img: any) => String(img).trim()).filter(Boolean) : (c.imageUrl ? [String(c.imageUrl).trim()] : []),
           priceINR: typeof c.priceINR === 'number' ? c.priceINR : Number(c.priceINR) || 0,
         }));
     }

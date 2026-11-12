@@ -18,7 +18,8 @@ export interface IArtworkVariant {
 export interface IArtworkColorOption {
   name: string; // e.g. "Emerald Green", "Royal Amber", "Sapphire Blue"
   colorHex?: string; // e.g. "#1B4D3E"
-  imageUrl?: string; // Photo of this color
+  imageUrl?: string; // Primary photo of this color
+  images?: string[]; // Array of multiple photos for this color (e.g. 5-6 angles)
   priceINR?: number; // Optional price override if color has different price
 }
 
@@ -67,6 +68,7 @@ const ArtworkColorOptionSchema = new Schema<IArtworkColorOption>(
     name: { type: String, required: true, trim: true },
     colorHex: { type: String, default: '', trim: true },
     imageUrl: { type: String, default: '', trim: true },
+    images: { type: [String], default: [] },
     priceINR: { type: Number, default: 0 },
   },
   { _id: false }

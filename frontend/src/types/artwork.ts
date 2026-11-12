@@ -16,7 +16,8 @@ export interface ArtworkVariant {
 export interface ArtworkColorOption {
   name: string; // e.g. "Emerald Green", "Amber Gold", "Cobalt Blue"
   colorHex?: string; // Optional hex code like "#1E5F38"
-  imageUrl?: string; // URL of the photo for this color
+  imageUrl?: string; // Primary URL of the photo for this color
+  images?: string[]; // Multiple photos (5-6 angles) of this color
   priceINR?: number; // Optional price override if different from base
 }
 

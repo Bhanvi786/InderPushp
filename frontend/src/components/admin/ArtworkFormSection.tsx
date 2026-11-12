@@ -174,12 +174,17 @@ export default function ArtworkFormSection({
     const cleanedColors = hasColors
       ? colorOptions
           .filter((c) => c.name.trim())
-          .map((c) => ({
-            name: c.name.trim(),
-            colorHex: c.colorHex?.trim() || '',
-            imageUrl: c.imageUrl?.trim() || '',
-            priceINR: Number(c.priceINR) || 0,
-          }))
+          .map((c) => {
+            const validImages = Array.isArray(c.images) ? c.images.filter(Boolean) : [];
+            const primaryImg = c.imageUrl?.trim() || validImages[0] || '';
+            return {
+              name: c.name.trim(),
+              colorHex: c.colorHex?.trim() || '',
+              imageUrl: primaryImg,
+              images: validImages.length > 0 ? validImages : (primaryImg ? [primaryImg] : []),
+              priceINR: Number(c.priceINR) || 0,
+            };
+          })
       : [];
 
     const stockNum = Number(stockQuantity);
@@ -522,161 +527,170 @@ export default function ArtworkFormSection({
                     </button>
                   </div>
 
-                  {colorOptions.map((c, idx) => (
-                    <div key={idx} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-2 bg-white rounded-md border border-[#B79A5A]/25">
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="color"
-                          value={c.colorHex || '#263248'}
-                          onChange={(e) => {
-                            const updated = [...colorOptions];
-                            updated[idx].colorHex = e.target.value;
-                            setColorOptions(updated);
-                          }}
-                          className="w-7 h-7 p-0 rounded-sm cursor-pointer border border-gray-300 shrink-0"
-                          title="Choose swatch color"
-                        />
-                        <input
-                          type="text"
-                          placeholder="Color Name (e.g. Royal Emerald)"
-                          value={c.name}
-                          onChange={(e) => {
-                            const updated = [...colorOptions];
-                            updated[idx].name = e.target.value;
-                            setColorOptions(updated);
-                          }}
-                          className="w-36 px-2.5 py-1.5 text-xs font-sans bg-white border border-[#B79A5A]/30 rounded-md text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
-                        />
-                      </div>
+                  {colorOptions.map((c, idx) => {
+                    const colorImageList = Array.isArray(c.images) && c.images.length > 0
+                      ? c.images
+                      : c.imageUrl
+                      ? [c.imageUrl]
+                      : [];
 
-                      <div className="flex-1 flex items-center gap-2">
-                        {/* Direct Photo Thumbnail & File Uploader */}
-                        <div className="flex items-center gap-1.5 shrink-0">
-                          {c.imageUrl ? (
-                            <div className="relative w-8 h-8 rounded-md border border-[#B79A5A]/30 overflow-hidden bg-stone-100 group">
-                              <Image
-                                src={c.imageUrl}
-                                alt={c.name || 'Color'}
-                                fill
-                                className="object-cover"
-                                sizes="32px"
-                              />
-                              <button
-                                type="button"
-                                onClick={() => {
+                    return (
+                      <div key={idx} className="p-3 bg-white rounded-xl border border-[#B79A5A]/30 space-y-3 shadow-2xs">
+                        {/* Top row: Color Picker, Name, Custom Price, and Delete */}
+                        <div className="flex flex-wrap items-center justify-between gap-2.5 pb-2.5 border-b border-[#FAF7F0]">
+                          <div className="flex items-center gap-2 flex-1 min-w-[200px]">
+                            <input
+                              type="color"
+                              value={c.colorHex || '#263248'}
+                              onChange={(e) => {
+                                const updated = [...colorOptions];
+                                updated[idx].colorHex = e.target.value;
+                                setColorOptions(updated);
+                              }}
+                              className="w-8 h-8 p-0.5 rounded-md cursor-pointer border border-gray-300 shrink-0"
+                              title="Choose swatch color"
+                            />
+                            <input
+                              type="text"
+                              placeholder="Color Name (e.g. Emerald Green)"
+                              value={c.name}
+                              onChange={(e) => {
+                                const updated = [...colorOptions];
+                                updated[idx].name = e.target.value;
+                                setColorOptions(updated);
+                              }}
+                              className="flex-1 max-w-xs px-3 py-1.5 text-xs font-sans font-medium bg-[#FAF7F0] border border-[#B79A5A]/30 rounded-lg text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
+                            />
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <div className="relative w-32">
+                              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-serif font-bold text-[#B79A5A]">
+                                ₹
+                              </span>
+                              <input
+                                type="number"
+                                placeholder="Same MRP"
+                                value={c.priceINR || ''}
+                                onChange={(e) => {
+                                  const val = Number(e.target.value);
                                   const updated = [...colorOptions];
-                                  updated[idx].imageUrl = '';
+                                  updated[idx].priceINR = isNaN(val) ? 0 : val;
                                   setColorOptions(updated);
                                 }}
-                                className="absolute inset-0 bg-black/60 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"
-                                title="Remove photo link"
-                              >
-                                <Trash2 size={12} />
-                              </button>
+                                className="w-full pl-6 pr-2 py-1.5 text-xs font-sans bg-[#FAF7F0] border border-[#B79A5A]/30 rounded-lg text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
+                                title="Leave blank or 0 to inherit base price"
+                              />
                             </div>
-                          ) : (
-                            <label className="flex items-center gap-1 px-2.5 py-1.5 rounded-md border border-dashed border-[#B79A5A]/50 bg-[#FAF7F0] text-[#263248] hover:bg-[#FAF7F0]/80 cursor-pointer text-xs font-sans transition-colors">
-                              <Upload size={12} className="text-[#B79A5A]" />
-                              <span>{colorUploadIndex === idx ? 'Uploading...' : 'Upload Photo'}</span>
+
+                            <button
+                              type="button"
+                              onClick={() => setColorOptions((prev) => prev.filter((_, i) => i !== idx))}
+                              className="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors"
+                              title="Remove color option"
+                            >
+                              <Trash2 size={15} />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Bottom area: Multi-image gallery for this specific color (up to 6 photos) */}
+                        <div className="space-y-1.5">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[11px] font-sans font-semibold text-[#263248] flex items-center gap-1.5">
+                              <span>Photos of {c.name || 'this color'}</span>
+                              <span className="text-[10px] text-[#4B5568] font-normal">
+                                ({colorImageList.length} added • upload 5-6 angles, framing, close-ups)
+                              </span>
+                            </span>
+                          </div>
+
+                          <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                            {/* Render all uploaded photos for this color */}
+                            {colorImageList.map((imgUrl, imgIdx) => (
+                              <div
+                                key={imgIdx}
+                                className="relative w-16 h-16 rounded-lg border border-[#B79A5A]/30 overflow-hidden bg-stone-100 group shrink-0"
+                              >
+                                <Image
+                                  src={imgUrl}
+                                  alt={`${c.name} ${imgIdx + 1}`}
+                                  fill
+                                  className="object-cover"
+                                  sizes="64px"
+                                />
+                                {imgIdx === 0 && (
+                                  <span className="absolute bottom-0 inset-x-0 bg-[#263248]/85 text-white text-[8px] font-sans text-center py-0.5">
+                                    Primary
+                                  </span>
+                                )}
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const nextImages = colorImageList.filter((_, i) => i !== imgIdx);
+                                    const updated = [...colorOptions];
+                                    updated[idx].images = nextImages;
+                                    updated[idx].imageUrl = nextImages[0] || '';
+                                    setColorOptions(updated);
+                                  }}
+                                  className="absolute top-1 right-1 p-1 rounded-full bg-black/60 text-white hover:bg-rose-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                                  title="Delete photo"
+                                >
+                                  <Trash2 size={11} />
+                                </button>
+                              </div>
+                            ))}
+
+                            {/* Add More Photos button (allows multiple file selection) */}
+                            <label className="w-16 h-16 rounded-lg border-2 border-dashed border-[#B79A5A]/40 hover:border-[#B79A5A] bg-[#FAF7F0] hover:bg-[#F4EFE4] flex flex-col items-center justify-center text-center cursor-pointer transition-colors shrink-0 group">
+                              <Upload size={14} className="text-[#B79A5A] group-hover:scale-110 transition-transform mb-0.5" />
+                              <span className="text-[9px] font-sans font-medium text-[#263248] leading-tight">
+                                {colorUploadIndex === idx ? 'Saving...' : '+ Add Photos'}
+                              </span>
                               <input
                                 type="file"
                                 accept="image/jpeg,image/png,image/webp,image/avif"
+                                multiple
                                 className="hidden"
                                 disabled={colorUploadIndex === idx}
                                 onChange={async (e) => {
-                                  const file = e.target.files?.[0];
-                                  if (!file) return;
+                                  const files = Array.from(e.target.files || []);
+                                  if (files.length === 0) return;
                                   setColorUploadIndex(idx);
                                   try {
-                                    if (isStorageActive) {
-                                      const res = await uploadApi.uploadImage(file);
-                                      const updated = [...colorOptions];
-                                      updated[idx].imageUrl = res.url;
-                                      setColorOptions(updated);
-                                      // Also append to additional images gallery so it's part of the artwork's image set
-                                      if (!additionalImages.some((img) => img.url === res.url)) {
-                                        setAdditionalImages((prev) => [
-                                          ...prev,
-                                          { url: res.url, publicId: res.publicId, alt: `${c.name || 'Artwork'} color` },
-                                        ]);
+                                    const newUrls: string[] = [];
+                                    for (const file of files) {
+                                      if (isStorageActive) {
+                                        const res = await uploadApi.uploadImage(file);
+                                        newUrls.push(res.url);
+                                      } else {
+                                        newUrls.push(URL.createObjectURL(file));
                                       }
-                                    } else {
-                                      const objUrl = URL.createObjectURL(file);
-                                      const updated = [...colorOptions];
-                                      updated[idx].imageUrl = objUrl;
-                                      setColorOptions(updated);
                                     }
+                                    const combined = [...colorImageList, ...newUrls];
+                                    const updated = [...colorOptions];
+                                    updated[idx].images = combined;
+                                    updated[idx].imageUrl = combined[0] || '';
+                                    setColorOptions(updated);
                                   } catch (err: any) {
-                                    alert('Failed to upload image: ' + (err.message || 'Error'));
+                                    alert('Upload failed: ' + (err.message || 'Error'));
                                   } finally {
                                     setColorUploadIndex(null);
                                   }
                                 }}
                               />
                             </label>
-                          )}
+                          </div>
                         </div>
-
-                        {/* Or select from already uploaded images */}
-                        <select
-                          value={c.imageUrl || ''}
-                          onChange={(e) => {
-                            const updated = [...colorOptions];
-                            updated[idx].imageUrl = e.target.value;
-                            setColorOptions(updated);
-                          }}
-                          className="flex-1 px-2.5 py-1.5 text-xs font-sans bg-white border border-[#B79A5A]/30 rounded-md text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
-                        >
-                          <option value="">{c.imageUrl ? '-- Linked --' : '-- Or pick from uploaded photos --'}</option>
-                          {mainImage?.url && (
-                            <option value={mainImage.url}>Main Artwork Photo</option>
-                          )}
-                          {additionalImages.map((img, iIdx) => (
-                            <option key={iIdx} value={img.url}>
-                              Detail Image #{iIdx + 1} ({img.alt || 'Photo'})
-                            </option>
-                          ))}
-                        </select>
-
-                        <div className="relative w-28">
-                          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-serif font-bold text-[#B79A5A]">
-                            ₹
-                          </span>
-                          <input
-                            type="number"
-                            placeholder="Same MRP"
-                            value={c.priceINR || ''}
-                            onChange={(e) => {
-                              const val = Number(e.target.value);
-                              const updated = [...colorOptions];
-                              updated[idx].priceINR = isNaN(val) ? 0 : val;
-                              setColorOptions(updated);
-                            }}
-                            className="w-full pl-6 pr-2 py-1.5 text-xs font-sans bg-white border border-[#B79A5A]/30 rounded-md text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
-                            title="Leave blank or 0 to inherit base price"
-                          />
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={() => setColorOptions((prev) => prev.filter((_, i) => i !== idx))}
-                          className="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-md transition-colors"
-                          title="Remove color option"
-                        >
-                          <Trash2 size={14} />
-                        </button>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
 
                   {colorOptions.length === 0 && (
                     <p className="text-xs text-stone-500 italic">
                       No color options added yet. Click &ldquo;Add Color Option&rdquo; above.
                     </p>
                   )}
-                  <p className="text-[10px] font-sans text-[#4B5568] italic">
-                    💡 Tip: Upload all color photos in the image uploader above, then select which photo belongs to each color name here.
-                  </p>
                 </div>
               )}
             </div>

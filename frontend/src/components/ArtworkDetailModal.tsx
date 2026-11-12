@@ -72,9 +72,30 @@ export default function ArtworkDetailModal({
 
   if (!isOpen || !artwork) return null;
 
-  // Gather all unique images (mainImage first, then additional, then color images)
+  // Gather all unique images depending on selected color
   const allImages: ArtworkImage[] = [];
-  if (artwork.mainImage?.url) {
+
+  // If a color is selected and has multiple photos, prioritize showing its photos
+  if (currentColor?.images && Array.isArray(currentColor.images) && currentColor.images.length > 0) {
+    currentColor.images.forEach((url, idx) => {
+      if (url && !allImages.some((img) => img.url === url)) {
+        allImages.push({
+          url,
+          alt: `${artwork.title} - ${currentColor.name} (View ${idx + 1})`,
+          isMain: idx === 0,
+        });
+      }
+    });
+  } else if (currentColor?.imageUrl) {
+    allImages.push({
+      url: currentColor.imageUrl,
+      alt: `${artwork.title} - ${currentColor.name}`,
+      isMain: true,
+    });
+  }
+
+  // Include main artwork image and additional images as fallback or general gallery
+  if (artwork.mainImage?.url && !allImages.some((img) => img.url === artwork.mainImage.url)) {
     allImages.push(artwork.mainImage);
   }
   if (artwork.additionalImages && Array.isArray(artwork.additionalImages)) {
@@ -84,24 +105,8 @@ export default function ArtworkDetailModal({
       }
     });
   }
-  if (artwork.colorOptions && Array.isArray(artwork.colorOptions)) {
-    artwork.colorOptions.forEach((col) => {
-      if (col.imageUrl && !allImages.some((existing) => existing.url === col.imageUrl)) {
-        allImages.push({
-          url: col.imageUrl,
-          alt: `${artwork.title} - ${col.name}`,
-          isMain: false,
-        });
-      }
-    });
-  }
 
-  // If a color is selected and has an image, prefer displaying that color's image unless user clicked another thumbnail
-  const activeColorImage = currentColor?.imageUrl
-    ? allImages.find((img) => img.url === currentColor.imageUrl)
-    : null;
-
-  const currentImage = allImages[selectedImageIndex] || activeColorImage || artwork.mainImage;
+  const currentImage = allImages[selectedImageIndex] || allImages[0] || artwork.mainImage;
 
   const handleShare = () => {
     if (navigator?.clipboard) {
@@ -314,13 +319,7 @@ export default function ArtworkDetailModal({
                         type="button"
                         onClick={() => {
                           setSelectedColorIndex(i);
-                          // If this color has its own image, automatically jump main viewer to it
-                          if (col.imageUrl) {
-                            const foundIndex = allImages.findIndex((img) => img.url === col.imageUrl);
-                            if (foundIndex !== -1) {
-                              setSelectedImageIndex(foundIndex);
-                            }
-                          }
+                          setSelectedImageIndex(0);
                         }}
                         className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-all cursor-pointer flex items-center gap-2 border ${
                           isSelected
