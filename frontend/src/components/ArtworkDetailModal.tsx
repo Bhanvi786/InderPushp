@@ -24,16 +24,28 @@ export default function ArtworkDetailModal({
   const [copiedLink, setCopiedLink] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+  const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const { addItem, openCart } = useCart();
 
   const hasVariants = Boolean(artwork?.variants && artwork.variants.length > 0);
+  const hasColors = Boolean(artwork?.colorOptions && artwork.colorOptions.length > 0);
+
   const currentVariant = hasVariants && artwork ? artwork.variants![selectedVariantIndex] : null;
-  const currentPrice = currentVariant ? currentVariant.priceINR : artwork?.priceINR || 0;
+  const currentColor = hasColors && artwork ? artwork.colorOptions![selectedColorIndex] : null;
+
+  // Calculate effective price: color override > variant > base artwork price
+  const currentPrice = currentColor?.priceINR && currentColor.priceINR > 0
+    ? currentColor.priceINR
+    : currentVariant
+    ? currentVariant.priceINR
+    : artwork?.priceINR || 0;
+
   const currentDimensions = currentVariant?.dimensions || artwork?.dimensions;
 
   useEffect(() => {
     setSelectedImageIndex(0);
     setSelectedVariantIndex(0);
+    setSelectedColorIndex(0);
     setIsAdded(false);
   }, [artwork]);
 
@@ -60,7 +72,7 @@ export default function ArtworkDetailModal({
 
   if (!isOpen || !artwork) return null;
 
-  // Gather all unique images (mainImage first, then additional)
+  // Gather all unique images (mainImage first, then additional, then color images)
   const allImages: ArtworkImage[] = [];
   if (artwork.mainImage?.url) {
     allImages.push(artwork.mainImage);
@@ -72,8 +84,24 @@ export default function ArtworkDetailModal({
       }
     });
   }
+  if (artwork.colorOptions && Array.isArray(artwork.colorOptions)) {
+    artwork.colorOptions.forEach((col) => {
+      if (col.imageUrl && !allImages.some((existing) => existing.url === col.imageUrl)) {
+        allImages.push({
+          url: col.imageUrl,
+          alt: `${artwork.title} - ${col.name}`,
+          isMain: false,
+        });
+      }
+    });
+  }
 
-  const currentImage = allImages[selectedImageIndex] || artwork.mainImage;
+  // If a color is selected and has an image, prefer displaying that color's image unless user clicked another thumbnail
+  const activeColorImage = currentColor?.imageUrl
+    ? allImages.find((img) => img.url === currentColor.imageUrl)
+    : null;
+
+  const currentImage = allImages[selectedImageIndex] || activeColorImage || artwork.mainImage;
 
   const handleShare = () => {
     if (navigator?.clipboard) {
@@ -266,6 +294,59 @@ export default function ArtworkDetailModal({
               </div>
             )}
 
+            {/* Color / Shade Selector */}
+            {hasColors && artwork.colorOptions && artwork.colorOptions.length > 0 && (
+              <div className="space-y-2 pt-2 border-t border-[#B79A5A]/20">
+                <div className="flex items-center justify-between">
+                  <label className="text-[11px] font-sans uppercase tracking-widest text-[#263248]/80 font-semibold block">
+                    Select Color / Finish:
+                  </label>
+                  <span className="text-xs font-serif font-medium text-[#B79A5A]">
+                    {currentColor?.name}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {artwork.colorOptions.map((col, i) => {
+                    const isSelected = i === selectedColorIndex;
+                    return (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => {
+                          setSelectedColorIndex(i);
+                          // If this color has its own image, automatically jump main viewer to it
+                          if (col.imageUrl) {
+                            const foundIndex = allImages.findIndex((img) => img.url === col.imageUrl);
+                            if (foundIndex !== -1) {
+                              setSelectedImageIndex(foundIndex);
+                            }
+                          }
+                        }}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-all cursor-pointer flex items-center gap-2 border ${
+                          isSelected
+                            ? 'bg-[#263248] text-[#FAF7F0] border-[#263248] shadow-xs'
+                            : 'bg-white hover:bg-[#FAF7F0] text-[#263248] border-[#B79A5A]/30'
+                        }`}
+                      >
+                        {col.colorHex && (
+                          <span
+                            className="w-3.5 h-3.5 rounded-full border border-black/20 shrink-0 inline-block shadow-2xs"
+                            style={{ backgroundColor: col.colorHex }}
+                          />
+                        )}
+                        <span>{col.name}</span>
+                        {col.priceINR && col.priceINR > 0 && col.priceINR !== artwork.priceINR && (
+                          <span className={`text-[10px] ${isSelected ? 'text-[#D8C594]' : 'text-[#B79A5A]'}`}>
+                            ₹{col.priceINR.toLocaleString('en-IN')}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             {/* Description */}
             {artwork.description && (
               <div className="space-y-2">
@@ -326,6 +407,7 @@ export default function ArtworkDetailModal({
               <AddToCartButton
                 artwork={artwork}
                 selectedVariant={currentVariant || undefined}
+                selectedColor={currentColor || undefined}
                 className="px-5 py-2.5"
               />
 

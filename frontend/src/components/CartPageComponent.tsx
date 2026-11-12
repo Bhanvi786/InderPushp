@@ -107,7 +107,13 @@ export default function CartPageComponent() {
     setIsSubmitting(true);
 
     const itemsSummary = items
-      .map((item, idx) => `${idx + 1}. *${item.title}${item.variantName ? ` (${item.variantName})` : ''}* (Qty: ${item.quantity}) - ₹${(item.priceINR * item.quantity).toLocaleString('en-IN')}`)
+      .map((item, idx) => {
+        const optionParts = [];
+        if (item.variantName) optionParts.push(item.variantName);
+        if (item.colorName) optionParts.push(`Color: ${item.colorName}`);
+        const optionSuffix = optionParts.length > 0 ? ` (${optionParts.join(', ')})` : '';
+        return `${idx + 1}. *${item.title}${optionSuffix}* (Qty: ${item.quantity}) - ₹${(item.priceINR * item.quantity).toLocaleString('en-IN')}`;
+      })
       .join('\n');
 
     const message = `*New Order Request - InderPushp House of Art*
@@ -284,11 +290,18 @@ Please confirm my order and share payment / delivery schedule. Thank you!`;
                               <h3 className="text-base sm:text-lg font-serif text-[#263248] font-medium leading-snug">
                                 {item.title}
                               </h3>
-                              {item.variantName && (
-                                <span className="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[11px] font-sans font-medium bg-[#B79A5A]/15 text-[#B79A5A] border border-[#B79A5A]/30">
-                                  {item.variantName}
-                                </span>
-                              )}
+                              <div className="flex flex-wrap gap-1.5 mt-1">
+                                {item.variantName && (
+                                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-sans font-medium bg-[#B79A5A]/15 text-[#B79A5A] border border-[#B79A5A]/30">
+                                    {item.variantName}
+                                  </span>
+                                )}
+                                {item.colorName && (
+                                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-sans font-medium bg-[#263248]/10 text-[#263248] border border-[#263248]/20">
+                                    Color: {item.colorName}
+                                  </span>
+                                )}
+                              </div>
                             </div>
 
                             <button
@@ -596,6 +609,11 @@ Please confirm my order and share payment / delivery schedule. Thank you!`;
                             {item.variantName && (
                               <span className="ml-1 text-[11px] font-sans text-[#B79A5A] font-normal">
                                 ({item.variantName})
+                              </span>
+                            )}
+                            {item.colorName && (
+                              <span className="ml-1 text-[11px] font-sans text-[#4B5568] font-normal">
+                                • {item.colorName}
                               </span>
                             )}
                           </p>

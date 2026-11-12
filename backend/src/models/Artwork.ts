@@ -11,6 +11,15 @@ export interface IArtworkVariant {
   name: string; // e.g., "Single Piece", "Pair", "Set of 3", "Small", "Large"
   priceINR: number;
   dimensions?: string;
+  imageUrl?: string; // Optional variant image (e.g. for color/finish variants)
+  colorHex?: string; // Optional hex code for swatch display e.g. "#2E7D32"
+}
+
+export interface IArtworkColorOption {
+  name: string; // e.g. "Emerald Green", "Royal Amber", "Sapphire Blue"
+  colorHex?: string; // e.g. "#1B4D3E"
+  imageUrl?: string; // Photo of this color
+  priceINR?: number; // Optional price override if color has different price
 }
 
 export type ArtworkCategory = string;
@@ -27,6 +36,7 @@ export interface IArtwork extends Document {
   category: string;
   priceINR: number;
   variants: IArtworkVariant[];
+  colorOptions: IArtworkColorOption[];
   mainImage: IArtworkImage;
   additionalImages: IArtworkImage[];
   dimensions?: string; // e.g., "24 x 36 inches"
@@ -46,6 +56,18 @@ const ArtworkVariantSchema = new Schema<IArtworkVariant>(
     name: { type: String, required: true, trim: true },
     priceINR: { type: Number, required: true, min: 0 },
     dimensions: { type: String, default: '', trim: true },
+    imageUrl: { type: String, default: '' },
+    colorHex: { type: String, default: '' },
+  },
+  { _id: false }
+);
+
+const ArtworkColorOptionSchema = new Schema<IArtworkColorOption>(
+  {
+    name: { type: String, required: true, trim: true },
+    colorHex: { type: String, default: '', trim: true },
+    imageUrl: { type: String, default: '', trim: true },
+    priceINR: { type: Number, default: 0 },
   },
   { _id: false }
 );
@@ -87,6 +109,10 @@ const ArtworkSchema = new Schema<IArtwork>(
     },
     variants: {
       type: [ArtworkVariantSchema],
+      default: [],
+    },
+    colorOptions: {
+      type: [ArtworkColorOptionSchema],
       default: [],
     },
     mainImage: {

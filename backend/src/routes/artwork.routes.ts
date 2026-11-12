@@ -189,6 +189,7 @@ router.post('/', authenticateAdmin, async (req: Request, res: Response): Promise
       category,
       priceINR,
       variants,
+      colorOptions,
       mainImage,
       additionalImages,
       dimensions,
@@ -234,6 +235,18 @@ router.post('/', authenticateAdmin, async (req: Request, res: Response): Promise
               name: String(v.name).trim(),
               priceINR: Number(v.priceINR) || 0,
               dimensions: v.dimensions ? String(v.dimensions).trim() : '',
+              imageUrl: v.imageUrl ? String(v.imageUrl).trim() : '',
+              colorHex: v.colorHex ? String(v.colorHex).trim() : '',
+            }))
+        : [],
+      colorOptions: Array.isArray(colorOptions)
+        ? colorOptions
+            .filter((c: any) => c && c.name)
+            .map((c: any) => ({
+              name: String(c.name).trim(),
+              colorHex: c.colorHex ? String(c.colorHex).trim() : '',
+              imageUrl: c.imageUrl ? String(c.imageUrl).trim() : '',
+              priceINR: typeof c.priceINR === 'number' ? c.priceINR : Number(c.priceINR) || 0,
             }))
         : [],
       mainImage: {
@@ -328,6 +341,7 @@ router.put('/:id', authenticateAdmin, async (req: Request, res: Response): Promi
       category,
       priceINR,
       variants,
+      colorOptions,
       mainImage,
       additionalImages,
       dimensions,
@@ -351,6 +365,18 @@ router.put('/:id', authenticateAdmin, async (req: Request, res: Response): Promi
           name: String(v.name).trim(),
           priceINR: Number(v.priceINR) || 0,
           dimensions: v.dimensions ? String(v.dimensions).trim() : '',
+          imageUrl: v.imageUrl ? String(v.imageUrl).trim() : '',
+          colorHex: v.colorHex ? String(v.colorHex).trim() : '',
+        }));
+    }
+    if (colorOptions !== undefined && Array.isArray(colorOptions)) {
+      existingArtwork.colorOptions = colorOptions
+        .filter((c: any) => c && c.name)
+        .map((c: any) => ({
+          name: String(c.name).trim(),
+          colorHex: c.colorHex ? String(c.colorHex).trim() : '',
+          imageUrl: c.imageUrl ? String(c.imageUrl).trim() : '',
+          priceINR: typeof c.priceINR === 'number' ? c.priceINR : Number(c.priceINR) || 0,
         }));
     }
     if (dimensions !== undefined) existingArtwork.dimensions = dimensions.trim();

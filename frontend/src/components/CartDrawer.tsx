@@ -128,11 +128,18 @@ export default function CartDrawer() {
                             <h4 className="text-sm font-serif font-medium text-[#263248] truncate leading-tight mt-0.5">
                               {item.title}
                             </h4>
-                            {item.variantName && (
-                              <span className="inline-block mt-0.5 px-2 py-0.5 rounded-full text-[9px] font-sans font-medium bg-[#B79A5A]/15 text-[#B79A5A] border border-[#B79A5A]/30">
-                                {item.variantName}
-                              </span>
-                            )}
+                            <div className="flex flex-wrap gap-1 mt-0.5">
+                              {item.variantName && (
+                                <span className="inline-block px-2 py-0.5 rounded-full text-[9px] font-sans font-medium bg-[#B79A5A]/15 text-[#B79A5A] border border-[#B79A5A]/30">
+                                  {item.variantName}
+                                </span>
+                              )}
+                              {item.colorName && (
+                                <span className="inline-block px-2 py-0.5 rounded-full text-[9px] font-sans font-medium bg-[#263248]/10 text-[#263248] border border-[#263248]/20">
+                                  {item.colorName}
+                                </span>
+                              )}
+                            </div>
                           </div>
 
                           <button

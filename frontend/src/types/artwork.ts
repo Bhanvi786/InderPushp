@@ -9,6 +9,15 @@ export interface ArtworkVariant {
   name: string; // e.g., "Single Piece", "Pair", "Set of 3", "Small", "Large"
   priceINR: number;
   dimensions?: string;
+  imageUrl?: string;
+  colorHex?: string;
+}
+
+export interface ArtworkColorOption {
+  name: string; // e.g. "Emerald Green", "Amber Gold", "Cobalt Blue"
+  colorHex?: string; // Optional hex code like "#1E5F38"
+  imageUrl?: string; // URL of the photo for this color
+  priceINR?: number; // Optional price override if different from base
 }
 
 export type ArtworkCategory = string;
@@ -40,6 +49,7 @@ export interface Artwork {
   category: string;
   priceINR: number;
   variants?: ArtworkVariant[];
+  colorOptions?: ArtworkColorOption[];
   mainImage: ArtworkImage;
   additionalImages: ArtworkImage[];
   dimensions?: string;

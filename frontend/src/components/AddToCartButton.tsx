@@ -2,12 +2,13 @@
 
 import React, { useState } from "react";
 import { ShoppingBag, Check } from "lucide-react";
-import { Artwork, ArtworkVariant } from "../types/artwork";
+import { Artwork, ArtworkVariant, ArtworkColorOption } from "../types/artwork";
 import { useCart } from "../context/CartContext";
 
 interface AddToCartButtonProps {
   artwork: Artwork;
   selectedVariant?: ArtworkVariant;
+  selectedColor?: ArtworkColorOption;
   className?: string;
   isAddedExternal?: boolean;
 }
@@ -15,6 +16,7 @@ interface AddToCartButtonProps {
 export default function AddToCartButton({
   artwork,
   selectedVariant,
+  selectedColor,
   className = "",
   isAddedExternal,
 }: AddToCartButtonProps) {
@@ -32,7 +34,7 @@ export default function AddToCartButton({
     if (isProcessing || isAdded) return;
 
     setIsProcessing(true);
-    addItem(artwork, 1, selectedVariant);
+    addItem(artwork, 1, selectedVariant, selectedColor);
     setInternalAdded(true);
 
     setTimeout(() => {

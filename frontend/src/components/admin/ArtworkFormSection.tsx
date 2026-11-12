@@ -16,6 +16,7 @@ import {
   Artwork,
   ArtworkCategory,
   ArtworkVariant,
+  ArtworkColorOption,
   AvailabilityStatus,
   ArtworkImage,
   Category,
@@ -56,6 +57,12 @@ export default function ArtworkFormSection({
   );
   const [hasVariants, setHasVariants] = useState<boolean>(
     Boolean(initialArtwork?.variants && initialArtwork.variants.length > 0)
+  );
+  const [colorOptions, setColorOptions] = useState<ArtworkColorOption[]>(
+    initialArtwork?.colorOptions || []
+  );
+  const [hasColors, setHasColors] = useState<boolean>(
+    Boolean(initialArtwork?.colorOptions && initialArtwork.colorOptions.length > 0)
   );
   const [dimensions, setDimensions] = useState(initialArtwork?.dimensions || '');
   const [materials, setMaterials] = useState(
@@ -160,6 +167,18 @@ export default function ArtworkFormSection({
           }))
       : [];
 
+    // Filter valid colors if enabled
+    const cleanedColors = hasColors
+      ? colorOptions
+          .filter((c) => c.name.trim())
+          .map((c) => ({
+            name: c.name.trim(),
+            colorHex: c.colorHex?.trim() || '',
+            imageUrl: c.imageUrl?.trim() || '',
+            priceINR: Number(c.priceINR) || 0,
+          }))
+      : [];
+
     const stockNum = Number(stockQuantity);
 
     setIsSubmitting(true);
@@ -170,6 +189,7 @@ export default function ArtworkFormSection({
         category,
         priceINR: priceNum,
         variants: cleanedVariants,
+        colorOptions: cleanedColors,
         mainImage,
         additionalImages,
         dimensions: dimensions.trim(),
@@ -440,6 +460,153 @@ export default function ArtworkFormSection({
                       No variants added yet. Click &ldquo;Add Set / Option&rdquo; above.
                     </p>
                   )}
+                </div>
+              )}
+            </div>
+
+            {/* Color / Shade Options */}
+            <div className="pt-2 pb-1 border-b border-[#B79A5A]/20">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <label className="text-xs font-sans font-semibold uppercase tracking-wider text-[#263248] block">
+                    Multiple Color / Finish Options
+                  </label>
+                  <p className="text-[11px] font-sans text-[#4B5568]">
+                    Upload and link dedicated photos for different colorways (e.g. Emerald Green, Amber Gold, Sapphire Blue).
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const next = !hasColors;
+                    setHasColors(next);
+                    if (next && colorOptions.length === 0) {
+                      setColorOptions([
+                        { name: 'Emerald Green', colorHex: '#1B4D3E', imageUrl: '', priceINR: 0 },
+                        { name: 'Royal Amber', colorHex: '#C5832B', imageUrl: '', priceINR: 0 },
+                      ]);
+                    }
+                  }}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer ${
+                    hasColors ? 'bg-[#B79A5A]' : 'bg-gray-300'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      hasColors ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {hasColors && (
+                <div className="space-y-3 bg-[#B79A5A]/5 p-3.5 rounded-lg border border-[#B79A5A]/20 mb-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-sans font-semibold text-[#263248]">
+                      Colorways & Photo Links
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setColorOptions((prev) => [
+                          ...prev,
+                          { name: '', colorHex: '#263248', imageUrl: '', priceINR: 0 },
+                        ])
+                      }
+                      className="inline-flex items-center gap-1 text-xs font-sans text-[#B79A5A] hover:text-[#9A7F43] font-semibold"
+                    >
+                      <Plus size={14} /> Add Color Option
+                    </button>
+                  </div>
+
+                  {colorOptions.map((c, idx) => (
+                    <div key={idx} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-2 bg-white rounded-md border border-[#B79A5A]/25">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="color"
+                          value={c.colorHex || '#263248'}
+                          onChange={(e) => {
+                            const updated = [...colorOptions];
+                            updated[idx].colorHex = e.target.value;
+                            setColorOptions(updated);
+                          }}
+                          className="w-7 h-7 p-0 rounded-sm cursor-pointer border border-gray-300 shrink-0"
+                          title="Choose swatch color"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Color Name (e.g. Royal Emerald)"
+                          value={c.name}
+                          onChange={(e) => {
+                            const updated = [...colorOptions];
+                            updated[idx].name = e.target.value;
+                            setColorOptions(updated);
+                          }}
+                          className="w-36 px-2.5 py-1.5 text-xs font-sans bg-white border border-[#B79A5A]/30 rounded-md text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
+                        />
+                      </div>
+
+                      <div className="flex-1 flex items-center gap-2">
+                        {/* Dropdown to select from already uploaded images or type custom URL */}
+                        <select
+                          value={c.imageUrl || ''}
+                          onChange={(e) => {
+                            const updated = [...colorOptions];
+                            updated[idx].imageUrl = e.target.value;
+                            setColorOptions(updated);
+                          }}
+                          className="flex-1 px-2.5 py-1.5 text-xs font-sans bg-white border border-[#B79A5A]/30 rounded-md text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
+                        >
+                          <option value="">-- Link to an uploaded photo --</option>
+                          {mainImage?.url && (
+                            <option value={mainImage.url}>Main Artwork Image</option>
+                          )}
+                          {additionalImages.map((img, iIdx) => (
+                            <option key={iIdx} value={img.url}>
+                              Additional Image #{iIdx + 1} ({img.alt || 'Photo'})
+                            </option>
+                          ))}
+                        </select>
+
+                        <div className="relative w-28">
+                          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-serif font-bold text-[#B79A5A]">
+                            ₹
+                          </span>
+                          <input
+                            type="number"
+                            placeholder="Same MRP"
+                            value={c.priceINR || ''}
+                            onChange={(e) => {
+                              const val = Number(e.target.value);
+                              const updated = [...colorOptions];
+                              updated[idx].priceINR = isNaN(val) ? 0 : val;
+                              setColorOptions(updated);
+                            }}
+                            className="w-full pl-6 pr-2 py-1.5 text-xs font-sans bg-white border border-[#B79A5A]/30 rounded-md text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
+                            title="Leave blank or 0 to inherit base price"
+                          />
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => setColorOptions((prev) => prev.filter((_, i) => i !== idx))}
+                          className="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-md transition-colors"
+                          title="Remove color option"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+
+                  {colorOptions.length === 0 && (
+                    <p className="text-xs text-stone-500 italic">
+                      No color options added yet. Click &ldquo;Add Color Option&rdquo; above.
+                    </p>
+                  )}
+                  <p className="text-[10px] font-sans text-[#4B5568] italic">
+                    💡 Tip: Upload all color photos in the image uploader above, then select which photo belongs to each color name here.
+                  </p>
                 </div>
               )}
             </div>

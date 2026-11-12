@@ -18,7 +18,12 @@ interface CartContextType {
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
-  addItem: (artwork: Artwork, quantity?: number, selectedVariant?: { name: string; priceINR: number; dimensions?: string }) => void;
+  addItem: (
+    artwork: Artwork,
+    quantity?: number,
+    selectedVariant?: { name: string; priceINR: number; dimensions?: string; imageUrl?: string },
+    selectedColor?: { name: string; imageUrl?: string; priceINR?: number }
+  ) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
@@ -74,17 +79,25 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const addItem = (
     artwork: Artwork,
     quantity = 1,
-    selectedVariant?: { name: string; priceINR: number; dimensions?: string }
+    selectedVariant?: { name: string; priceINR: number; dimensions?: string; imageUrl?: string },
+    selectedColor?: { name: string; imageUrl?: string; priceINR?: number }
   ) => {
     if (!artwork || !artwork._id) return;
 
-    // Use a unique item ID per variant, e.g. artId-variantName or just artId
-    const cartItemId = selectedVariant?.name
-      ? `${artwork._id}__${selectedVariant.name.replace(/\s+/g, '_')}`
-      : artwork._id;
+    // Use a unique item ID per variant & color combination
+    const variantPart = selectedVariant?.name ? `_v_${selectedVariant.name.replace(/\s+/g, '_')}` : '';
+    const colorPart = selectedColor?.name ? `_c_${selectedColor.name.replace(/\s+/g, '_')}` : '';
+    const cartItemId = `${artwork._id}${variantPart}${colorPart}`;
 
-    const itemPrice = selectedVariant ? selectedVariant.priceINR : artwork.priceINR || 0;
+    const basePrice = selectedColor?.priceINR && selectedColor.priceINR > 0
+      ? selectedColor.priceINR
+      : selectedVariant
+      ? selectedVariant.priceINR
+      : artwork.priceINR || 0;
+
+    const itemPrice = basePrice;
     const itemDimensions = selectedVariant?.dimensions || artwork.dimensions;
+    const itemImage = selectedColor?.imageUrl || selectedVariant?.imageUrl || artwork.mainImage?.url || '';
 
     setItems((prevItems) => {
       const existingIndex = prevItems.findIndex((it) => it.id === cartItemId);
@@ -101,10 +114,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           id: cartItemId,
           artworkId: artwork._id,
           variantName: selectedVariant?.name,
+          colorName: selectedColor?.name,
           title: artwork.title,
           category: artwork.category,
           priceINR: itemPrice,
-          imageUrl: artwork.mainImage?.url || '',
+          imageUrl: itemImage,
           dimensions: itemDimensions,
           materials: artwork.materials,
           quantity: Math.max(1, quantity),
@@ -115,11 +129,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
     });
 
+    // Detailed title for toast
+    const labelParts = [];
+    if (selectedVariant?.name) labelParts.push(selectedVariant.name);
+    if (selectedColor?.name) labelParts.push(selectedColor.name);
+    const toastTitle = labelParts.length > 0 ? `${artwork.title} (${labelParts.join(', ')})` : artwork.title;
+
     // Trigger toast notification
     setToastNotification({
       id: `${cartItemId}-${Date.now()}`,
-      artworkTitle: selectedVariant?.name ? `${artwork.title} (${selectedVariant.name})` : artwork.title,
-      imageUrl: artwork.mainImage?.url,
+      artworkTitle: toastTitle,
+      imageUrl: itemImage,
     });
 
     // Trigger navbar cart badge bump animation
