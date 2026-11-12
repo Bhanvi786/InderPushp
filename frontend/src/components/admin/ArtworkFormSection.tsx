@@ -11,6 +11,7 @@ import {
   HelpCircle,
   Plus,
   Trash2,
+  Upload,
 } from 'lucide-react';
 import {
   Artwork,
@@ -22,6 +23,7 @@ import {
   Category,
 } from '../../types/artwork';
 import ArtworkImageUploader from './ArtworkImageUploader';
+import { uploadApi } from '../../lib/api';
 
 interface ArtworkFormSectionProps {
   initialArtwork?: Artwork | null;
@@ -94,6 +96,7 @@ export default function ArtworkFormSection({
   const [additionalImages, setAdditionalImages] = useState<ArtworkImage[]>(
     initialArtwork?.additionalImages || []
   );
+  const [colorUploadIndex, setColorUploadIndex] = useState<number | null>(null);
 
   // UI state
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -547,7 +550,74 @@ export default function ArtworkFormSection({
                       </div>
 
                       <div className="flex-1 flex items-center gap-2">
-                        {/* Dropdown to select from already uploaded images or type custom URL */}
+                        {/* Direct Photo Thumbnail & File Uploader */}
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          {c.imageUrl ? (
+                            <div className="relative w-8 h-8 rounded-md border border-[#B79A5A]/30 overflow-hidden bg-stone-100 group">
+                              <Image
+                                src={c.imageUrl}
+                                alt={c.name || 'Color'}
+                                fill
+                                className="object-cover"
+                                sizes="32px"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const updated = [...colorOptions];
+                                  updated[idx].imageUrl = '';
+                                  setColorOptions(updated);
+                                }}
+                                className="absolute inset-0 bg-black/60 text-white opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"
+                                title="Remove photo link"
+                              >
+                                <Trash2 size={12} />
+                              </button>
+                            </div>
+                          ) : (
+                            <label className="flex items-center gap-1 px-2.5 py-1.5 rounded-md border border-dashed border-[#B79A5A]/50 bg-[#FAF7F0] text-[#263248] hover:bg-[#FAF7F0]/80 cursor-pointer text-xs font-sans transition-colors">
+                              <Upload size={12} className="text-[#B79A5A]" />
+                              <span>{colorUploadIndex === idx ? 'Uploading...' : 'Upload Photo'}</span>
+                              <input
+                                type="file"
+                                accept="image/jpeg,image/png,image/webp,image/avif"
+                                className="hidden"
+                                disabled={colorUploadIndex === idx}
+                                onChange={async (e) => {
+                                  const file = e.target.files?.[0];
+                                  if (!file) return;
+                                  setColorUploadIndex(idx);
+                                  try {
+                                    if (isStorageActive) {
+                                      const res = await uploadApi.uploadImage(file);
+                                      const updated = [...colorOptions];
+                                      updated[idx].imageUrl = res.url;
+                                      setColorOptions(updated);
+                                      // Also append to additional images gallery so it's part of the artwork's image set
+                                      if (!additionalImages.some((img) => img.url === res.url)) {
+                                        setAdditionalImages((prev) => [
+                                          ...prev,
+                                          { url: res.url, publicId: res.publicId, alt: `${c.name || 'Artwork'} color` },
+                                        ]);
+                                      }
+                                    } else {
+                                      const objUrl = URL.createObjectURL(file);
+                                      const updated = [...colorOptions];
+                                      updated[idx].imageUrl = objUrl;
+                                      setColorOptions(updated);
+                                    }
+                                  } catch (err: any) {
+                                    alert('Failed to upload image: ' + (err.message || 'Error'));
+                                  } finally {
+                                    setColorUploadIndex(null);
+                                  }
+                                }}
+                              />
+                            </label>
+                          )}
+                        </div>
+
+                        {/* Or select from already uploaded images */}
                         <select
                           value={c.imageUrl || ''}
                           onChange={(e) => {
@@ -557,13 +627,13 @@ export default function ArtworkFormSection({
                           }}
                           className="flex-1 px-2.5 py-1.5 text-xs font-sans bg-white border border-[#B79A5A]/30 rounded-md text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
                         >
-                          <option value="">-- Link to an uploaded photo --</option>
+                          <option value="">{c.imageUrl ? '-- Linked --' : '-- Or pick from uploaded photos --'}</option>
                           {mainImage?.url && (
-                            <option value={mainImage.url}>Main Artwork Image</option>
+                            <option value={mainImage.url}>Main Artwork Photo</option>
                           )}
                           {additionalImages.map((img, iIdx) => (
                             <option key={iIdx} value={img.url}>
-                              Additional Image #{iIdx + 1} ({img.alt || 'Photo'})
+                              Detail Image #{iIdx + 1} ({img.alt || 'Photo'})
                             </option>
                           ))}
                         </select>
