@@ -7,6 +7,12 @@ export interface IArtworkImage {
   isMain?: boolean;
 }
 
+export interface IArtworkVariant {
+  name: string; // e.g., "Single Piece", "Pair", "Set of 3", "Small", "Large"
+  priceINR: number;
+  dimensions?: string;
+}
+
 export type ArtworkCategory = string;
 
 export type AvailabilityStatus =
@@ -20,6 +26,7 @@ export interface IArtwork extends Document {
   description?: string;
   category: string;
   priceINR: number;
+  variants: IArtworkVariant[];
   mainImage: IArtworkImage;
   additionalImages: IArtworkImage[];
   dimensions?: string; // e.g., "24 x 36 inches"
@@ -33,6 +40,15 @@ export interface IArtwork extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+const ArtworkVariantSchema = new Schema<IArtworkVariant>(
+  {
+    name: { type: String, required: true, trim: true },
+    priceINR: { type: Number, required: true, min: 0 },
+    dimensions: { type: String, default: '', trim: true },
+  },
+  { _id: false }
+);
 
 const ArtworkImageSchema = new Schema<IArtworkImage>(
   {
@@ -68,6 +84,10 @@ const ArtworkSchema = new Schema<IArtwork>(
       required: [true, 'Price is required'],
       min: [0, 'Price must be positive'],
       default: 0,
+    },
+    variants: {
+      type: [ArtworkVariantSchema],
+      default: [],
     },
     mainImage: {
       type: ArtworkImageSchema,

@@ -428,7 +428,7 @@ function CollectionsContent() {
                   <div className="flex items-center justify-between pt-1.5 sm:pt-2 border-t border-[#B79A5A]/15 mt-auto">
                     <div>
                       <span className="text-[7.5px] sm:text-[9px] font-sans text-[#718096] uppercase tracking-wider block">
-                        Price
+                        {art.variants && art.variants.length > 0 ? "Starting From" : "Price"}
                       </span>
                       <p className="text-xs xs:text-sm sm:text-base font-serif font-bold text-[#263248]">
                         ₹{art.priceINR.toLocaleString("en-IN")}

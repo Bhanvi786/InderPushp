@@ -9,10 +9,13 @@ import {
   Check,
   AlertCircle,
   HelpCircle,
+  Plus,
+  Trash2,
 } from 'lucide-react';
 import {
   Artwork,
   ArtworkCategory,
+  ArtworkVariant,
   AvailabilityStatus,
   ArtworkImage,
   Category,
@@ -47,6 +50,12 @@ export default function ArtworkFormSection({
   );
   const [priceINR, setPriceINR] = useState<string>(
     initialArtwork ? String(initialArtwork.priceINR) : '25000'
+  );
+  const [variants, setVariants] = useState<ArtworkVariant[]>(
+    initialArtwork?.variants || []
+  );
+  const [hasVariants, setHasVariants] = useState<boolean>(
+    Boolean(initialArtwork?.variants && initialArtwork.variants.length > 0)
   );
   const [dimensions, setDimensions] = useState(initialArtwork?.dimensions || '');
   const [materials, setMaterials] = useState(
@@ -140,6 +149,17 @@ export default function ArtworkFormSection({
       return;
     }
 
+    // Filter valid variants if enabled
+    const cleanedVariants = hasVariants
+      ? variants
+          .filter((v) => v.name.trim() && !isNaN(Number(v.priceINR)) && Number(v.priceINR) >= 0)
+          .map((v) => ({
+            name: v.name.trim(),
+            priceINR: Number(v.priceINR),
+            dimensions: v.dimensions?.trim() || '',
+          }))
+      : [];
+
     const stockNum = Number(stockQuantity);
 
     setIsSubmitting(true);
@@ -149,6 +169,7 @@ export default function ArtworkFormSection({
         description: description.trim(),
         category,
         priceINR: priceNum,
+        variants: cleanedVariants,
         mainImage,
         additionalImages,
         dimensions: dimensions.trim(),
@@ -278,7 +299,7 @@ export default function ArtworkFormSection({
 
               <div>
                 <label className="block text-xs font-sans font-semibold uppercase tracking-wider text-[#263248] mb-1.5">
-                  Price in INR (₹) <span className="text-rose-600">*</span>
+                  Base Price in INR (₹) <span className="text-rose-600">*</span>
                 </label>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-serif font-bold text-[#B79A5A]">
@@ -287,14 +308,140 @@ export default function ArtworkFormSection({
                   <input
                     type="number"
                     min="0"
-                    step="500"
-                    placeholder="25000"
+                    step="100"
+                    placeholder="3000"
                     value={priceINR}
                     onChange={(e) => setPriceINR(e.target.value)}
                     className="w-full pl-8 pr-3.5 py-2.5 text-sm font-sans bg-[#FAF7F0] border border-[#B79A5A]/30 rounded-lg text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
                   />
                 </div>
+                {hasVariants && (
+                  <p className="text-[11px] font-sans text-[#4B5568] mt-1">
+                    Used as the &ldquo;starting from&rdquo; price on artwork cards.
+                  </p>
+                )}
               </div>
+            </div>
+
+            {/* Set / Size Variants Option */}
+            <div className="pt-2 pb-1 border-t border-b border-[#B79A5A]/20">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <label className="text-xs font-sans font-semibold uppercase tracking-wider text-[#263248] block">
+                    Different Sets / MRP Variants
+                  </label>
+                  <p className="text-[11px] font-sans text-[#4B5568]">
+                    Enable if this artwork is sold in multiple sets (e.g. Single Piece, Pair, Set of 3) or sizes.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const next = !hasVariants;
+                    setHasVariants(next);
+                    if (next && variants.length === 0) {
+                      setVariants([
+                        { name: 'Single Piece', priceINR: Number(priceINR) || 3000, dimensions: dimensions || '' },
+                        { name: 'Pair', priceINR: 5500, dimensions: dimensions || '' },
+                        { name: 'Set of 3', priceINR: 7800, dimensions: dimensions || '' },
+                      ]);
+                    }
+                  }}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer ${
+                    hasVariants ? 'bg-[#B79A5A]' : 'bg-gray-300'
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      hasVariants ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {hasVariants && (
+                <div className="space-y-3 bg-[#B79A5A]/5 p-3.5 rounded-lg border border-[#B79A5A]/20 mb-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-sans font-semibold text-[#263248]">
+                      Variants & MRP Pricing List
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setVariants((prev) => [
+                          ...prev,
+                          { name: '', priceINR: 0, dimensions: '' },
+                        ])
+                      }
+                      className="inline-flex items-center gap-1 text-xs font-sans text-[#B79A5A] hover:text-[#9A7F43] font-semibold"
+                    >
+                      <Plus size={14} /> Add Set / Option
+                    </button>
+                  </div>
+
+                  {variants.map((v, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        placeholder="e.g. Single Piece, Pair, Set of 3"
+                        value={v.name}
+                        onChange={(e) => {
+                          const updated = [...variants];
+                          updated[idx].name = e.target.value;
+                          setVariants(updated);
+                        }}
+                        className="flex-2 px-3 py-1.5 text-xs font-sans bg-white border border-[#B79A5A]/30 rounded-md text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
+                      />
+                      <div className="relative flex-1">
+                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs font-serif font-bold text-[#B79A5A]">
+                          ₹
+                        </span>
+                        <input
+                          type="number"
+                          placeholder="Price"
+                          value={v.priceINR || ''}
+                          onChange={(e) => {
+                            const val = Number(e.target.value);
+                            const updated = [...variants];
+                            updated[idx].priceINR = isNaN(val) ? 0 : val;
+                            setVariants(updated);
+                            // Auto sync first variant with base price if desired
+                            if (idx === 0 && !isNaN(val) && val > 0) {
+                              setPriceINR(String(val));
+                            }
+                          }}
+                          className="w-full pl-6 pr-2 py-1.5 text-xs font-sans bg-white border border-[#B79A5A]/30 rounded-md text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
+                        />
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Optional dimensions"
+                        value={v.dimensions || ''}
+                        onChange={(e) => {
+                          const updated = [...variants];
+                          updated[idx].dimensions = e.target.value;
+                          setVariants(updated);
+                        }}
+                        className="flex-1 px-3 py-1.5 text-xs font-sans bg-white border border-[#B79A5A]/30 rounded-md text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setVariants((prev) => prev.filter((_, i) => i !== idx))}
+                        className="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded-md transition-colors"
+                        title="Remove option"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  ))}
+
+                  {variants.length === 0 && (
+                    <p className="text-xs text-stone-500 italic">
+                      No variants added yet. Click &ldquo;Add Set / Option&rdquo; above.
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Dimensions & Materials */}

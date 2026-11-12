@@ -23,10 +23,17 @@ export default function ArtworkDetailModal({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [copiedLink, setCopiedLink] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const { addItem, openCart } = useCart();
+
+  const hasVariants = Boolean(artwork?.variants && artwork.variants.length > 0);
+  const currentVariant = hasVariants && artwork ? artwork.variants![selectedVariantIndex] : null;
+  const currentPrice = currentVariant ? currentVariant.priceINR : artwork?.priceINR || 0;
+  const currentDimensions = currentVariant?.dimensions || artwork?.dimensions;
 
   useEffect(() => {
     setSelectedImageIndex(0);
+    setSelectedVariantIndex(0);
     setIsAdded(false);
   }, [artwork]);
 
@@ -208,16 +215,54 @@ export default function ArtworkDetailModal({
             </h2>
 
             {/* Price Presentation */}
-            {artwork.priceINR > 0 ? (
-              <div className="flex items-baseline gap-2">
-                <span className="text-xl sm:text-2xl font-serif text-[#263248] font-semibold">
-                  ₹{artwork.priceINR.toLocaleString('en-IN')}
-                </span>
-                <span className="text-xs font-sans text-[#4B5568] opacity-75">INR (taxes included)</span>
+            {currentPrice > 0 ? (
+              <div className="space-y-1">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-xl sm:text-2xl font-serif text-[#263248] font-semibold">
+                    ₹{currentPrice.toLocaleString('en-IN')}
+                  </span>
+                  <span className="text-xs font-sans text-[#4B5568] opacity-75">INR (taxes included)</span>
+                </div>
+                {hasVariants && (
+                  <span className="text-[11px] font-sans font-medium text-[#B79A5A] uppercase tracking-wider">
+                    {currentVariant?.name} selected
+                  </span>
+                )}
               </div>
             ) : (
               <div className="text-sm font-sans italic text-[#B79A5A]">
                 Custom Price on Request / Exclusive Commission
+              </div>
+            )}
+
+            {/* Set / Size Variant Selector */}
+            {hasVariants && artwork.variants && artwork.variants.length > 0 && (
+              <div className="space-y-2 pt-2 border-t border-[#B79A5A]/20">
+                <label className="text-[11px] font-sans uppercase tracking-widest text-[#263248]/80 font-semibold block">
+                  Select Option / Set
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {artwork.variants.map((v, i) => {
+                    const isSelected = i === selectedVariantIndex;
+                    return (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => setSelectedVariantIndex(i)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-sans font-medium transition-all cursor-pointer flex items-center gap-1.5 border ${
+                          isSelected
+                            ? 'bg-[#263248] text-[#FAF7F0] border-[#263248] shadow-xs'
+                            : 'bg-white hover:bg-[#FAF7F0] text-[#263248] border-[#B79A5A]/30'
+                        }`}
+                      >
+                        <span>{v.name}</span>
+                        <span className={`text-[11px] ${isSelected ? 'text-[#D8C594]' : 'text-[#B79A5A]'}`}>
+                          ₹{v.priceINR.toLocaleString('en-IN')}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             )}
 
@@ -235,12 +280,12 @@ export default function ArtworkDetailModal({
 
             {/* Specifications Grid */}
             <div className="space-y-3 pt-3 border-t border-[#B79A5A]/20 text-xs font-sans">
-              {artwork.dimensions && (
+              {currentDimensions && (
                 <div className="flex items-start gap-3 text-[#263248]">
                   <Ruler size={16} className="text-[#B79A5A] shrink-0 mt-0.5" />
                   <div>
                     <span className="font-semibold block">Dimensions</span>
-                    <span className="text-[#4B5568]">{artwork.dimensions}</span>
+                    <span className="text-[#4B5568]">{currentDimensions}</span>
                   </div>
                 </div>
               )}
@@ -278,7 +323,11 @@ export default function ArtworkDetailModal({
             </button>
 
             <div className="flex items-center gap-2.5">
-              <AddToCartButton artwork={artwork} className="px-5 py-2.5" />
+              <AddToCartButton
+                artwork={artwork}
+                selectedVariant={currentVariant || undefined}
+                className="px-5 py-2.5"
+              />
 
               <a
                 href="/#contact"

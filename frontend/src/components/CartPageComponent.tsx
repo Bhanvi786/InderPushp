@@ -107,7 +107,7 @@ export default function CartPageComponent() {
     setIsSubmitting(true);
 
     const itemsSummary = items
-      .map((item, idx) => `${idx + 1}. *${item.title}* (Qty: ${item.quantity}) - ₹${(item.priceINR * item.quantity).toLocaleString('en-IN')}`)
+      .map((item, idx) => `${idx + 1}. *${item.title}${item.variantName ? ` (${item.variantName})` : ''}* (Qty: ${item.quantity}) - ₹${(item.priceINR * item.quantity).toLocaleString('en-IN')}`)
       .join('\n');
 
     const message = `*New Order Request - InderPushp House of Art*
@@ -284,6 +284,11 @@ Please confirm my order and share payment / delivery schedule. Thank you!`;
                               <h3 className="text-base sm:text-lg font-serif text-[#263248] font-medium leading-snug">
                                 {item.title}
                               </h3>
+                              {item.variantName && (
+                                <span className="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[11px] font-sans font-medium bg-[#B79A5A]/15 text-[#B79A5A] border border-[#B79A5A]/30">
+                                  {item.variantName}
+                                </span>
+                              )}
                             </div>
 
                             <button
@@ -588,6 +593,11 @@ Please confirm my order and share payment / delivery schedule. Thank you!`;
                         <div className="flex-1 min-w-0">
                           <p className="text-xs font-serif text-[#263248] truncate font-medium">
                             {item.title}
+                            {item.variantName && (
+                              <span className="ml-1 text-[11px] font-sans text-[#B79A5A] font-normal">
+                                ({item.variantName})
+                              </span>
+                            )}
                           </p>
                           <p className="text-[11px] font-sans text-[#4B5568]/80">
                             Qty: {item.quantity} × ₹{item.priceINR.toLocaleString('en-IN')}

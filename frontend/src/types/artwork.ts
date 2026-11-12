@@ -5,6 +5,12 @@ export interface ArtworkImage {
   isMain?: boolean;
 }
 
+export interface ArtworkVariant {
+  name: string; // e.g., "Single Piece", "Pair", "Set of 3", "Small", "Large"
+  priceINR: number;
+  dimensions?: string;
+}
+
 export type ArtworkCategory = string;
 
 export interface Category {
@@ -33,6 +39,7 @@ export interface Artwork {
   description: string;
   category: string;
   priceINR: number;
+  variants?: ArtworkVariant[];
   mainImage: ArtworkImage;
   additionalImages: ArtworkImage[];
   dimensions?: string;

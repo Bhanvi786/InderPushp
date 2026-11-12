@@ -188,6 +188,7 @@ router.post('/', authenticateAdmin, async (req: Request, res: Response): Promise
       description,
       category,
       priceINR,
+      variants,
       mainImage,
       additionalImages,
       dimensions,
@@ -226,6 +227,15 @@ router.post('/', authenticateAdmin, async (req: Request, res: Response): Promise
       description: description?.trim() || '',
       category: category || 'Floral & Nature',
       priceINR: typeof priceINR === 'number' ? priceINR : Number(priceINR) || 0,
+      variants: Array.isArray(variants)
+        ? variants
+            .filter((v: any) => v && v.name && v.priceINR !== undefined)
+            .map((v: any) => ({
+              name: String(v.name).trim(),
+              priceINR: Number(v.priceINR) || 0,
+              dimensions: v.dimensions ? String(v.dimensions).trim() : '',
+            }))
+        : [],
       mainImage: {
         url: mainImage.url,
         publicId: mainImage.publicId || '',
@@ -317,6 +327,7 @@ router.put('/:id', authenticateAdmin, async (req: Request, res: Response): Promi
       description,
       category,
       priceINR,
+      variants,
       mainImage,
       additionalImages,
       dimensions,
@@ -333,6 +344,15 @@ router.put('/:id', authenticateAdmin, async (req: Request, res: Response): Promi
     if (description !== undefined) existingArtwork.description = description.trim();
     if (category !== undefined) existingArtwork.category = category;
     if (priceINR !== undefined) existingArtwork.priceINR = Number(priceINR);
+    if (variants !== undefined && Array.isArray(variants)) {
+      existingArtwork.variants = variants
+        .filter((v: any) => v && v.name && v.priceINR !== undefined)
+        .map((v: any) => ({
+          name: String(v.name).trim(),
+          priceINR: Number(v.priceINR) || 0,
+          dimensions: v.dimensions ? String(v.dimensions).trim() : '',
+        }));
+    }
     if (dimensions !== undefined) existingArtwork.dimensions = dimensions.trim();
     if (materials !== undefined) existingArtwork.materials = materials.trim();
     if (availability !== undefined) existingArtwork.availability = availability;

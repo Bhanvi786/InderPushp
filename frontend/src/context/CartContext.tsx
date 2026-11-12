@@ -18,7 +18,7 @@ interface CartContextType {
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
-  addItem: (artwork: Artwork, quantity?: number) => void;
+  addItem: (artwork: Artwork, quantity?: number, selectedVariant?: { name: string; priceINR: number; dimensions?: string }) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
@@ -71,11 +71,23 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const closeCart = () => setIsOpen(false);
   const toggleCart = () => setIsOpen((prev) => !prev);
 
-  const addItem = (artwork: Artwork, quantity = 1) => {
+  const addItem = (
+    artwork: Artwork,
+    quantity = 1,
+    selectedVariant?: { name: string; priceINR: number; dimensions?: string }
+  ) => {
     if (!artwork || !artwork._id) return;
 
+    // Use a unique item ID per variant, e.g. artId-variantName or just artId
+    const cartItemId = selectedVariant?.name
+      ? `${artwork._id}__${selectedVariant.name.replace(/\s+/g, '_')}`
+      : artwork._id;
+
+    const itemPrice = selectedVariant ? selectedVariant.priceINR : artwork.priceINR || 0;
+    const itemDimensions = selectedVariant?.dimensions || artwork.dimensions;
+
     setItems((prevItems) => {
-      const existingIndex = prevItems.findIndex((it) => it.id === artwork._id);
+      const existingIndex = prevItems.findIndex((it) => it.id === cartItemId);
       if (existingIndex > -1) {
         const updated = [...prevItems];
         updated[existingIndex] = {
@@ -86,12 +98,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         return updated;
       } else {
         const newItem: CartItem = {
-          id: artwork._id,
+          id: cartItemId,
+          artworkId: artwork._id,
+          variantName: selectedVariant?.name,
           title: artwork.title,
           category: artwork.category,
-          priceINR: artwork.priceINR || 0,
+          priceINR: itemPrice,
           imageUrl: artwork.mainImage?.url || '',
-          dimensions: artwork.dimensions,
+          dimensions: itemDimensions,
           materials: artwork.materials,
           quantity: Math.max(1, quantity),
           availability: artwork.availability,
@@ -103,8 +117,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
     // Trigger toast notification
     setToastNotification({
-      id: `${artwork._id}-${Date.now()}`,
-      artworkTitle: artwork.title,
+      id: `${cartItemId}-${Date.now()}`,
+      artworkTitle: selectedVariant?.name ? `${artwork.title} (${selectedVariant.name})` : artwork.title,
       imageUrl: artwork.mainImage?.url,
     });
 
