@@ -369,10 +369,10 @@ export default function ArtworkFormSection({
                     const next = !hasVariants;
                     setHasVariants(next);
                     if (next && variants.length === 0) {
+                      const baseNum = Number(priceINR) || 950;
                       setVariants([
-                        { name: 'Single Piece', priceINR: Number(priceINR) || 3000, dimensions: dimensions || '' },
-                        { name: 'Pair', priceINR: 5500, dimensions: dimensions || '' },
-                        { name: 'Set of 3', priceINR: 7800, dimensions: dimensions || '' },
+                        { name: 'Single Piece', priceINR: baseNum, dimensions: dimensions || '' },
+                        { name: '2 Pieces (Pair)', priceINR: baseNum * 2, dimensions: dimensions || '' },
                       ]);
                     }
                   }}
