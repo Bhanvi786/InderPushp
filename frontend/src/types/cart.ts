@@ -3,6 +3,7 @@ export interface CartItem {
   artworkId?: string; // original artwork ID
   variantName?: string; // e.g., "Pair", "Set of 3", "Small"
   colorName?: string; // e.g., "Emerald Green", "Amber Gold"
+  pricePerUnitText?: string; // e.g. "for Single Piece", "for 2 Pieces"
   title: string;
   category: string;
   priceINR: number;

@@ -50,6 +50,7 @@ export interface Artwork {
   description: string;
   category: string;
   priceINR: number;
+  pricePerUnitText?: string; // e.g. "for Single Piece", "for 2 Pieces", "per piece"
   variants?: ArtworkVariant[];
   colorOptions?: ArtworkColorOption[];
   mainImage: ArtworkImage;

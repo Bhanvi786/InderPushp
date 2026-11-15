@@ -261,6 +261,11 @@ export default function ArtworkDetailModal({
                   <span className="text-xl sm:text-2xl font-serif text-[#263248] font-semibold">
                     ₹{currentPrice.toLocaleString('en-IN')}
                   </span>
+                  {artwork.pricePerUnitText && (
+                    <span className="text-sm font-sans font-medium text-[#B79A5A]">
+                      {artwork.pricePerUnitText}
+                    </span>
+                  )}
                   <span className="text-xs font-sans text-[#4B5568] opacity-75">INR (taxes included)</span>
                 </div>
                 {hasVariants && (

@@ -37,6 +37,7 @@ export interface IArtwork extends Document {
   description?: string;
   category: string;
   priceINR: number;
+  pricePerUnitText?: string; // e.g. "for Single Piece", "for 2 Pieces", "per pair"
   variants: IArtworkVariant[];
   colorOptions: IArtworkColorOption[];
   mainImage: IArtworkImage;
@@ -110,6 +111,11 @@ const ArtworkSchema = new Schema<IArtwork>(
       required: [true, 'Price is required'],
       min: [0, 'Price must be positive'],
       default: 0,
+    },
+    pricePerUnitText: {
+      type: String,
+      default: '',
+      trim: true,
     },
     variants: {
       type: [ArtworkVariantSchema],

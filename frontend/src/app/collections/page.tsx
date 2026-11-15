@@ -430,9 +430,16 @@ function CollectionsContent() {
                       <span className="text-[7.5px] sm:text-[9px] font-sans text-[#718096] uppercase tracking-wider block">
                         {art.variants && art.variants.length > 0 ? "Starting From" : "Price"}
                       </span>
-                      <p className="text-xs xs:text-sm sm:text-base font-serif font-bold text-[#263248]">
-                        ₹{art.priceINR.toLocaleString("en-IN")}
-                      </p>
+                      <div className="flex items-baseline gap-1">
+                        <p className="text-xs xs:text-sm sm:text-base font-serif font-bold text-[#263248]">
+                          ₹{art.priceINR.toLocaleString("en-IN")}
+                        </p>
+                        {art.pricePerUnitText && (
+                          <span className="text-[9px] sm:text-[10px] font-sans font-medium text-[#B79A5A]">
+                            {art.pricePerUnitText}
+                          </span>
+                        )}
+                      </div>
                     </div>
 
                     <AddToCartButton artwork={art} />

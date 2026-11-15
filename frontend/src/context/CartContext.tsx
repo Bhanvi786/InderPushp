@@ -115,6 +115,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           artworkId: artwork._id,
           variantName: selectedVariant?.name,
           colorName: selectedColor?.name,
+          pricePerUnitText: artwork.pricePerUnitText,
           title: artwork.title,
           category: artwork.category,
           priceINR: itemPrice,

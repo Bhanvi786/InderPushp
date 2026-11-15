@@ -52,7 +52,14 @@ export default function ArtworkFormSection({
     initialArtwork?.category || (availableCategories[0]?.name || 'Floral & Nature')
   );
   const [priceINR, setPriceINR] = useState<string>(
-    initialArtwork ? String(initialArtwork.priceINR) : '25000'
+    initialArtwork
+      ? initialArtwork.pricePerUnitText
+        ? `${initialArtwork.priceINR} ${initialArtwork.pricePerUnitText}`
+        : String(initialArtwork.priceINR)
+      : '25000'
+  );
+  const [pricePerUnitText, setPricePerUnitText] = useState<string>(
+    initialArtwork?.pricePerUnitText || ''
   );
   const [variants, setVariants] = useState<ArtworkVariant[]>(
     initialArtwork?.variants || []
@@ -153,10 +160,24 @@ export default function ArtworkFormSection({
       return;
     }
 
-    const priceNum = Number(priceINR);
+    // Parse numeric price from priceINR string (e.g. "950 for single piece" -> 950)
+    // Extract first number found
+    const numMatch = priceINR.replace(/,/g, '').match(/\d+(\.\d+)?/);
+    const priceNum = numMatch ? Number(numMatch[0]) : NaN;
+
     if (isNaN(priceNum) || priceNum < 0) {
-      setFormError('Please enter a valid price in INR.');
+      setFormError('Please include a valid numeric price (e.g. "950", "950 for 1 piece", "950 for 2 pieces").');
       return;
+    }
+
+    // Auto-extract any trailing text if pricePerUnitText was not explicitly filled
+    // e.g. "950 for single piece" -> priceNum = 950, extractedUnit = "for single piece"
+    let finalUnitText = pricePerUnitText.trim();
+    if (!finalUnitText && numMatch) {
+      const remainder = priceINR.replace(numMatch[0], '').replace(/[₹,]/g, '').trim();
+      if (remainder) {
+        finalUnitText = remainder;
+      }
     }
 
     // Filter valid variants if enabled
@@ -197,6 +218,7 @@ export default function ArtworkFormSection({
         description: description.trim(),
         category,
         priceINR: priceNum,
+        pricePerUnitText: finalUnitText,
         variants: cleanedVariants,
         colorOptions: cleanedColors,
         mainImage,
@@ -335,17 +357,18 @@ export default function ArtworkFormSection({
                     ₹
                   </span>
                   <input
-                    type="number"
-                    min="0"
-                    step="100"
-                    placeholder="3000"
+                    type="text"
+                    placeholder="e.g. 950 for single piece OR 950 for 2 pieces"
                     value={priceINR}
                     onChange={(e) => setPriceINR(e.target.value)}
                     className="w-full pl-8 pr-3.5 py-2.5 text-sm font-sans bg-[#FAF7F0] border border-[#B79A5A]/30 rounded-lg text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
                   />
                 </div>
+                <p className="text-[11px] font-sans text-[#4B5568] mt-1">
+                  You can type text directly, e.g. <span className="font-semibold text-[#263248]">950 for 1 piece</span> or <span className="font-semibold text-[#263248]">950 for 2 pieces</span>.
+                </p>
                 {hasVariants && (
-                  <p className="text-[11px] font-sans text-[#4B5568] mt-1">
+                  <p className="text-[11px] font-sans text-[#4B5568] mt-0.5">
                     Used as the &ldquo;starting from&rdquo; price on artwork cards.
                   </p>
                 )}

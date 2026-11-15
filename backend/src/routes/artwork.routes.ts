@@ -188,6 +188,7 @@ router.post('/', authenticateAdmin, async (req: Request, res: Response): Promise
       description,
       category,
       priceINR,
+      pricePerUnitText,
       variants,
       colorOptions,
       mainImage,
@@ -228,6 +229,7 @@ router.post('/', authenticateAdmin, async (req: Request, res: Response): Promise
       description: description?.trim() || '',
       category: category || 'Floral & Nature',
       priceINR: typeof priceINR === 'number' ? priceINR : Number(priceINR) || 0,
+      pricePerUnitText: pricePerUnitText?.trim() || '',
       variants: Array.isArray(variants)
         ? variants
             .filter((v: any) => v && v.name && v.priceINR !== undefined)
@@ -342,6 +344,7 @@ router.put('/:id', authenticateAdmin, async (req: Request, res: Response): Promi
       description,
       category,
       priceINR,
+      pricePerUnitText,
       variants,
       colorOptions,
       mainImage,
@@ -360,6 +363,7 @@ router.put('/:id', authenticateAdmin, async (req: Request, res: Response): Promi
     if (description !== undefined) existingArtwork.description = description.trim();
     if (category !== undefined) existingArtwork.category = category;
     if (priceINR !== undefined) existingArtwork.priceINR = Number(priceINR);
+    if (pricePerUnitText !== undefined) existingArtwork.pricePerUnitText = pricePerUnitText.trim();
     if (variants !== undefined && Array.isArray(variants)) {
       existingArtwork.variants = variants
         .filter((v: any) => v && v.name && v.priceINR !== undefined)
