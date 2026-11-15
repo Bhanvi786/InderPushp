@@ -23,7 +23,7 @@ import AddToCartButton from "./AddToCartButton";
 import AllWorksPerspectiveCarousel from "./AllWorksPerspectiveCarousel";
 import MosaicBorderDivider from "./MosaicBorderDivider";
 
-// Metadata icons and subtle styling accents for each of the 6 categories
+// Metadata icons and subtle styling accents for each category
 const CATEGORY_META: Record<
   string,
   {
@@ -42,11 +42,6 @@ const CATEGORY_META: Record<
     accentColor: "#934A5F",
     tagline: "Sacred portraits, Krishna & devotion",
   },
-  "abstract & geometric": {
-    icon: Palette,
-    accentColor: "#3B5998",
-    tagline: "Rhythmic patterns & modern tesserae",
-  },
   "decorative art": {
     icon: Frame,
     accentColor: "#B79A5A",
@@ -56,11 +51,6 @@ const CATEGORY_META: Record<
     icon: HomeIcon,
     accentColor: "#6A4C93",
     tagline: "Architectural installations & murals",
-  },
-  other: {
-    icon: Sparkles,
-    accentColor: "#52796F",
-    tagline: "Unique studio creations & experiments",
   },
 };
 

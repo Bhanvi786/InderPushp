@@ -42,11 +42,6 @@ const CATEGORY_META: Record<
     accentColor: "#934A5F",
     tagline: "Sacred portraits, Lord Krishna & soulful devotional art",
   },
-  "abstract & geometric": {
-    icon: Palette,
-    accentColor: "#3B5998",
-    tagline: "Rhythmic tesserae patterns & contemporary experimental forms",
-  },
   "decorative art": {
     icon: Frame,
     accentColor: "#B79A5A",
@@ -56,11 +51,6 @@ const CATEGORY_META: Record<
     icon: HomeIcon,
     accentColor: "#6A4C93",
     tagline: "Architectural wall installations & bespoke mosaic murals",
-  },
-  other: {
-    icon: Sparkles,
-    accentColor: "#52796F",
-    tagline: "Rare studio creations & signature experimental works",
   },
 };
 

@@ -212,10 +212,8 @@ export const artworksApi = {
 export const DEFAULT_CATEGORIES: Category[] = [
   { _id: 'cat-1', name: 'Floral & Nature', slug: 'floral-nature', description: 'Includes flowers, plants, birds, animals and landscapes.', displayOrder: 1, isActive: true },
   { _id: 'cat-2', name: 'Figurative & Spiritual', slug: 'figurative-spiritual', description: 'Includes human portraits, Lord Krishna, other deities and spiritual artwork.', displayOrder: 2, isActive: true },
-  { _id: 'cat-3', name: 'Abstract & Geometric', slug: 'abstract-geometric', description: 'Includes abstract designs, geometric patterns and experimental mosaic art.', displayOrder: 3, isActive: true },
-  { _id: 'cat-4', name: 'Decorative Art', slug: 'decorative-art', description: 'Includes mirrors, decorative objects, framed pieces and functional art.', displayOrder: 4, isActive: true },
-  { _id: 'cat-5', name: 'Art for Spaces', slug: 'art-for-spaces', description: 'Includes wall installations, murals and custom artwork for homes, offices and other spaces.', displayOrder: 5, isActive: true },
-  { _id: 'cat-6', name: 'Other', slug: 'other', description: 'For artwork that does not fit any of the above categories.', displayOrder: 6, isActive: true },
+  { _id: 'cat-3', name: 'Decorative Art', slug: 'decorative-art', description: 'Includes mirrors, decorative objects, framed pieces and functional art.', displayOrder: 3, isActive: true },
+  { _id: 'cat-4', name: 'Art for Spaces', slug: 'art-for-spaces', description: 'Includes wall installations, murals and custom artwork for homes, offices and other spaces.', displayOrder: 4, isActive: true },
 ];
 
 /**

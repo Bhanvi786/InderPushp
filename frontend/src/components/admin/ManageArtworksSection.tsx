@@ -60,10 +60,8 @@ export default function ManageArtworksSection({
       list.push(
         'Floral & Nature',
         'Figurative & Spiritual',
-        'Abstract & Geometric',
         'Decorative Art',
-        'Art for Spaces',
-        'Other'
+        'Art for Spaces'
       );
     }
     artworks.forEach((a) => {

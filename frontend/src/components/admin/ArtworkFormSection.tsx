@@ -117,14 +117,12 @@ export default function ArtworkFormSection({
     }
   }, [availability, estimatedProductionTime]);
 
-  // Dynamic categories with default fallback to the 6 core categories
+  // Dynamic categories with default fallback to the 4 core categories
   const fallbackCategories = [
     'Floral & Nature',
     'Figurative & Spiritual',
-    'Abstract & Geometric',
     'Decorative Art',
     'Art for Spaces',
-    'Other',
   ];
 
   const categoryNames = React.useMemo(() => {

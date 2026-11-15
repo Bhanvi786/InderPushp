@@ -20,24 +20,14 @@ export const FINAL_6_CATEGORIES = [
     displayOrder: 2,
   },
   {
-    name: 'Abstract & Geometric',
-    description: 'Includes abstract designs, geometric patterns and experimental mosaic art.',
-    displayOrder: 3,
-  },
-  {
     name: 'Decorative Art',
     description: 'Includes mirrors, decorative objects, framed pieces and functional art.',
-    displayOrder: 4,
+    displayOrder: 3,
   },
   {
     name: 'Art for Spaces',
     description: 'Includes wall installations, murals and custom artwork for homes, offices and other spaces.',
-    displayOrder: 5,
-  },
-  {
-    name: 'Other',
-    description: 'For artwork that does not fit any of the above categories.',
-    displayOrder: 6,
+    displayOrder: 4,
   },
 ];
 
@@ -47,15 +37,15 @@ const CATEGORY_MAP: Record<string, string> = {
   'nature and wildlife': 'Floral & Nature',
   'figurative': 'Figurative & Spiritual',
   'spiritual': 'Figurative & Spiritual',
-  'abstract': 'Abstract & Geometric',
-  'geometric': 'Abstract & Geometric',
+  'abstract': 'Decorative Art',
+  'geometric': 'Decorative Art',
   'decorative objects': 'Decorative Art',
   'decorative art': 'Decorative Art',
   'art for spaces': 'Art for Spaces',
-  'other': 'Other',
+  'other': 'Decorative Art',
   'floral & nature': 'Floral & Nature',
   'figurative & spiritual': 'Figurative & Spiritual',
-  'abstract & geometric': 'Abstract & Geometric',
+  'abstract & geometric': 'Decorative Art',
 };
 
 export async function runMigration() {

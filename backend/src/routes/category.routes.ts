@@ -17,7 +17,7 @@ export const slugify = (text: string): string => {
 };
 
 /**
- * The 6 core artwork categories for Inderpushp
+ * The 4 core artwork categories for Inderpushp
  */
 export const INITIAL_CATEGORIES = [
   {
@@ -29,20 +29,12 @@ export const INITIAL_CATEGORIES = [
     description: 'Includes human portraits, Lord Krishna, other deities and spiritual artwork.',
   },
   {
-    name: 'Abstract & Geometric',
-    description: 'Includes abstract designs, geometric patterns and experimental mosaic art.',
-  },
-  {
     name: 'Decorative Art',
     description: 'Includes mirrors, decorative objects, framed pieces and functional art.',
   },
   {
     name: 'Art for Spaces',
     description: 'Includes wall installations, murals and custom artwork for homes, offices and other spaces.',
-  },
-  {
-    name: 'Other',
-    description: 'For artwork that does not fit any of the above categories.',
   },
 ];
 
@@ -52,20 +44,37 @@ const LEGACY_CATEGORY_MAP: Record<string, string> = {
   'nature and wildlife': 'Floral & Nature',
   'figurative': 'Figurative & Spiritual',
   'spiritual': 'Figurative & Spiritual',
-  'abstract': 'Abstract & Geometric',
-  'geometric': 'Abstract & Geometric',
+  'abstract': 'Decorative Art',
+  'geometric': 'Decorative Art',
+  'abstract & geometric': 'Decorative Art',
   'decorative objects': 'Decorative Art',
   'decorative art': 'Decorative Art',
   'art for spaces': 'Art for Spaces',
-  'other': 'Other',
+  'other': 'Decorative Art',
 };
 
 /**
- * Ensure the exact 6 core categories exist in MongoDB and reassign legacy categories
+ * Ensure the exact 4 core categories exist in MongoDB and reassign legacy categories
  */
 export const ensureInitialCategories = async () => {
   try {
-    // 1. Migrate any legacy artworks if they exist
+    // 1. Reassign any artworks under removed categories (Abstract & Geometric, Other) to Decorative Art
+    await Artwork.updateMany(
+      {
+        category: {
+          $in: [
+            'Abstract & Geometric',
+            'abstract & geometric',
+            'Abstract and Geometric',
+            'Other',
+            'other',
+          ],
+        },
+      },
+      { category: 'Decorative Art' }
+    );
+
+    // 2. Migrate any legacy artworks if they exist
     for (const [legacyKey, newCatName] of Object.entries(LEGACY_CATEGORY_MAP)) {
       if (legacyKey !== newCatName.toLowerCase()) {
         await Artwork.updateMany(
@@ -75,7 +84,7 @@ export const ensureInitialCategories = async () => {
       }
     }
 
-    // 2. Ensure each of the 6 final categories exists
+    // 3. Ensure each of the 4 final categories exists
     const validNames = INITIAL_CATEGORIES.map((item) => item.name);
     for (let i = 0; i < INITIAL_CATEGORIES.length; i++) {
       const item = INITIAL_CATEGORIES[i];
@@ -107,12 +116,12 @@ export const ensureInitialCategories = async () => {
       }
     }
 
-    // 3. Remove obsolete categories
+    // 4. Remove obsolete categories (including Abstract & Geometric, Other)
     await Category.deleteMany({
       name: { $nin: validNames },
     });
   } catch (err) {
-    console.error('Error ensuring 6 core categories:', err);
+    console.error('Error ensuring 4 core categories:', err);
   }
 };
 
