@@ -79,38 +79,39 @@ export default function ArtworkDetailModal({
 
   if (!isOpen || !artwork) return null;
 
-  // Gather all unique images depending on selected color
+  // Gather images for display:
+  // If artwork has color options and current color has photos, display ONLY this colorway's photos
   const allImages: ArtworkImage[] = [];
 
-  // If a color is selected and has multiple photos, prioritize showing its photos
-  if (currentColor?.images && Array.isArray(currentColor.images) && currentColor.images.length > 0) {
-    currentColor.images.forEach((url, idx) => {
+  const currentColorPhotos = (currentColor?.images && Array.isArray(currentColor.images) && currentColor.images.length > 0)
+    ? currentColor.images
+    : currentColor?.imageUrl
+    ? [currentColor.imageUrl]
+    : [];
+
+  if (hasColors && currentColorPhotos.length > 0) {
+    // Show only the selected color's images
+    currentColorPhotos.forEach((url, idx) => {
       if (url && !allImages.some((img) => img.url === url)) {
         allImages.push({
           url,
-          alt: `${artwork.title} - ${currentColor.name} (View ${idx + 1})`,
+          alt: `${artwork.title} - ${currentColor?.name || 'Color'} (View ${idx + 1})`,
           isMain: idx === 0,
         });
       }
     });
-  } else if (currentColor?.imageUrl) {
-    allImages.push({
-      url: currentColor.imageUrl,
-      alt: `${artwork.title} - ${currentColor.name}`,
-      isMain: true,
-    });
-  }
-
-  // Include main artwork image and additional images as fallback or general gallery
-  if (artwork.mainImage?.url && !allImages.some((img) => img.url === artwork.mainImage.url)) {
-    allImages.push(artwork.mainImage);
-  }
-  if (artwork.additionalImages && Array.isArray(artwork.additionalImages)) {
-    artwork.additionalImages.forEach((img) => {
-      if (img.url && !allImages.some((existing) => existing.url === img.url)) {
-        allImages.push(img);
-      }
-    });
+  } else {
+    // Normal artwork without color options (or if color has no photos yet)
+    if (artwork.mainImage?.url) {
+      allImages.push(artwork.mainImage);
+    }
+    if (artwork.additionalImages && Array.isArray(artwork.additionalImages)) {
+      artwork.additionalImages.forEach((img) => {
+        if (img.url && !allImages.some((existing) => existing.url === img.url)) {
+          allImages.push(img);
+        }
+      });
+    }
   }
 
   const currentImage = allImages[selectedImageIndex] || allImages[0] || artwork.mainImage;

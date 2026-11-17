@@ -167,9 +167,9 @@ export default function Collections() {
         </div>
 
         {/* ======================================================== */}
-        {/* 6 CATEGORY SHAPES IN A SINGLE ROW (ALL SCREEN SIZES)     */}
+        {/* 4 CATEGORY SHAPES IN A SINGLE ROW ACROSS ALL DEVICES    */}
         {/* ======================================================== */}
-        <div className="grid grid-cols-6 gap-1 xs:gap-1.5 sm:gap-3 md:gap-4 lg:gap-5 mb-10 sm:mb-14 px-0">
+        <div className="grid grid-cols-4 gap-1.5 xs:gap-2 sm:gap-6 md:gap-8 lg:gap-10 max-w-5xl mx-auto mb-10 sm:mb-14 px-1 xs:px-2">
           {displayCategories.map((cat, idx) => {
             const count = categoryArtworksMap[cat.name]?.length || 0;
             const meta = CATEGORY_META[cat.name.toLowerCase()] || {
@@ -193,10 +193,10 @@ export default function Collections() {
               <Link
                 key={cat._id || `cat-${idx}`}
                 href={`/collections?category=${encodeURIComponent(cat.name)}`}
-                className="group relative flex flex-col items-center focus:outline-none transition-transform duration-300 hover:-translate-y-1 cursor-pointer w-full"
+                className="group relative flex flex-col items-center focus:outline-none transition-transform duration-300 hover:-translate-y-1.5 cursor-pointer w-full"
               >
                 {/* SVG Shape Container with Gold Trim */}
-                <div className="relative w-full aspect-[1/1.05] max-w-[190px] mx-auto filter drop-shadow-[0_4px_10px_rgba(38,50,72,0.10)] sm:drop-shadow-[0_8px_18px_rgba(38,50,72,0.12)] group-hover:drop-shadow-[0_10px_20px_rgba(183,154,90,0.28)] transition-all duration-300">
+                <div className="relative w-full aspect-[1/1.05] max-w-[210px] mx-auto filter drop-shadow-[0_4px_10px_rgba(38,50,72,0.10)] sm:drop-shadow-[0_8px_18px_rgba(38,50,72,0.12)] group-hover:drop-shadow-[0_10px_20px_rgba(183,154,90,0.28)] transition-all duration-300">
                   <svg
                     viewBox="0 0 100 105"
                     className="w-full h-full"

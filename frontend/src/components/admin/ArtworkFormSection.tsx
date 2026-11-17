@@ -152,9 +152,24 @@ export default function ArtworkFormSection({
       return;
     }
 
-    // Validate main image
-    if (!mainImage || !mainImage.url) {
-      setFormError('A main artwork image is required to save or publish.');
+    // Validate main image (if color options are used with photos, auto-fill mainImage from the first color if empty)
+    let effectiveMainImage = mainImage;
+    if ((!effectiveMainImage || !effectiveMainImage.url) && hasColors) {
+      const firstColorPhoto = colorOptions.find((c) => (c.images && c.images.length > 0) || c.imageUrl);
+      const urlToUse = firstColorPhoto?.images?.[0] || firstColorPhoto?.imageUrl;
+      if (urlToUse) {
+        effectiveMainImage = {
+          url: urlToUse,
+          publicId: '',
+          alt: `${title.trim()} - ${firstColorPhoto?.name || 'Main Artwork'}`,
+          isMain: true,
+        };
+        setMainImage(effectiveMainImage);
+      }
+    }
+
+    if (!effectiveMainImage || !effectiveMainImage.url) {
+      setFormError('Please upload an image (either the Main Artwork Image or add photos to your Color Options).');
       return;
     }
 
@@ -219,7 +234,7 @@ export default function ArtworkFormSection({
         pricePerUnitText: finalUnitText,
         variants: cleanedVariants,
         colorOptions: cleanedColors,
-        mainImage,
+        mainImage: effectiveMainImage,
         additionalImages,
         dimensions: dimensions.trim(),
         materials: materials.trim(),
