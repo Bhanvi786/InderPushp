@@ -52,6 +52,11 @@ const CATEGORY_META: Record<
     accentColor: "#6A4C93",
     tagline: "Architectural installations & murals",
   },
+  "commissioned artworks": {
+    icon: Sparkles,
+    accentColor: "#D4AF37",
+    tagline: "Custom client orders & bespoke creations",
+  },
 };
 
 export default function Collections() {
@@ -167,9 +172,9 @@ export default function Collections() {
         </div>
 
         {/* ======================================================== */}
-        {/* 4 CATEGORY SHAPES IN A SINGLE ROW ACROSS ALL DEVICES    */}
+        {/* 5 CATEGORY SHAPES IN A SINGLE ROW ACROSS ALL DEVICES    */}
         {/* ======================================================== */}
-        <div className="grid grid-cols-4 gap-1.5 xs:gap-2 sm:gap-6 md:gap-8 lg:gap-10 max-w-5xl mx-auto mb-10 sm:mb-14 px-1 xs:px-2">
+        <div className="grid grid-cols-5 gap-1.5 xs:gap-2 sm:gap-4 md:gap-6 lg:gap-8 max-w-6xl mx-auto mb-10 sm:mb-14 px-1 xs:px-2">
           {displayCategories.map((cat, idx) => {
             const count = categoryArtworksMap[cat.name]?.length || 0;
             const meta = CATEGORY_META[cat.name.toLowerCase()] || {

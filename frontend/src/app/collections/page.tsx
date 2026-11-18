@@ -52,6 +52,11 @@ const CATEGORY_META: Record<
     accentColor: "#6A4C93",
     tagline: "Architectural wall installations & bespoke mosaic murals",
   },
+  "commissioned artworks": {
+    icon: Sparkles,
+    accentColor: "#D4AF37",
+    tagline: "Custom client orders & bespoke creations in handcrafted mosaic",
+  },
 };
 
 function CollectionsContent() {

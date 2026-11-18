@@ -61,7 +61,8 @@ export default function ManageArtworksSection({
         'Floral & Nature',
         'Figurative & Spiritual',
         'Decorative Art',
-        'Art for Spaces'
+        'Art for Spaces',
+        'Commissioned Artworks'
       );
     }
     artworks.forEach((a) => {

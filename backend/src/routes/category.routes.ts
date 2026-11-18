@@ -17,7 +17,7 @@ export const slugify = (text: string): string => {
 };
 
 /**
- * The 4 core artwork categories for Inderpushp
+ * The 5 core artwork categories for Inderpushp
  */
 export const INITIAL_CATEGORIES = [
   {
@@ -36,6 +36,10 @@ export const INITIAL_CATEGORIES = [
     name: 'Art for Spaces',
     description: 'Includes wall installations, murals and custom artwork for homes, offices and other spaces.',
   },
+  {
+    name: 'Commissioned Artworks',
+    description: 'Bespoke commissions, custom client orders, personalized architectural pieces and portraits.',
+  },
 ];
 
 const LEGACY_CATEGORY_MAP: Record<string, string> = {
@@ -50,11 +54,15 @@ const LEGACY_CATEGORY_MAP: Record<string, string> = {
   'decorative objects': 'Decorative Art',
   'decorative art': 'Decorative Art',
   'art for spaces': 'Art for Spaces',
+  'commissioned': 'Commissioned Artworks',
+  'commissioned artworks': 'Commissioned Artworks',
+  'commissioned artwork': 'Commissioned Artworks',
+  'commissions': 'Commissioned Artworks',
   'other': 'Decorative Art',
 };
 
 /**
- * Ensure the exact 4 core categories exist in MongoDB and reassign legacy categories
+ * Ensure the exact 5 core categories exist in MongoDB and reassign legacy categories
  */
 export const ensureInitialCategories = async () => {
   try {
@@ -84,7 +92,7 @@ export const ensureInitialCategories = async () => {
       }
     }
 
-    // 3. Ensure each of the 4 final categories exists
+    // 3. Ensure each of the 5 final categories exists
     const validNames = INITIAL_CATEGORIES.map((item) => item.name);
     for (let i = 0; i < INITIAL_CATEGORIES.length; i++) {
       const item = INITIAL_CATEGORIES[i];
@@ -121,7 +129,7 @@ export const ensureInitialCategories = async () => {
       name: { $nin: validNames },
     });
   } catch (err) {
-    console.error('Error ensuring 4 core categories:', err);
+    console.error('Error ensuring 5 core categories:', err);
   }
 };
 

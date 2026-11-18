@@ -29,6 +29,11 @@ export const FINAL_6_CATEGORIES = [
     description: 'Includes wall installations, murals and custom artwork for homes, offices and other spaces.',
     displayOrder: 4,
   },
+  {
+    name: 'Commissioned Artworks',
+    description: 'Bespoke commissions, custom client orders, personalized architectural pieces and portraits.',
+    displayOrder: 5,
+  },
 ];
 
 const CATEGORY_MAP: Record<string, string> = {
@@ -42,6 +47,10 @@ const CATEGORY_MAP: Record<string, string> = {
   'decorative objects': 'Decorative Art',
   'decorative art': 'Decorative Art',
   'art for spaces': 'Art for Spaces',
+  'commissioned': 'Commissioned Artworks',
+  'commissioned artworks': 'Commissioned Artworks',
+  'commissioned artwork': 'Commissioned Artworks',
+  'commissions': 'Commissioned Artworks',
   'other': 'Decorative Art',
   'floral & nature': 'Floral & Nature',
   'figurative & spiritual': 'Figurative & Spiritual',

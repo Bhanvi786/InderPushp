@@ -214,6 +214,7 @@ export const DEFAULT_CATEGORIES: Category[] = [
   { _id: 'cat-2', name: 'Figurative & Spiritual', slug: 'figurative-spiritual', description: 'Includes human portraits, Lord Krishna, other deities and spiritual artwork.', displayOrder: 2, isActive: true },
   { _id: 'cat-3', name: 'Decorative Art', slug: 'decorative-art', description: 'Includes mirrors, decorative objects, framed pieces and functional art.', displayOrder: 3, isActive: true },
   { _id: 'cat-4', name: 'Art for Spaces', slug: 'art-for-spaces', description: 'Includes wall installations, murals and custom artwork for homes, offices and other spaces.', displayOrder: 4, isActive: true },
+  { _id: 'cat-5', name: 'Commissioned Artworks', slug: 'commissioned-artworks', description: 'Bespoke commissions, custom client orders, personalized architectural pieces and portraits.', displayOrder: 5, isActive: true },
 ];
 
 /**
