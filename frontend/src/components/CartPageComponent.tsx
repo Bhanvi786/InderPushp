@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Trash2, Plus, Minus, ShieldCheck, Sparkles, ShoppingBag, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Trash2, Plus, Minus, ShieldCheck, Sparkles, ShoppingBag, ArrowRight, CheckCircle2, RotateCcw, Clock, ShieldAlert, Check } from 'lucide-react';
 import Header from '../components/Header';
 import { useCart } from '../context/CartContext';
 import { getImageKitUrl } from '../lib/imagekit';
@@ -353,6 +353,72 @@ Please confirm my order and share payment / delivery schedule. Thank you!`;
                         </div>
                       </div>
                     ))}
+
+                    {/* Atelier Return & Replacement Policy Box (Fills empty area below cart items) */}
+                    <div className="bg-gradient-to-br from-[#FAF7F0] to-[#F4EFE4] rounded-2xl p-6 sm:p-7 border border-[#B79A5A]/35 shadow-xs space-y-4">
+                      <div className="flex items-center gap-2.5 pb-3 border-b border-[#B79A5A]/20">
+                        <div className="w-8 h-8 rounded-full bg-[#B79A5A]/15 text-[#B79A5A] flex items-center justify-center shrink-0 border border-[#B79A5A]/30">
+                          <RotateCcw size={16} />
+                        </div>
+                        <div>
+                          <h3 className="font-serif text-[#263248] text-base sm:text-lg font-medium leading-tight">
+                            Studio Return &amp; Replacement Policy
+                          </h3>
+                          <span className="text-[10px] font-sans tracking-widest uppercase text-[#B79A5A] font-semibold">
+                            Handcrafted Art Guarantee &bull; Direct Studio Care
+                          </span>
+                        </div>
+                      </div>
+
+                      <ul className="space-y-3 font-sans text-xs sm:text-sm text-[#4B5568] leading-relaxed">
+                        <li className="flex items-start gap-2.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#B79A5A] mt-2 shrink-0" />
+                          <span>
+                            <strong className="text-[#263248] font-semibold">Handmade Art Notice:</strong> Returns won&rsquo;t be accepted for change of mind or personal preference, as each piece is uniquely handcrafted with hand-cut stained glass.
+                          </span>
+                        </li>
+
+                        <li className="flex items-start gap-2.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#B79A5A] mt-2 shrink-0" />
+                          <span>
+                            <strong className="text-[#263248] font-semibold">Transit Damage or Defect:</strong> If an artwork arrives damaged, defective, or incorrect, please contact us within <span className="font-semibold text-[#263248]">48 hours of delivery</span> with parcel photos and an unboxing opening video.
+                          </span>
+                        </li>
+
+                        <li className="flex items-start gap-2.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#B79A5A] mt-2 shrink-0" />
+                          <span>
+                            <strong className="text-[#263248] font-semibold">Customised Artworks:</strong> For custom commissions, cancellations and changes cannot be accepted once studio work has commenced.
+                          </span>
+                        </li>
+
+                        <li className="flex items-start gap-2.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#B79A5A] mt-2 shrink-0" />
+                          <span>
+                            <strong className="text-[#263248] font-semibold">Resolution:</strong> If there is any genuine issue from our side, we gladly offer a <span className="text-[#263248] font-medium">replacement, expert repair, or refund</span> depending on the situation.
+                          </span>
+                        </li>
+
+                        <li className="flex items-start gap-2.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#B79A5A] mt-2 shrink-0" />
+                          <span>
+                            <strong className="text-[#263248] font-semibold">Refunds:</strong> Approved refunds will be processed directly back through your original payment method.
+                          </span>
+                        </li>
+                      </ul>
+
+                      <div className="pt-3 border-t border-[#B79A5A]/20 flex flex-wrap items-center justify-between gap-2 text-[11px] font-sans text-[#4B5568]/80">
+                        <span>Need assistance with an order?</span>
+                        <a
+                          href="https://wa.me/919911145052?text=Hello%20Geetu,%20I%20have%20a%20question%20regarding%20an%20order%20and%20return%20policy."
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium text-[#B79A5A] hover:underline"
+                        >
+                          WhatsApp Studio Support: +91 99111 45052 &rarr;
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 ) : (
                   /* Luxury Gallery Delivery Form */
