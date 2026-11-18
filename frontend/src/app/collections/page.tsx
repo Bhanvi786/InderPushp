@@ -422,22 +422,38 @@ function CollectionsContent() {
 
                   <div className="flex items-center justify-between pt-1.5 sm:pt-2 border-t border-[#B79A5A]/15 mt-auto">
                     <div>
-                      <span className="text-[7.5px] sm:text-[9px] font-sans text-[#718096] uppercase tracking-wider block">
-                        {art.variants && art.variants.length > 0 ? "Starting From" : "Price"}
-                      </span>
-                      <div className="flex items-baseline gap-1">
-                        <p className="text-xs xs:text-sm sm:text-base font-serif font-bold text-[#263248]">
-                          ₹{art.priceINR.toLocaleString("en-IN")}
-                        </p>
-                        {art.pricePerUnitText && (
-                          <span className="text-[9px] sm:text-[10px] font-sans font-medium text-[#B79A5A]">
-                            {art.pricePerUnitText}
+                      {art.priceINR && art.priceINR > 0 ? (
+                        <>
+                          <span className="text-[7.5px] sm:text-[9px] font-sans text-[#718096] uppercase tracking-wider block">
+                            {art.variants && art.variants.length > 0 ? "Starting From" : "Price"}
                           </span>
-                        )}
-                      </div>
+                          <div className="flex items-baseline gap-1">
+                            <p className="text-xs xs:text-sm sm:text-base font-serif font-bold text-[#263248]">
+                              ₹{art.priceINR.toLocaleString("en-IN")}
+                            </p>
+                            {art.pricePerUnitText && (
+                              <span className="text-[9px] sm:text-[10px] font-sans font-medium text-[#B79A5A]">
+                                {art.pricePerUnitText}
+                              </span>
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <div className="py-0.5">
+                          <span className="text-[9.5px] sm:text-xs font-serif italic text-[#B79A5A] font-medium block">
+                            Price on Request
+                          </span>
+                        </div>
+                      )}
                     </div>
 
-                    <AddToCartButton artwork={art} />
+                    {art.priceINR && art.priceINR > 0 ? (
+                      <AddToCartButton artwork={art} />
+                    ) : (
+                      <span className="text-[10px] sm:text-[11px] font-sans uppercase tracking-wider font-semibold text-[#263248] hover:text-[#B79A5A] px-2.5 py-1 rounded-full border border-[#B79A5A]/40 bg-[#FAF7F0]">
+                        Commission
+                      </span>
+                    )}
                   </div>
                 </div>
               </article>

@@ -417,19 +417,21 @@ export default function ArtworkDetailModal({
             </button>
 
             <div className="flex items-center gap-2.5">
-              <AddToCartButton
-                artwork={artwork}
-                selectedVariant={currentVariant ? { ...currentVariant, priceINR: currentPrice } : undefined}
-                selectedColor={currentColor ? { ...currentColor, priceINR: currentPrice } : undefined}
-                className="px-5 py-2.5"
-              />
+              {currentPrice > 0 && (
+                <AddToCartButton
+                  artwork={artwork}
+                  selectedVariant={currentVariant ? { ...currentVariant, priceINR: currentPrice } : undefined}
+                  selectedColor={currentColor ? { ...currentColor, priceINR: currentPrice } : undefined}
+                  className="px-5 py-2.5"
+                />
+              )}
 
               <a
                 href="/#contact"
                 onClick={onClose}
                 className="inline-flex items-center justify-center px-4 py-2.5 rounded-full bg-[#263248] hover:bg-[#384055] text-[#FAF7F0] font-sans text-xs uppercase tracking-widest font-semibold transition-all shadow-md border border-[#B79A5A]/30"
               >
-                Enquire
+                {currentPrice > 0 ? 'Enquire' : 'Enquire / Commission'}
               </a>
             </div>
           </div>

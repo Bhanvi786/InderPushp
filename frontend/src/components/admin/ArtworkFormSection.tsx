@@ -51,12 +51,15 @@ export default function ArtworkFormSection({
   const [category, setCategory] = useState<string>(
     initialArtwork?.category || (availableCategories[0]?.name || 'Floral & Nature')
   );
+  const isCommissionedCategory = category.toLowerCase().includes('commission');
   const [priceINR, setPriceINR] = useState<string>(
     initialArtwork
       ? initialArtwork.pricePerUnitText
         ? `${initialArtwork.priceINR} ${initialArtwork.pricePerUnitText}`
-        : String(initialArtwork.priceINR)
-      : '25000'
+        : initialArtwork.priceINR > 0
+        ? String(initialArtwork.priceINR)
+        : ''
+      : ''
   );
   const [pricePerUnitText, setPricePerUnitText] = useState<string>(
     initialArtwork?.pricePerUnitText || ''
@@ -176,16 +179,20 @@ export default function ArtworkFormSection({
 
     // Parse numeric price from priceINR string (e.g. "950 for single piece" -> 950)
     // Extract first number found
-    const numMatch = priceINR.replace(/,/g, '').match(/\d+(\.\d+)?/);
-    const priceNum = numMatch ? Number(numMatch[0]) : NaN;
+    const trimmedPrice = priceINR.trim();
+    const numMatch = trimmedPrice.replace(/,/g, '').match(/\d+(\.\d+)?/);
+    let priceNum = numMatch ? Number(numMatch[0]) : NaN;
 
-    if (isNaN(priceNum) || priceNum < 0) {
-      setFormError('Please include a valid numeric price (e.g. "950", "950 for 1 piece", "950 for 2 pieces").');
+    // For Commissioned Artworks, price can be left empty or 0 (Price on Request)
+    const isCommissioned = category.toLowerCase().includes('commission');
+    if (isCommissioned && (!trimmedPrice || isNaN(priceNum))) {
+      priceNum = 0;
+    } else if (isNaN(priceNum) || priceNum < 0) {
+      setFormError('Please enter a valid price (or leave empty if this is a Commissioned Artwork).');
       return;
     }
 
     // Auto-extract any trailing text if pricePerUnitText was not explicitly filled
-    // e.g. "950 for single piece" -> priceNum = 950, extractedUnit = "for single piece"
     let finalUnitText = pricePerUnitText.trim();
     if (!finalUnitText && numMatch) {
       const remainder = priceINR.replace(numMatch[0], '').replace(/[₹,]/g, '').trim();
@@ -364,7 +371,12 @@ export default function ArtworkFormSection({
 
               <div>
                 <label className="block text-xs font-sans font-semibold uppercase tracking-wider text-[#263248] mb-1.5">
-                  Base Price in INR (₹) <span className="text-rose-600">*</span>
+                  Base Price in INR (₹){' '}
+                  {isCommissionedCategory ? (
+                    <span className="text-[#B79A5A] font-normal lowercase">(optional for commissions)</span>
+                  ) : (
+                    <span className="text-rose-600">*</span>
+                  )}
                 </label>
                 <div className="relative">
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-serif font-bold text-[#B79A5A]">
@@ -372,14 +384,20 @@ export default function ArtworkFormSection({
                   </span>
                   <input
                     type="text"
-                    placeholder="e.g. 950 for single piece OR 950 for 2 pieces"
+                    placeholder={
+                      isCommissionedCategory
+                        ? 'Leave blank for "Price on Request" (or enter price)'
+                        : 'e.g. 950 for single piece OR 950 for 2 pieces'
+                    }
                     value={priceINR}
                     onChange={(e) => setPriceINR(e.target.value)}
                     className="w-full pl-8 pr-3.5 py-2.5 text-sm font-sans bg-[#FAF7F0] border border-[#B79A5A]/30 rounded-lg text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
                   />
                 </div>
                 <p className="text-[11px] font-sans text-[#4B5568] mt-1">
-                  You can type text directly, e.g. <span className="font-semibold text-[#263248]">950 for 1 piece</span> or <span className="font-semibold text-[#263248]">950 for 2 pieces</span>.
+                  {isCommissionedCategory
+                    ? 'For Commissioned Artworks, you can leave this empty. It will display "Price on Request / Commission".'
+                    : 'You can type text directly, e.g. 950 for 1 piece or 950 for 2 pieces.'}
                 </p>
                 {hasVariants && (
                   <p className="text-[11px] font-sans text-[#4B5568] mt-0.5">
