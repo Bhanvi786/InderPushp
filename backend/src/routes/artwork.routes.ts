@@ -195,6 +195,7 @@ router.post('/', authenticateAdmin, async (req: Request, res: Response): Promise
       additionalImages,
       dimensions,
       materials,
+      videoUrl,
       availability,
       stockQuantity,
       estimatedProductionTime,
@@ -262,6 +263,7 @@ router.post('/', authenticateAdmin, async (req: Request, res: Response): Promise
       additionalImages: Array.isArray(additionalImages) ? additionalImages : [],
       dimensions: dimensions?.trim() || '',
       materials: materials?.trim() || '',
+      videoUrl: videoUrl ? String(videoUrl).trim() : '',
       availability: availability || 'In Stock',
       stockQuantity: typeof stockQuantity === 'number' ? stockQuantity : Number(stockQuantity) || 1,
       estimatedProductionTime: estimatedProductionTime?.trim() || '',
@@ -351,6 +353,7 @@ router.put('/:id', authenticateAdmin, async (req: Request, res: Response): Promi
       additionalImages,
       dimensions,
       materials,
+      videoUrl,
       availability,
       stockQuantity,
       estimatedProductionTime,
@@ -389,6 +392,7 @@ router.put('/:id', authenticateAdmin, async (req: Request, res: Response): Promi
     }
     if (dimensions !== undefined) existingArtwork.dimensions = dimensions.trim();
     if (materials !== undefined) existingArtwork.materials = materials.trim();
+    if (videoUrl !== undefined) existingArtwork.videoUrl = videoUrl ? String(videoUrl).trim() : '';
     if (availability !== undefined) existingArtwork.availability = availability;
     if (stockQuantity !== undefined) existingArtwork.stockQuantity = Number(stockQuantity);
     if (estimatedProductionTime !== undefined)

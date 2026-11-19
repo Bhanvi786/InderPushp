@@ -12,6 +12,7 @@ import {
   Plus,
   Trash2,
   Upload,
+  Video,
 } from 'lucide-react';
 import {
   Artwork,
@@ -77,6 +78,8 @@ export default function ArtworkFormSection({
     Boolean(initialArtwork?.colorOptions && initialArtwork.colorOptions.length > 0)
   );
   const [dimensions, setDimensions] = useState(initialArtwork?.dimensions || '');
+  const [videoUrl, setVideoUrl] = useState(initialArtwork?.videoUrl || '');
+  const [isVideoUploading, setIsVideoUploading] = useState(false);
   const [materials, setMaterials] = useState(
     initialArtwork?.materials || 'Hand-cut stained glass, Italian smalti, gold leaf tiles'
   );
@@ -244,7 +247,8 @@ export default function ArtworkFormSection({
         colorOptions: cleanedColors,
         mainImage: effectiveMainImage,
         additionalImages,
-        dimensions: dimensions.trim(),
+        dimensions: isCommissionedCategory ? '' : dimensions.trim(),
+        videoUrl: videoUrl.trim(),
         materials: materials.trim(),
         availability,
         stockQuantity: isNaN(stockNum) ? 1 : stockNum,
@@ -801,20 +805,22 @@ export default function ArtworkFormSection({
               )}
             </div>
 
-            {/* Dimensions & Materials */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-sans font-semibold uppercase tracking-wider text-[#263248] mb-1.5">
-                  Dimensions
-                </label>
-                <input
-                  type="text"
-                  placeholder='e.g., 24" x 36" (60 x 90 cm)'
-                  value={dimensions}
-                  onChange={(e) => setDimensions(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-sm font-sans bg-[#FAF7F0] border border-[#B79A5A]/30 rounded-lg text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
-                />
-              </div>
+            {/* Dimensions (Hidden for Commissioned Artworks) & Display Order */}
+            <div className={`grid grid-cols-1 ${isCommissionedCategory ? 'sm:grid-cols-1' : 'sm:grid-cols-2'} gap-4`}>
+              {!isCommissionedCategory && (
+                <div>
+                  <label className="block text-xs font-sans font-semibold uppercase tracking-wider text-[#263248] mb-1.5">
+                    Dimensions
+                  </label>
+                  <input
+                    type="text"
+                    placeholder='e.g., 24" x 36" (60 x 90 cm)'
+                    value={dimensions}
+                    onChange={(e) => setDimensions(e.target.value)}
+                    className="w-full px-3.5 py-2.5 text-sm font-sans bg-[#FAF7F0] border border-[#B79A5A]/30 rounded-lg text-[#263248] focus:outline-hidden focus:border-[#B79A5A]"
+                  />
+                </div>
+              )}
 
               <div>
                 <label className="block text-xs font-sans font-semibold uppercase tracking-wider text-[#263248] mb-1.5">
@@ -925,6 +931,92 @@ export default function ArtworkFormSection({
               onAdditionalImagesChange={setAdditionalImages}
               imageKitConfigured={isStorageActive}
             />
+
+            {/* Video Showcase Upload / Embed */}
+            <div className="mt-6 pt-5 border-t border-[#B79A5A]/20 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Video size={16} className="text-[#B79A5A]" />
+                  <label className="text-xs font-sans font-semibold uppercase tracking-wider text-[#263248]">
+                    Artwork Video Showcase (Optional)
+                  </label>
+                </div>
+                {videoUrl && (
+                  <button
+                    type="button"
+                    onClick={() => setVideoUrl('')}
+                    className="text-xs text-rose-500 hover:text-rose-700 flex items-center gap-1 font-sans"
+                  >
+                    <Trash2 size={13} /> Remove
+                  </button>
+                )}
+              </div>
+              <p className="text-[11px] font-sans text-[#4B5568]">
+                Add a short video/reel of this artwork in lighting, angle transitions or craft details. Available for all categories.
+              </p>
+
+              {videoUrl ? (
+                <div className="space-y-2">
+                  <div className="relative rounded-xl overflow-hidden bg-black/90 aspect-video flex items-center justify-center border border-[#B79A5A]/30">
+                    <video
+                      src={videoUrl}
+                      controls
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <input
+                    type="url"
+                    value={videoUrl}
+                    onChange={(e) => setVideoUrl(e.target.value)}
+                    placeholder="https://..."
+                    className="w-full px-3 py-1.5 text-xs font-sans bg-[#FAF7F0] border border-[#B79A5A]/30 rounded-lg text-[#263248] focus:outline-hidden"
+                  />
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <label className="border-2 border-dashed border-[#B79A5A]/30 hover:border-[#B79A5A] rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer bg-[#FAF7F0]/60 hover:bg-[#FAF7F0] transition-colors">
+                    <Upload size={18} className="text-[#B79A5A] mb-1" />
+                    <span className="text-xs font-sans font-medium text-[#263248]">
+                      {isVideoUploading ? 'Uploading Video...' : 'Upload Video File (MP4, WebM, MOV)'}
+                    </span>
+                    <span className="text-[10px] text-[#4B5568] mt-0.5">Up to 100MB</span>
+                    <input
+                      type="file"
+                      accept="video/mp4,video/webm,video/quicktime,video/x-matroska"
+                      className="hidden"
+                      disabled={isVideoUploading}
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        setIsVideoUploading(true);
+                        try {
+                          if (isStorageActive) {
+                            const res = await uploadApi.uploadImage(file);
+                            setVideoUrl(res.url);
+                          } else {
+                            setVideoUrl(URL.createObjectURL(file));
+                          }
+                        } catch (err: any) {
+                          alert('Video upload failed: ' + (err.message || 'Error'));
+                        } finally {
+                          setIsVideoUploading(false);
+                        }
+                      }}
+                    />
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-sans text-stone-400 uppercase tracking-wider">or paste link:</span>
+                    <input
+                      type="url"
+                      placeholder="https://ik.imagekit.io/... or video URL"
+                      value={videoUrl}
+                      onChange={(e) => setVideoUrl(e.target.value)}
+                      className="flex-1 px-2.5 py-1.5 text-xs font-sans bg-[#FAF7F0] border border-[#B79A5A]/30 rounded-lg text-[#263248] focus:outline-hidden"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Action buttons: Save Draft vs Publish */}

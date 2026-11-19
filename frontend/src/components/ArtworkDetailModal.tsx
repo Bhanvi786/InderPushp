@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { X, Sparkles, Ruler, Palette, Clock, CheckCircle2, ChevronLeft, ChevronRight, Share2, ZoomIn, ShoppingBag, Check } from 'lucide-react';
+import { X, Sparkles, Ruler, Palette, Clock, CheckCircle2, ChevronLeft, ChevronRight, Share2, ZoomIn, ShoppingBag, Check, Play, Film } from 'lucide-react';
 import { Artwork, ArtworkImage } from '../types/artwork';
 import { getImageKitUrl } from '../lib/imagekit';
 import { useCart } from '../context/CartContext';
@@ -21,11 +21,14 @@ export default function ArtworkDetailModal({
   onSelectCategory,
 }: ArtworkDetailModalProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [isVideoActive, setIsVideoActive] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const { addItem, openCart } = useCart();
+
+  const isCommissionedCategory = artwork?.category?.toLowerCase().includes('commission') ?? false;
 
   const hasVariants = Boolean(artwork?.variants && artwork.variants.length > 0);
   const hasColors = Boolean(artwork?.colorOptions && artwork.colorOptions.length > 0);
@@ -51,6 +54,7 @@ export default function ArtworkDetailModal({
 
   useEffect(() => {
     setSelectedImageIndex(0);
+    setIsVideoActive(false);
     setSelectedVariantIndex(0);
     setSelectedColorIndex(0);
     setIsAdded(false);
@@ -142,10 +146,17 @@ export default function ArtworkDetailModal({
           <X size={20} />
         </button>
 
-        {/* LEFT COLUMN: Visual Presentation (Full Image + Thumbnails) */}
+        {/* LEFT COLUMN: Visual Presentation (Full Image/Video + Thumbnails) */}
         <div className="w-full md:w-[58%] bg-[#F4EFE4]/60 p-4 sm:p-6 md:p-8 flex flex-col justify-between border-b md:border-b-0 md:border-r border-[#B79A5A]/20">
           <div className="relative w-full aspect-4/3 sm:aspect-4/3 md:aspect-square rounded-xl overflow-hidden bg-white/70 border border-[#B79A5A]/25 shadow-inner flex items-center justify-center">
-            {currentImage?.url ? (
+            {isVideoActive && artwork.videoUrl ? (
+              <video
+                src={artwork.videoUrl}
+                controls
+                autoPlay
+                className="w-full h-full object-contain bg-black/95"
+              />
+            ) : currentImage?.url ? (
               <Image
                 src={getImageKitUrl(currentImage.url, { width: 1200, quality: 90 })}
                 alt={currentImage.alt || artwork.title}
@@ -159,7 +170,7 @@ export default function ArtworkDetailModal({
             )}
 
             {/* Availability Badge Overlay */}
-            <div className="absolute top-3 left-3">
+            <div className="absolute top-3 left-3 z-10">
               <span
                 className={`px-3 py-1 rounded-full text-[11px] font-sans font-semibold tracking-wider uppercase backdrop-blur-md shadow-xs ${
                   artwork.availability === 'In Stock'
@@ -175,8 +186,29 @@ export default function ArtworkDetailModal({
               </span>
             </div>
 
-            {/* Image Navigation Arrows if multiple */}
-            {allImages.length > 1 && (
+            {/* Video Active / Photo View Switch Badge if video exists */}
+            {artwork.videoUrl && (
+              <button
+                type="button"
+                onClick={() => setIsVideoActive(!isVideoActive)}
+                className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-sans font-semibold tracking-wider uppercase backdrop-blur-md shadow-xs bg-[#263248]/90 text-white hover:bg-[#384055] border border-[#B79A5A]/40 transition-colors"
+              >
+                {isVideoActive ? (
+                  <>
+                    <ZoomIn size={12} className="text-[#B79A5A]" />
+                    <span>View Photos</span>
+                  </>
+                ) : (
+                  <>
+                    <Play size={12} className="text-[#B79A5A] fill-[#B79A5A]" />
+                    <span>Watch Video</span>
+                  </>
+                )}
+              </button>
+            )}
+
+            {/* Image Navigation Arrows if multiple and not viewing video */}
+            {!isVideoActive && allImages.length > 1 && (
               <>
                 <button
                   onClick={() =>
@@ -200,15 +232,18 @@ export default function ArtworkDetailModal({
             )}
           </div>
 
-          {/* Thumbnails Row if multiple images */}
-          {allImages.length > 1 && (
+          {/* Thumbnails Row (Images + Video thumbnail if present) */}
+          {(allImages.length > 1 || Boolean(artwork.videoUrl)) && (
             <div className="flex items-center gap-2.5 mt-4 overflow-x-auto pb-1 hide-scrollbar">
               {allImages.map((img, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setSelectedImageIndex(idx)}
+                  onClick={() => {
+                    setIsVideoActive(false);
+                    setSelectedImageIndex(idx);
+                  }}
                   className={`relative w-14 h-14 rounded-lg overflow-hidden shrink-0 border-2 transition-all ${
-                    selectedImageIndex === idx
+                    !isVideoActive && selectedImageIndex === idx
                       ? 'border-[#B79A5A] ring-2 ring-[#B79A5A]/30 scale-105'
                       : 'border-transparent opacity-60 hover:opacity-100'
                   }`}
@@ -222,6 +257,23 @@ export default function ArtworkDetailModal({
                   />
                 </button>
               ))}
+
+              {/* Video Thumbnail Button */}
+              {artwork.videoUrl && (
+                <button
+                  type="button"
+                  onClick={() => setIsVideoActive(true)}
+                  className={`relative w-14 h-14 rounded-lg overflow-hidden shrink-0 border-2 flex flex-col items-center justify-center bg-[#263248] text-white transition-all ${
+                    isVideoActive
+                      ? 'border-[#B79A5A] ring-2 ring-[#B79A5A]/30 scale-105 opacity-100'
+                      : 'border-transparent opacity-70 hover:opacity-100'
+                  }`}
+                  title="Play video"
+                >
+                  <Play size={16} className="text-[#B79A5A] fill-[#B79A5A] mb-0.5" />
+                  <span className="text-[9px] font-sans uppercase font-medium tracking-wider">Video</span>
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -374,7 +426,7 @@ export default function ArtworkDetailModal({
 
             {/* Specifications Grid */}
             <div className="space-y-3 pt-3 border-t border-[#B79A5A]/20 text-xs font-sans">
-              {currentDimensions && (
+              {!isCommissionedCategory && currentDimensions && (
                 <div className="flex items-start gap-3 text-[#263248]">
                   <Ruler size={16} className="text-[#B79A5A] shrink-0 mt-0.5" />
                   <div>

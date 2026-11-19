@@ -44,6 +44,7 @@ export interface IArtwork extends Document {
   additionalImages: IArtworkImage[];
   dimensions?: string; // e.g., "24 x 36 inches"
   materials?: string; // e.g., "Stained Glass, Italian Smalti, Ceramic tiles"
+  videoUrl?: string; // Optional showcase video (e.g. MP4 or YouTube/Vimeo embed or uploaded video)
   availability: AvailabilityStatus;
   stockQuantity: number;
   estimatedProductionTime?: string; // e.g., "2-3 weeks"
@@ -139,6 +140,11 @@ const ArtworkSchema = new Schema<IArtwork>(
       trim: true,
     },
     materials: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    videoUrl: {
       type: String,
       default: '',
       trim: true,

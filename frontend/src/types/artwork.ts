@@ -57,6 +57,7 @@ export interface Artwork {
   additionalImages: ArtworkImage[];
   dimensions?: string;
   materials?: string;
+  videoUrl?: string; // Optional artwork demonstration video
   availability: AvailabilityStatus;
   stockQuantity: number;
   estimatedProductionTime?: string;
