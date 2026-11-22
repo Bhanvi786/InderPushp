@@ -27,6 +27,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} h-full antialiased scroll-smooth`}>
+      <head>
+        <link rel="preconnect" href="https://ik.imagekit.io" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://ik.imagekit.io" />
+      </head>
       <body className="min-h-full flex flex-col bg-ivory text-navy-text">
         <CartProvider>
           {children}

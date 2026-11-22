@@ -262,13 +262,13 @@ function Circular3DCarouselTrack({
     } catch (_) {}
   };
 
-  // Preload all carousel images into memory so they are instantly ready with zero pop-in on mobile
+  // Preload visible carousel images into memory for instant readiness
   useEffect(() => {
     if (typeof window === "undefined") return;
-    items.forEach((art) => {
+    items.slice(0, 10).forEach((art) => {
       const url = getImageKitUrl(art.mainImage?.url, {
-        width: 650,
-        quality: 85,
+        width: 480,
+        quality: 78,
         format: "webp",
       });
       if (url) {
@@ -333,8 +333,8 @@ function Circular3DCarouselTrack({
       >
         {items.map((art, index) => {
           const imageUrl = getImageKitUrl(art.mainImage?.url, {
-            width: 650,
-            quality: 85,
+            width: 480,
+            quality: 78,
             format: "webp",
           });
 

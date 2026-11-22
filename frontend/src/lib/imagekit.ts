@@ -23,12 +23,14 @@ export function getImageKitUrl(
   const transforms: string[] = [];
   if (options?.width) transforms.push(`w-${options.width}`);
   if (options?.height) transforms.push(`h-${options.height}`);
-  if (options?.quality) transforms.push(`q-${options.quality}`);
+  // Use a balanced quality (default 75-80) for instant delivery
+  const quality = options?.quality !== undefined ? options.quality : 78;
+  transforms.push(`q-${quality}`);
   if (options?.blur) transforms.push(`bl-${options.blur}`);
   if (options?.format) {
     transforms.push(`f-${options.format}`);
   } else {
-    transforms.push('f-auto'); // Default to auto-format (WebP/AVIF depending on browser)
+    transforms.push('f-auto'); // Default to auto-format (modern WebP/AVIF depending on browser)
   }
 
   if (transforms.length === 0) return url;

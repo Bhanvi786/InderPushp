@@ -400,11 +400,13 @@ function CollectionsContent() {
                 <div className="relative w-full h-[140px] xs:h-[175px] sm:h-[260px] overflow-hidden bg-[#FAF7F0] flex items-center justify-center p-2 sm:p-3">
                   <img
                     src={getImageKitUrl(art.mainImage?.url, {
-                      width: 700,
-                      quality: 88,
+                      width: 500,
+                      quality: 80,
                       format: "webp",
                     })}
                     alt={art.mainImage?.alt || art.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                   <div className="absolute top-1.5 right-1.5 sm:top-2.5 sm:right-2.5 w-4 h-4 sm:w-6 sm:h-6 border-t-2 border-r-2 border-[#B79A5A]/40 rounded-tr-md pointer-events-none group-hover:border-[#B79A5A] transition-colors" />
