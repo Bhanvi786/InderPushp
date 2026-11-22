@@ -16,11 +16,18 @@ export default function Header() {
     { label: "Home", href: "/" },
     { label: "Collections", href: "/#collections" },
     { label: "About", href: "/about" },
+    { label: "Return Policy", href: "/return-policy" },
     { label: "Contact", href: "/#contact" },
   ];
 
-  // On subpages (e.g. /cart, /about), display strictly the "Home" option
-  const navLinks = isHomePage ? allNavLinks : [{ label: "Home", href: "/" }];
+  // On subpages (e.g. /cart, /about, /return-policy), display "Home" and "Return Policy" options
+  const isReturnPolicyPage = pathname === "/return-policy";
+  const navLinks = isHomePage
+    ? allNavLinks
+    : [
+        { label: "Home", href: "/" },
+        { label: "Return Policy", href: "/return-policy" },
+      ];
 
   return (
     <header className="absolute top-0 left-0 w-full z-50 pt-2.5 pb-2 px-6 md:px-12 xl:px-20 flex items-center justify-between">
@@ -56,13 +63,23 @@ export default function Header() {
           ))}
         </nav>
       ) : (
-        /* On Subpages: Perfectly Centered "Home" Option across all screen sizes */
-        <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 z-40">
+        /* On Subpages: Centered Nav Links */
+        <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 z-40 flex items-center gap-6 sm:gap-8">
           <Link
             href="/"
-            className="text-sm sm:text-base font-sans tracking-wide text-gold border-b-2 border-gold pb-0.5 hover:text-navy transition-colors font-medium select-none"
+            className="text-sm sm:text-base font-sans tracking-wide text-navy hover:text-gold transition-colors font-medium select-none"
           >
             Home
+          </Link>
+          <Link
+            href="/return-policy"
+            className={`text-sm sm:text-base font-sans tracking-wide transition-colors font-medium select-none pb-0.5 ${
+              isReturnPolicyPage
+                ? "text-gold border-b-2 border-gold"
+                : "text-navy hover:text-gold"
+            }`}
+          >
+            Return Policy
           </Link>
         </div>
       )}

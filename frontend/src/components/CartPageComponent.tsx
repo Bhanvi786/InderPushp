@@ -373,37 +373,27 @@ Please confirm my order and share payment / delivery schedule. Thank you!`;
                       <ul className="space-y-3 font-sans text-xs sm:text-sm text-[#4B5568] leading-relaxed">
                         <li className="flex items-start gap-2.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#B79A5A] mt-2 shrink-0" />
-                          <span>
-                            <strong className="text-[#263248] font-semibold">Handmade Art Notice:</strong> Returns won&rsquo;t be accepted for change of mind or personal preference, as each piece is uniquely handcrafted with hand-cut stained glass.
-                          </span>
+                          <span>Returns won&rsquo;t be accepted for change of mind or personal preference, as the artworks are handmade.</span>
                         </li>
 
                         <li className="flex items-start gap-2.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#B79A5A] mt-2 shrink-0" />
-                          <span>
-                            <strong className="text-[#263248] font-semibold">Transit Damage or Defect:</strong> If an artwork arrives damaged, defective, or incorrect, please contact us within <span className="font-semibold text-[#263248]">48 hours of delivery</span> with parcel photos and an unboxing opening video.
-                          </span>
+                          <span>If an artwork arrives damaged, defective or incorrect, the customer can contact us within 48 hours of delivery with photos and opening video.</span>
                         </li>
 
                         <li className="flex items-start gap-2.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#B79A5A] mt-2 shrink-0" />
-                          <span>
-                            <strong className="text-[#263248] font-semibold">Customised Artworks:</strong> For custom commissions, cancellations and changes cannot be accepted once studio work has commenced.
-                          </span>
+                          <span>For customised artworks, cancellations won&rsquo;t be accepted once the work has started.</span>
                         </li>
 
                         <li className="flex items-start gap-2.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#B79A5A] mt-2 shrink-0" />
-                          <span>
-                            <strong className="text-[#263248] font-semibold">Resolution:</strong> If there is any genuine issue from our side, we gladly offer a <span className="text-[#263248] font-medium">replacement, expert repair, or refund</span> depending on the situation.
-                          </span>
+                          <span>If there&rsquo;s any issue from our side, we can offer a replacement, repair or refund depending on the situation.</span>
                         </li>
 
                         <li className="flex items-start gap-2.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-[#B79A5A] mt-2 shrink-0" />
-                          <span>
-                            <strong className="text-[#263248] font-semibold">Refunds:</strong> Approved refunds will be processed directly back through your original payment method.
-                          </span>
+                          <span>Approved refunds will be processed through the original payment method.</span>
                         </li>
                       </ul>
 
