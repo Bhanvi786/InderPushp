@@ -407,8 +407,14 @@ Please confirm my order and share payment / delivery schedule. Thank you!`;
                         </li>
                       </ul>
 
-                      <div className="pt-3 border-t border-[#B79A5A]/20 flex flex-wrap items-center justify-between gap-2 text-[11px] font-sans text-[#4B5568]/80">
-                        <span>Need assistance with an order?</span>
+                      <div className="pt-3 border-t border-[#B79A5A]/20 flex flex-wrap items-center justify-between gap-3 text-xs font-sans">
+                        <Link
+                          href="/return-policy"
+                          className="font-medium text-[#263248] hover:text-[#B79A5A] underline underline-offset-4 decoration-[#B79A5A]/50 transition-colors inline-flex items-center gap-1.5"
+                        >
+                          <span>Read Full Return Policy Page</span>
+                          <span aria-hidden="true">&rarr;</span>
+                        </Link>
                         <a
                           href="https://wa.me/919911145052?text=Hello%20Geetu,%20I%20have%20a%20question%20regarding%20an%20order%20and%20return%20policy."
                           target="_blank"

@@ -97,6 +97,14 @@ export default function Footer() {
                   Shopping Bag
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/return-policy"
+                  className="text-[#FAF7F0]/75 hover:text-[#D8C594] transition-colors inline-block"
+                >
+                  Return Policy
+                </Link>
+              </li>
             </ul>
           </div>
 
