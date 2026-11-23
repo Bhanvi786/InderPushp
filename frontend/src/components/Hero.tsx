@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import MosaicGallery from "./MosaicGallery";
-import { Heart, Leaf, Home } from "lucide-react";
+import { Heart, Leaf, GraduationCap } from "lucide-react";
 
 export default function Hero() {
   const images = [
@@ -102,13 +102,13 @@ export default function Hero() {
                 </p>
               </div>
 
-              {/* Feature 3 */}
+              {/* Feature 3: Hands-On Workshops */}
               <div className="flex flex-col items-center text-center gap-1.5 xs:gap-2 md:gap-2 relative px-1">
                 {/* Vertical Divider on Desktop */}
                 <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-[36px] lg:h-[44px] bg-[#B79A5A]/35 pointer-events-none" />
-                <Home size={22} className="text-[#B79A5A] xs:w-[24px] xs:h-[24px] md:w-[26px] md:h-[26px] lg:w-[28px] lg:h-[28px] shrink-0" strokeWidth={1.5} />
+                <GraduationCap size={22} className="text-[#B79A5A] xs:w-[24px] xs:h-[24px] md:w-[26px] md:h-[26px] lg:w-[28px] lg:h-[28px] shrink-0" strokeWidth={1.5} />
                 <p className="text-[10px] xs:text-[11px] sm:text-[11.5px] md:text-[11.5px] lg:text-[12.5px] text-[#263248] font-sans font-semibold uppercase tracking-[0.14em] xs:tracking-[0.16em] md:tracking-[0.16em] leading-snug">
-                  Art for<br />Homes
+                  Hands-On<br />Workshops
                 </p>
               </div>
 
