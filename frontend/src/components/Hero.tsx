@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import MosaicGallery from "./MosaicGallery";
-import { Heart, Leaf, GraduationCap } from "lucide-react";
+import { Heart, GraduationCap } from "lucide-react";
 
 export default function Hero() {
   const images = [
@@ -81,10 +81,10 @@ export default function Hero() {
 
             {/* FEATURE HIGHLIGHTS: */}
             {/* On mobile (<md): Positioned vertically on the right side */}
-            {/* On all desktop/laptop (>=md): Always visible horizontally in a clean 3-column row below CTA */}
-            <div className="shrink-0 w-[115px] xs:w-[130px] sm:w-[150px] md:w-full md:max-w-[480px] lg:max-w-[520px] flex flex-col md:grid md:grid-cols-3 gap-3.5 xs:gap-4 md:gap-2 lg:gap-3 pl-3 xs:pl-3.5 md:pl-0 border-l md:border-l-0 md:border-t border-[#B79A5A]/35 md:mt-6 lg:mt-8 md:pt-4 lg:pt-6 py-2 md:py-0 self-center md:self-start">
+            {/* On all desktop/laptop (>=md): Always visible horizontally in a clean 2-column row below CTA */}
+            <div className="shrink-0 w-[115px] xs:w-[130px] sm:w-[150px] md:w-full md:max-w-[420px] lg:max-w-[450px] flex flex-col md:grid md:grid-cols-2 gap-3.5 xs:gap-4 md:gap-4 pl-3 xs:pl-3.5 md:pl-0 border-l md:border-l-0 md:border-t border-[#B79A5A]/35 md:mt-6 lg:mt-8 md:pt-4 lg:pt-6 py-2 md:py-0 self-center md:self-start">
 
-              {/* Feature 1 */}
+              {/* Feature 1: Handcrafted with Love */}
               <div className="flex flex-col items-center text-center gap-1.5 xs:gap-2 md:gap-2 relative px-1">
                 <Heart size={22} className="text-[#B79A5A] xs:w-[24px] xs:h-[24px] md:w-[26px] md:h-[26px] lg:w-[28px] lg:h-[28px] shrink-0" strokeWidth={1.5} />
                 <p className="text-[10px] xs:text-[11px] sm:text-[11.5px] md:text-[11.5px] lg:text-[12.5px] text-[#263248] font-sans font-semibold uppercase tracking-[0.14em] xs:tracking-[0.16em] md:tracking-[0.16em] leading-snug">
@@ -92,17 +92,7 @@ export default function Hero() {
                 </p>
               </div>
 
-              {/* Feature 2 */}
-              <div className="flex flex-col items-center text-center gap-1.5 xs:gap-2 md:gap-2 relative px-1">
-                {/* Vertical Divider on Desktop */}
-                <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-[36px] lg:h-[44px] bg-[#B79A5A]/35 pointer-events-none" />
-                <Leaf size={22} className="text-[#B79A5A] xs:w-[24px] xs:h-[24px] md:w-[26px] md:h-[26px] lg:w-[28px] lg:h-[28px] shrink-0" strokeWidth={1.5} />
-                <p className="text-[10px] xs:text-[11px] sm:text-[11.5px] md:text-[11.5px] lg:text-[12.5px] text-[#263248] font-sans font-semibold uppercase tracking-[0.14em] xs:tracking-[0.16em] md:tracking-[0.16em] leading-snug">
-                  Inspired<br />by Nature
-                </p>
-              </div>
-
-              {/* Feature 3: Hands-On Workshops */}
+              {/* Feature 2: Hands-On Workshops */}
               <div className="flex flex-col items-center text-center gap-1.5 xs:gap-2 md:gap-2 relative px-1">
                 {/* Vertical Divider on Desktop */}
                 <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-[36px] lg:h-[44px] bg-[#B79A5A]/35 pointer-events-none" />
