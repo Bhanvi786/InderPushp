@@ -93,7 +93,7 @@ export default function AboutPreview() {
                       muted
                       loop
                       playsInline
-                      preload="auto"
+                      preload="none"
                       className="w-full h-full object-contain"
                     />
 
@@ -166,7 +166,7 @@ export default function AboutPreview() {
         >
           <div className="relative w-full h-full min-h-[420px]">
             <Image
-              src="/borders.png"
+              src="/borders.webp"
               alt="Handcrafted Mosaic Ribbon Border"
               fill
               className="object-cover md:object-contain object-right"

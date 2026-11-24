@@ -44,7 +44,7 @@ export default function MosaicBorderDivider({
               height="80"
             >
               <image
-                href="/mosaic-flowers-proportional.png"
+                href="/mosaic-flowers-proportional.webp"
                 x="0"
                 y="-15"
                 width="600"

@@ -188,8 +188,8 @@ export default function Collections() {
             const previewArt = categoryArtworksMap[cat.name]?.[0];
             const previewImgUrl = previewArt?.mainImage?.url
               ? getImageKitUrl(previewArt.mainImage.url, {
-                  width: 380,
-                  quality: 80,
+                  width: 320,
+                  quality: 65,
                   format: "webp",
                 })
               : null;
